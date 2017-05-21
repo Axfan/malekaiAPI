@@ -1,10 +1,6 @@
 # malekaiApi
 
-An API for a game I'm making (or was).
-
-Node.js, Express, RethinkDB, and Typescript, yahoo!
-
-Feel free to learn.
+The api for the malekai project.
 
 ## To setup:
 
@@ -14,4 +10,7 @@ Install node v6, start up a rethinkdb server with default ports/etc.
 
 ## To run:
 
-`npm start` or `tsc && node dist/server.js`, if you have `typescript` installed globally
+`npm start` or `tsc && node dist/server.js`, if you have `typescript` installed globally.
+
+Make sure to clear the dist folder if you want to remove old files (important for building
+for release!).
