@@ -1,4 +1,4 @@
-# malekaiWebApi
+# malekaiApi
 
 An API for a game I'm making (or was).
 
