@@ -19,13 +19,19 @@ export class DisciplineApi {
     });
   }
 
-  @Route(':id')
+  @Route(':name')
   get(req, res) {
-    DisciplineService.get(req.params.id).then(
-      value => res.json(value.toDTO()),
-      err => {
-        res.status(err.status).send(err.message);
-        Logger.error('GET: /discs/' + req.params.id, err);
-    });
+    try {
+      const name = atob(req.params.name);
+      DisciplineService.get(req.params.name).then(
+        value => res.json(value.toDTO()),
+        err => {
+          res.status(err.status).send(err.message);
+          Logger.error('GET: /discs/' + req.params.name, err);
+      });
+    } catch (e) {
+      res.status(500).send('' + e);
+      Logger.error('GET: /discs/' + req.params.name, e);
+    }
   }
 }

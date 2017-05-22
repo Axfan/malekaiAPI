@@ -1,9 +1,9 @@
 export class Discipline {
 
-  id: string; // i.e. "Agent Provocateur"
+  name: string; // i.e. "Agent Provocateur"
   description: string; // i.e. "Agent Provocateurs are sneaky, well-hidden, and difficult to track."
 
-  icon: string; // i.e. ""
+  icon: string; // i.e. ''
 
   can_equip: string[]; // i.e. ["Assassin","Duelist","Ranger"]
 
@@ -22,10 +22,10 @@ export class Discipline {
 
   public static fromDTO(obj: any) {
     const d = new Discipline();
-    d.id = obj.name || "";
-    d.description = obj.description || "";
+    d.name = obj.name || '';
+    d.description = obj.description || '';
 
-    d.icon = obj.icon || "";
+    d.icon = obj.icon || '';
 
     d.can_equip = obj.can_equip instanceof Array ? obj.can_equip.slice() : [];
 
@@ -37,8 +37,8 @@ export class Discipline {
     d.slots_granted = obj.slots_granted instanceof Array ? obj.slots_granted.slice() : [];
     d.slots_removed = obj.slots_removed instanceof Array ? obj.slots_removed.slice() : [];
 
-    d.trays_granted = obj.trays_granted || "";
-    d.trays_removed = obj.trays_removed || "";
+    d.trays_granted = obj.trays_granted || '';
+    d.trays_removed = obj.trays_removed || '';
 
     d.powers_granted = obj.powers_granted ? obj.powers_granted.slice() : [];
     return d;
@@ -51,10 +51,10 @@ export class Discipline {
   constructor(disc?: Discipline) {
     if(disc != null) {
 
-      this.id = disc.id || "";
-      this.description = disc.description || "";
+      this.name = disc.name || '';
+      this.description = disc.description || '';
 
-      this.icon = disc.icon || "";
+      this.icon = disc.icon || '';
 
       this.can_equip = disc.can_equip ? disc.can_equip.slice() : [];
 
@@ -66,17 +66,17 @@ export class Discipline {
       this.slots_granted = disc.slots_granted ? disc.slots_granted.slice() : [];
       this.slots_removed = disc.slots_removed ? disc.slots_removed.slice() : [];
 
-      this.trays_granted = disc.trays_granted || "";
-      this.trays_removed = disc.trays_removed || "";
+      this.trays_granted = disc.trays_granted || '';
+      this.trays_removed = disc.trays_removed || '';
 
       this.powers_granted = disc.powers_granted ? disc.powers_granted.slice() : [];
 
     } else {
 
-      this.id =  "";
-      this.description = "";
+      this.name =  '';
+      this.description = '';
 
-      this.icon =  "";
+      this.icon =  '';
 
       this.can_equip = [];
 
@@ -88,8 +88,8 @@ export class Discipline {
       this.slots_granted = [];
       this.slots_removed = [];
 
-      this.trays_granted =  "";
-      this.trays_removed =  "";
+      this.trays_granted =  '';
+      this.trays_removed =  '';
 
       this.powers_granted = [];
     }
@@ -97,7 +97,7 @@ export class Discipline {
 
   toDTO(): any {
     return {
-      name: this.id,
+      name: this.name,
       description: this.description,
 
       icon: this.icon,
