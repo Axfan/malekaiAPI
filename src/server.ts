@@ -14,19 +14,26 @@ DatabaseService.init().then(() => {
 
   const app = express();
 
-  const whitelist = ['localhost:4200', 'crowfall.wiki', 'michaelfedora.github.io'];
+  /*const whitelist = [
+    'localhost:4200',
+    'crowfall.wiki',
+    'test.crowfall.wiki',
+    'michaelfedora.github.io',
+    undefined
+  ];
 
   app.use(cors({
     origin: (origin, callback) => {
       if (whitelist.indexOf(origin) !== -1) callback(null, true);
-      else callback(new Error('Not allowed by CORS'));
+      else callback(`Your origin (${origin}) is not allowed by CORS!`);
     },
     methods: 'GET,POST'
-  }));
+  }));*/
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
   const port = 7070; // woo!
+  const ip = '0.0.0.0';
 
   const router = express.Router();
 
@@ -49,8 +56,8 @@ DatabaseService.init().then(() => {
     cert: fs.readFileSync('cert.pem')
   }, app).listen(port); /// https://github.com/ebekker/ACMESharp/wiki/Quick-Start */
 
-  app.listen(port);
-  console.log('API started on port ' + port);
+  app.listen(port, ip);
+  console.log('API started on ' + ip + ':' + port);
 
 }, err => {
 
