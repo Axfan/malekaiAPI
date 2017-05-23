@@ -14,19 +14,19 @@ DatabaseService.init().then(() => {
 
   const app = express();
 
-  let whitelist = ['localhost:4200', 'crowfall.wiki', 'michaelfedora.github.io'];
+  const whitelist = ['localhost:4200', 'crowfall.wiki', 'michaelfedora.github.io'];
 
   app.use(cors({
     origin: (origin, callback) => {
       if (whitelist.indexOf(origin) !== -1) callback(null, true);
       else callback(new Error('Not allowed by CORS'));
     },
-    methods: "GET,POST"
+    methods: 'GET,POST'
   }));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
-  const port = process.env.PORT || 8079;
+  const port = 7070; // woo!
 
   const router = express.Router();
 
