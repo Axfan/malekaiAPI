@@ -24,7 +24,7 @@ export class PowerApi {
   get(req, res) {
     try {
       const name = atob(req.params.name);
-      PowerService.get(req.params.name).then(
+      PowerService.get(name).then(
         value => res.json(value.toDTO()),
         err => {
           res.status(err.status).send(err.message);

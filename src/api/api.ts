@@ -13,23 +13,23 @@ export class Api {
   private _meta: MetaApi;
   public get meta(): MetaApi { return this._meta; }
 
-  private _race: RaceApi;
-  public get race(): RaceApi { return this._race; }
+  private _races: RaceApi;
+  public get races(): RaceApi { return this._races; }
 
-  private _class: ClassApi;
-  public get class(): ClassApi { return this._class; }
+  private _classes: ClassApi;
+  public get classes(): ClassApi { return this._classes; }
 
-  private _disc: DisciplineApi;
-  public get disc(): DisciplineApi { return this._disc; }
+  private _disciplines: DisciplineApi;
+  public get disciplines(): DisciplineApi { return this._disciplines; }
 
-  private _power: PowerApi;
-  public get power(): PowerApi { return this._power; }
+  private _powers: PowerApi;
+  public get powers(): PowerApi { return this._powers; }
 
   constructor() {
     this._meta = new MetaApi(this.router);
-    this._race = new RaceApi(this.router);
-    this._class = new ClassApi(this.router);
-    this._disc = new DisciplineApi(this.router);
-    this._power = new PowerApi(this.router);
+    this._races = new RaceApi(this.router);
+    this._classes = new ClassApi(this.router);
+    this._disciplines = new DisciplineApi(this.router);
+    this._powers = new PowerApi(this.router);
   }
 }

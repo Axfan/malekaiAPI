@@ -24,7 +24,7 @@ export class RaceApi {
   get(req, res) {
     try {
       const name = atob(req.params.name);
-      RaceService.get(req.params.name).then(
+      RaceService.get(name).then(
         value => res.json(value.toDTO()),
         err => {
           res.status(err.status).send(err.message);

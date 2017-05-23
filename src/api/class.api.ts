@@ -24,7 +24,7 @@ export class ClassApi {
   get(req, res) {
     try {
       const name = atob(req.params.name);
-      ClassService.get(req.params.name).then(
+      ClassService.get(name).then(
         value => res.json(value.toDTO()),
         err => {
           res.status(err.status).send(err.message);
