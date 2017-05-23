@@ -3,6 +3,7 @@ import { Discipline } from '../data';
 import { Logger } from '../util';
 import { DisciplineService } from '../service';
 import { Api, Route } from '../deco';
+import { atob, btoa } from '../polyfills';
 
 @Api('discs')
 export class DisciplineApi {

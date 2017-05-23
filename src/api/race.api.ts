@@ -3,6 +3,7 @@ import { Race } from '../data';
 import { Logger } from '../util';
 import { RaceService } from '../service';
 import { Api, Route } from '../deco';
+import { atob, btoa } from '../polyfills';
 
 @Api('races')
 export class RaceApi {

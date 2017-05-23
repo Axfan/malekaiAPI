@@ -3,6 +3,7 @@ import { Class } from '../data';
 import { Logger } from '../util';
 import { ClassService } from '../service';
 import { Api, Route } from '../deco';
+import { atob, btoa } from '../polyfills';
 
 @Api('classes')
 export class ClassApi {

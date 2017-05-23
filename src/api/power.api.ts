@@ -3,6 +3,7 @@ import { Power } from '../data';
 import { Logger } from '../util';
 import { PowerService } from '../service';
 import { Api, Route } from '../deco';
+import { atob, btoa } from '../polyfills';
 
 @Api('powers')
 export class PowerApi {
