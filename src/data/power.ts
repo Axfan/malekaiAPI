@@ -5,7 +5,6 @@ export class Power {
   icon: string;
 
   source: string;
-  source_type: string;
 
   type: string;
   cast_type: string;
@@ -24,7 +23,6 @@ export class Power {
     p.tooltip = obj.tooltip || '';
     p.icon = obj.icon || '';
     p.source = obj.source || '';
-    p.source_type = obj.source_type || '';
     p.type = obj.type || '';
     p.cast_type = obj.cast_type || '';
     p.cost = obj.cost ? { pips: obj.cost.pips || 0, resource: obj.cost.resource || 0 } : { pips: 0, resource: 0 };
@@ -49,7 +47,6 @@ export class Power {
       this.tooltip = power.tooltip || '';
       this.icon = power.icon || '';
       this.source = power.source || '';
-      this.source_type = power.source_type || '';
       this.type = power.type || '';
       this.cast_type = power.cast_type || '';
       this.cost = power.cost ? { pips: power.cost.pips || 0, resource: power.cost.resource || 0 } : { pips: 0, resource: 0 };
@@ -64,7 +61,6 @@ export class Power {
       this.tooltip = '';
       this.icon = '';
       this.source = '';
-      this.source_type = '';
       this.type = '';
       this.cast_type = '';
       this.cost = { pips: 0, resource: 0 };
@@ -83,7 +79,6 @@ export class Power {
       tooltip: this.tooltip,
       icon: this.icon,
       source: this.source,
-      source_type: this.source_type,
       type: this.type,
       cost: { pips: this.cost.pips, resource: this.cost.resource },
       duration: this.duration,
