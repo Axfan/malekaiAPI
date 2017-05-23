@@ -31,5 +31,9 @@ export class Api {
     this._classes = new ClassApi(this.router);
     this._disciplines = new DisciplineApi(this.router);
     this._powers = new PowerApi(this.router);
+
+    this.router.get('/', (req, res) => {
+      res.json({ message: 'hello world!' });
+    });
   }
 }

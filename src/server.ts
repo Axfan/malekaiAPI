@@ -35,12 +35,6 @@ DatabaseService.init().then(() => {
   const port = 7070; // woo!
   const ip = '0.0.0.0';
 
-  const router = express.Router();
-
-  router.get('/', (req, res) => {
-    res.json({ message: 'hello world!' });
-  });
-
   app.use((req, res, next) => {
     Logger.log('HTTP', req.method + ': ' + req.originalUrl, ['http', req.method, req.baseUrl + '/' +  req.path], req.ip);
     next();
@@ -48,8 +42,7 @@ DatabaseService.init().then(() => {
 
   const api = new Api();
 
-  app.use('/', router);
-  app.use('/api', api.router);
+  app.use('/', api.router);
 
   /*https.createServer({
     key: fs.readFileSync('privkey.pem'),
