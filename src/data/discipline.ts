@@ -44,7 +44,9 @@ export class Discipline {
     return d;
   }
 
-  public static fromDBO(obj: any) {
+  static fromDBO(obj: any): Discipline {
+    obj.name = obj.id;
+    delete obj.id;
     return this.fromDTO(obj);
   }
 
@@ -120,6 +122,9 @@ export class Discipline {
   }
 
   toDBO(): any {
-    return this.toDTO();
+    const o = this.toDTO();
+    o.id = o.name;
+    delete o.name;
+    return o;
   }
 }

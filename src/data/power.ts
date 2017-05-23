@@ -38,6 +38,8 @@ export class Power {
   }
 
   static fromDBO(obj: any): Power {
+    obj.name = obj.id;
+    delete obj.id;
     return this.fromDTO(obj);
   }
 
@@ -94,6 +96,9 @@ export class Power {
   }
 
   toDBO(): any {
-    return this.toDTO();
+    const o = this.toDTO();
+    o.id = o.name;
+    delete o.name;
+    return o;
   }
 }

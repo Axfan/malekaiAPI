@@ -7,7 +7,7 @@ export class DatabaseService {
   private static _connection: Connection;
   public static get connection() { return this._connection; }
 
-  public static get dbName(): string { return 'test'; } /// @todo: adjust via env
+  public static get dbName(): string { return 'crowfallData'; } /// @todo: adjust via env
 
   public static _r: typeof rethinkdb = rethinkdb
   public static get r(): typeof rethinkdb { return this._r; }

@@ -15,6 +15,8 @@ export class Race {
   }
 
   static fromDBO(obj: any): Race {
+    obj.name = obj.id;
+    delete obj.id;
     return this.fromDTO(obj);
   }
 
@@ -42,6 +44,9 @@ export class Race {
   }
 
   toDBO(): any {
-    return this.toDTO();
+    const o = this.toDTO();
+    o.id = o.name;
+    delete o.name;
+    return o;
   }
 }
