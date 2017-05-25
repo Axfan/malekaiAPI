@@ -2,6 +2,7 @@ export class Discipline {
 
   name: string; // i.e. "Agent Provocateur"
   description: string; // i.e. "Agent Provocateurs are sneaky, well-hidden, and difficult to track."
+  type: string; // i.e. major/weapon/minor
 
   icon: string; // i.e. ''
 
@@ -24,6 +25,7 @@ export class Discipline {
     const d = new Discipline();
     d.name = obj.name || '';
     d.description = obj.description || '';
+    d.type = obj.type || '';
 
     d.icon = obj.icon || '';
 
@@ -55,6 +57,7 @@ export class Discipline {
 
       this.name = disc.name || '';
       this.description = disc.description || '';
+      this.type = disc.type || '';
 
       this.icon = disc.icon || '';
 
@@ -77,6 +80,7 @@ export class Discipline {
 
       this.name =  '';
       this.description = '';
+      this.type = '';
 
       this.icon =  '';
 
@@ -101,6 +105,7 @@ export class Discipline {
     return {
       name: this.name,
       description: this.description,
+      type: this.type,
 
       icon: this.icon,
 

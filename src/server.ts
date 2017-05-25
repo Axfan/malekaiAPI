@@ -29,6 +29,9 @@ DatabaseService.init().then(() => {
     },
     methods: 'GET,POST'
   }));*/
+
+  app.use(cors({ origin: '*', methods: 'GET,POST' }));
+  // TODO: Brute!
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 

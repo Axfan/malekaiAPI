@@ -5,7 +5,7 @@ import { DisciplineService } from '../service';
 import { Api, Route } from '../deco';
 import { atob, btoa } from '../polyfills';
 
-@Api('discipline')
+@Api('disciplines')
 export class DisciplineApi {
 
   constructor(router: Router) { }
@@ -16,7 +16,7 @@ export class DisciplineApi {
       value => res.json(value.map(v => v.toDTO())),
       err => {
         res.status(err.status).send(err.message);
-        Logger.error('GET: /discs', err);
+        Logger.error('GET: /disciplines', err);
     });
   }
 
@@ -28,11 +28,11 @@ export class DisciplineApi {
         value => res.json(value.toDTO()),
         err => {
           res.status(err.status).send(err.message);
-          Logger.error('GET: /discipline/' + req.params.name, err);
+          Logger.error('GET: /disciplines/' + req.params.name, err);
       });
     } catch (e) {
       res.status(500).send('' + e);
-      Logger.error('GET: /discipline/' + req.params.name, e);
+      Logger.error('GET: /disciplines/' + req.params.name, e);
     }
   }
 }
