@@ -2,6 +2,9 @@ import { IDataObject } from './interfaces';
 
 export class Power implements IDataObject {
 
+  static get data_type(): string { return 'power'; }
+  data_type = Power.data_type;
+
   id: string;
   name: string;
   description: string
@@ -23,6 +26,7 @@ export class Power implements IDataObject {
   next_chain: string[];
 
   static fromDTO(obj: any): Power {
+    if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
     const p = new Power();
     p.id = obj.id || '';
     p.name = obj.name || '';
@@ -96,6 +100,8 @@ export class Power implements IDataObject {
 
   toDTO(): any {
     return {
+      data_type: this.data_type,
+
       id: this.id,
       name: this.name,
       description: this.description,

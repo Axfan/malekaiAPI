@@ -2,6 +2,9 @@ import { IDataObject } from './interfaces';
 
 export class Race implements IDataObject {
 
+  static get data_type(): string { return 'race'; }
+  data_type = Race.data_type;
+
   id: string;
   name: string;
   description: string;
@@ -9,6 +12,7 @@ export class Race implements IDataObject {
   classes: string[];
 
   static fromDTO(obj: any): Race {
+    if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
     const r = new Race();
     r.id = obj.id || '';
     r.name = obj.name || '';
@@ -40,6 +44,7 @@ export class Race implements IDataObject {
 
   toDTO(): any {
     return {
+      data_type: this.data_type,
       id: this.id,
       name: this.name,
       description: this.description,

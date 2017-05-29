@@ -2,6 +2,9 @@ import { IDataObject } from './interfaces';
 
 export class Discipline implements IDataObject {
 
+  static get data_type(): string { return 'discipline'; }
+  data_type = Discipline.data_type;
+
   id: string; // i.e. "agent_provocateur"
   name: string; // i.e. "Agent Provocateur"
   description: string; // i.e. "Agent Provocateurs are sneaky, well-hidden, and difficult to track."
@@ -25,6 +28,7 @@ export class Discipline implements IDataObject {
   powers_granted: string[]; // i.e.  ["Caltrops","Lay Low","Stink Bomb","Preparation"]
 
   public static fromDTO(obj: any) {
+    if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
     const d = new Discipline();
     d.id = obj.id || '';
     d.name = obj.name || '';
@@ -107,6 +111,8 @@ export class Discipline implements IDataObject {
 
   toDTO(): any {
     return {
+      data_type: this.data_type,
+
       id: this.id,
       name: this.name,
       description: this.description,

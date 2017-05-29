@@ -9,7 +9,7 @@ export class SearchApi {
 
   constructor(router: Router) { }
 
-  parse(str: string) {
+  parse(str: string): any {
     try {
       return JSON.parse(str);
     } catch (e) {
@@ -18,29 +18,37 @@ export class SearchApi {
   }
 
   @Route()
-  post(req: Request, res: Response): void {
+  get(req: Request, res: Response): void {
     const params: [string, any][] = [];
     try {
-      if(req.body && JSON.stringify(req.body) !== '{}') { // body params (i.e. graphql)
-        for(const key in req.body)
-          params.push([key, req.body[key]]);
-      } else if(req.query && JSON.stringify(req.query) !== '{}') { // url params
-        for(const key in req.query)
-        params.push([key, this.parse(req.query[key])]);
-      } else throw new Error('Nothing to search for!');
+      if(!req.query || JSON.stringify(req.query) === '{}')
+        throw new Error('Query is null or empty!')
 
+      const parse = (str: string) => {
+        try {
+          return JSON.parse(str);
+        } catch (e) {
+          return str;
+        }
+      };
+
+      for(const key in req.query) if(req.query[key]) {
+        const value = parse(req.query[key]);
+        if(key && value)
+          params.push([key, value]);
+      }
     } catch (e) {
       const err = new Rejection(e);
       res.status(err.status).send(err.message);
-      Logger.error('POST: /search pre-service', err);
+      Logger.error('GET: /search pre-service', err);
       return;
     }
 
     SearchService.search(params).then(
-      value => res.json(value), // .map(v => v.toDTO())),
+      value => res.json(value.map(v => v.toDTO())),
       err => {
         res.status(err.status).send(err.message);
-        Logger.error('POST: /search', err);
+        Logger.error('GET: /search', err);
     });
   }
 }
