@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { SearchApi } from './search.api';
 import { MetaApi } from './meta.api';
 import { RaceApi } from './race.api';
 import { ClassApi } from './class.api';
@@ -12,6 +13,9 @@ export class Api {
 
   private _meta: MetaApi;
   public get meta(): MetaApi { return this._meta; }
+
+  private _search: SearchApi;
+  public get search(): SearchApi { return this._search; }
 
   private _races: RaceApi;
   public get races(): RaceApi { return this._races; }
@@ -27,6 +31,7 @@ export class Api {
 
   constructor() {
     this._meta = new MetaApi(this.router);
+    this._search = new SearchApi(this.router);
     this._races = new RaceApi(this.router);
     this._classes = new ClassApi(this.router);
     this._disciplines = new DisciplineApi(this.router);
