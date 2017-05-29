@@ -20,19 +20,19 @@ export class RaceApi {
     });
   }
 
-  @Route(':name')
+  @Route(':id')
   get(req, res) {
     try {
-      const name = atob(req.params.name);
-      RaceService.get(name).then(
+      // const is = atob(req.params.is);
+      RaceService.get('' + req.params.id).then(
         value => res.json(value.toDTO()),
         err => {
           res.status(err.status).send(err.message);
-          Logger.error('GET: /races/' + req.params.name, err);
+          Logger.error('GET: /races/' + req.params.id, err);
       });
     } catch (e) {
       res.status(500).send('' + e);
-      Logger.error('GET: /races/' + req.params.name, e);
+      Logger.error('GET: /races/' + req.params.id, e);
     }
   }
 }

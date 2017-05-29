@@ -20,19 +20,19 @@ export class ClassApi {
     });
   }
 
-  @Route(':name')
+  @Route(':id')
   get(req, res) {
     try {
-      const name = atob(req.params.name);
-      ClassService.get(name).then(
+      // const id = atob(req.params.id);
+      ClassService.get('' + req.params.id).then(
         value => res.json(value.toDTO()),
         err => {
           res.status(err.status).send(err.message);
-          Logger.error('GET: /classes/' + req.params.name, err);
+          Logger.error('GET: /classes/' + req.params.id, err);
       });
     } catch (e) {
       res.status(500).send('' + e);
-      Logger.error('GET: /classes/' + req.params.name, e);
+      Logger.error('GET: /classes/' + req.params.id, e);
     }
   }
 }

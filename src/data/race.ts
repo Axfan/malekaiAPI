@@ -1,5 +1,8 @@
-export class Race {
+import { IDataObject } from './interfaces';
 
+export class Race implements IDataObject {
+
+  id: string;
   name: string;
   description: string;
   icon: string;
@@ -7,6 +10,7 @@ export class Race {
 
   static fromDTO(obj: any): Race {
     const r = new Race();
+    r.id = obj.id || '';
     r.name = obj.name || '';
     r.description = obj.description || '';
     r.icon = obj.icon || '';
@@ -15,18 +19,18 @@ export class Race {
   }
 
   static fromDBO(obj: any): Race {
-    obj.name = obj.id;
-    delete obj.id;
     return this.fromDTO(obj);
   }
 
   constructor(race?: Race) {
     if(race != null) {
+      this.id = race.id || '';
       this.name = race.name || '';
       this.description = race.description || '';
       this.icon = race.icon || '';
       this.classes = race.classes ? race.classes.slice() : [];
     } else {
+      this.id = '';
       this.name = '';
       this.description = '';
       this.icon = '';
@@ -36,6 +40,7 @@ export class Race {
 
   toDTO(): any {
     return {
+      id: this.id,
       name: this.name,
       description: this.description,
       icon: this.icon,
@@ -44,9 +49,6 @@ export class Race {
   }
 
   toDBO(): any {
-    const o = this.toDTO();
-    o.id = o.name;
-    delete o.name;
-    return o;
+    return this.toDTO();
   }
 }

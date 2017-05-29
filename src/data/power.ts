@@ -1,7 +1,10 @@
-export class Power {
+import { IDataObject } from './interfaces';
 
+export class Power implements IDataObject {
+
+  id: string;
   name: string;
-  tooltip: string;
+  description: string
   icon: string;
 
   source: string;
@@ -21,8 +24,9 @@ export class Power {
 
   static fromDTO(obj: any): Power {
     const p = new Power();
+    p.id = obj.id || '';
     p.name = obj.name || '';
-    p.tooltip = obj.tooltip || '';
+    p.description = obj.tooltip || '';
     p.icon = obj.icon || '';
 
     p.source = obj.source || '';
@@ -43,15 +47,14 @@ export class Power {
   }
 
   static fromDBO(obj: any): Power {
-    obj.name = obj.id;
-    delete obj.id;
     return this.fromDTO(obj);
   }
 
   constructor(power?: Power) {
     if(power != null) {
+      this.id = power.id || '';
       this.name = power.name || '';
-      this.tooltip = power.tooltip || '';
+      this.description = power.description || '';
       this.icon = power.icon || '';
 
       this.source = power.source || '';
@@ -69,8 +72,9 @@ export class Power {
 
       this.next_chain = power.next_chain instanceof Array ? power.next_chain.slice() : [];
     } else {
+      this.id = '';
       this.name = '';
-      this.tooltip = '';
+      this.description = '';
       this.icon = '';
 
       this.source = '';
@@ -92,8 +96,9 @@ export class Power {
 
   toDTO(): any {
     return {
+      id: this.id,
       name: this.name,
-      tooltip: this.tooltip,
+      tooltip: this.description,
       icon: this.icon,
 
       source: this.source,
@@ -114,9 +119,6 @@ export class Power {
   }
 
   toDBO(): any {
-    const o = this.toDTO();
-    o.id = o.name;
-    delete o.name;
-    return o;
+    return this.toDTO();
   }
 }

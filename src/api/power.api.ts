@@ -20,19 +20,21 @@ export class PowerApi {
     });
   }
 
-  @Route(':name')
+  @Route(':id')
   get(req, res) {
     try {
-      const name = atob(req.params.name);
-      PowerService.get(name).then(
+      // const id = atob(req.params.id);
+      // req.query ?!
+      // const classes: string = req.options.classes; // ?classes=cleric,assassin
+      PowerService.get('' + req.params.id).then(
         value => res.json(value.toDTO()),
         err => {
           res.status(err.status).send(err.message);
-          Logger.error('GET: /powers/' + req.params.name, err);
+          Logger.error('GET: /powers/' + req.params.id, err);
       });
     } catch (e) {
       res.status(500).send('' + e);
-      Logger.error('GET: /powers/' + req.params.name, e);
+      Logger.error('GET: /powers/' + req.params.id, e);
     }
   }
 }

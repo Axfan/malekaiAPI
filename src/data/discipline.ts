@@ -1,5 +1,8 @@
-export class Discipline {
+import { IDataObject } from './interfaces';
 
+export class Discipline implements IDataObject {
+
+  id: string; // i.e. "agent_provocateur"
   name: string; // i.e. "Agent Provocateur"
   description: string; // i.e. "Agent Provocateurs are sneaky, well-hidden, and difficult to track."
   type: string; // i.e. major/weapon/minor
@@ -23,6 +26,7 @@ export class Discipline {
 
   public static fromDTO(obj: any) {
     const d = new Discipline();
+    d.id = obj.id || '';
     d.name = obj.name || '';
     d.description = obj.description || '';
     d.type = obj.type || '';
@@ -47,14 +51,13 @@ export class Discipline {
   }
 
   static fromDBO(obj: any): Discipline {
-    obj.name = obj.id;
-    delete obj.id;
     return this.fromDTO(obj);
   }
 
   constructor(disc?: Discipline) {
     if(disc != null) {
 
+      this.id = disc.id || '';
       this.name = disc.name || '';
       this.description = disc.description || '';
       this.type = disc.type || '';
@@ -78,6 +81,7 @@ export class Discipline {
 
     } else {
 
+      this.id = '';
       this.name =  '';
       this.description = '';
       this.type = '';
@@ -103,6 +107,7 @@ export class Discipline {
 
   toDTO(): any {
     return {
+      id: this.id,
       name: this.name,
       description: this.description,
       type: this.type,
@@ -127,9 +132,6 @@ export class Discipline {
   }
 
   toDBO(): any {
-    const o = this.toDTO();
-    o.id = o.name;
-    delete o.name;
-    return o;
+    return this.toDTO();
   }
 }

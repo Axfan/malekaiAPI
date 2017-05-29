@@ -1,5 +1,8 @@
-export class Class {
+import { IDataObject } from './interfaces';
 
+export class Class implements IDataObject {
+
+  id: string;
   name: string;
   description: string;
   icon: string;
@@ -7,6 +10,7 @@ export class Class {
 
   static fromDTO(obj: any): Class {
     const r = new Class();
+    r.id = obj.id || '';
     r.name = obj.name || '';
     r.description = obj.description || '';
     r.icon = obj.icon || '';
@@ -15,18 +19,18 @@ export class Class {
   }
 
   static fromDBO(obj: any): Class {
-    obj.name = obj.id;
-    delete obj.id;
     return this.fromDTO(obj);
   }
 
   constructor(clas?: Class) {
     if(clas != null) {
+      this.id = clas.id || '';
       this.name = clas.name || '';
       this.description = clas.description || '';
       this.icon = clas.icon || '';
       this.races = clas.races ? clas.races.slice() : [];
     } else {
+      this.id = '';
       this.name = '';
       this.description = '';
       this.icon = '';
@@ -36,6 +40,7 @@ export class Class {
 
   toDTO(): any {
     return {
+      id: this.id,
       name: this.name,
       description: this.description,
       icon: this.icon,
@@ -44,9 +49,6 @@ export class Class {
   }
 
   toDBO(): any {
-    const o = this.toDTO();
-    o.id = o.name;
-    delete o.name;
-    return o;
+    return this.toDTO();
   }
 }

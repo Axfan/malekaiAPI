@@ -3,6 +3,7 @@ import * as bodyParser from 'body-parser';
 import * as https from 'https';
 import * as cors from 'cors'; /// https://github.com/expressjs/cors
 import * as fs from 'fs';
+import * as rethinkdb from 'rethinkdb';
 import { Logger } from './util';
 import { DatabaseService } from './service';
 import { Api } from './api';
@@ -14,11 +15,11 @@ DatabaseService.init().then(() => {
 
   const app = express();
 
-  /*const whitelist = [
-    'localhost:4200',
-    'crowfall.wiki',
-    'test.crowfall.wiki',
-    'michaelfedora.github.io',
+  const whitelist = [
+    'http://localhost:4200',
+    'https://crowfall.wiki',
+    'https://test.crowfall.wiki',
+    'https://michaelfedora.github.io',
     undefined
   ];
 
@@ -28,10 +29,12 @@ DatabaseService.init().then(() => {
       else callback(`Your origin (${origin}) is not allowed by CORS!`);
     },
     methods: 'GET,POST'
-  }));*/
+  }));
 
   app.use(cors({ origin: '*', methods: 'GET,POST' }));
   // TODO: Brute!
+  // const bruteForce = new ExpressBrute(store);
+  // app.use(bruteForce.prevent);
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
