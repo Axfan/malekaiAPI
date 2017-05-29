@@ -9,20 +9,25 @@ export class SearchApi {
 
   constructor(router: Router) { }
 
+  parse(str: string) {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      return str;
+    }
+  }
+
   @Route()
   post(req: Request, res: Response): void {
     const params: [string, any][] = [];
     try {
-      const hasBody = !req.body || JSON.stringify(req.body) === '{}'; // body params (i.e. graphql)
-      const hasQuery = !req.query || JSON.stringify(req.query) === '{}'; // url params
-
-      if(!(hasBody || hasQuery))
-        throw new Error('Nothing to search for!');
-
-      const from = hasBody ? req.body : req.query;
-
-      for(const key in from)
-        params.push([key, from[key]]);
+      if(req.body && JSON.stringify(req.body) !== '{}') { // body params (i.e. graphql)
+        for(const key in req.body)
+          params.push([key, req.body[key]]);
+      } else if(req.query && JSON.stringify(req.query) !== '{}') { // url params
+        for(const key in req.query)
+        params.push([key, this.parse(req.query[key])]);
+      } else throw new Error('Nothing to search for!');
 
     } catch (e) {
       const err = new Rejection(e);
