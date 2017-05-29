@@ -13,7 +13,7 @@ export class DbPool {
   idleTimeoutMillis = 60 * 60 * 1000; // 1 hour (rethinkdb default)
 
   pool: {
-    aquire(): Promise<r.Connection>;
+    acquire(): Promise<r.Connection>;
     release(resource: r.Connection)
     drain(): Promise<void>;
     clear(): void;
@@ -32,7 +32,7 @@ export class DbPool {
   }
 
   run<T>(query: r.Operation<T>): Promise<T | any[]> {
-    return this.pool.aquire().then(connection => {
+    return this.pool.acquire().then(connection => {
       return query.run.call(query, connection).then(cursorOrResult => {
         let result;
 
