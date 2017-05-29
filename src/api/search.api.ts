@@ -13,22 +13,26 @@ export class SearchApi {
   post(req: Request, res: Response): void {
     const params: [string, any][] = [];
     try {
-      if(!(req.body || req.query))
-        throw new Error('Nothing to search for: ' + JSON.stringify(req.body) + ', ' + JSON.stringify(req.query));
+      const hasBody = !req.body || JSON.stringify(req.body) === '{}'; // body params (i.e. graphql)
+      const hasQuery = !req.query || JSON.stringify(req.query) === '{}'; // url params
 
-      const from = req.body ? req.body : req.query; // body params (i.e. graphql) : url params
+      if(!(hasBody || hasQuery))
+        throw new Error('Nothing to search for!');
+
+      const from = hasBody ? req.body : req.query;
+
       for(const key in from)
         params.push([key, from[key]]);
 
-    } catch (err) {
-      err = new Rejection(err);
+    } catch (e) {
+      const err = new Rejection(e);
       res.status(err.status).send(err.message);
-      Logger.error('POST: /search', err);
+      Logger.error('POST: /search pre-service', err);
       return;
     }
 
     SearchService.search(params).then(
-      value => res.json(value.map(v => v.toDTO())),
+      value => res.json(value), // .map(v => v.toDTO())),
       err => {
         res.status(err.status).send(err.message);
         Logger.error('POST: /search', err);
