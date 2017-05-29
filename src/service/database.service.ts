@@ -17,6 +17,10 @@ export class DatabaseService {
   public static get disciplines(): Table { return this.db.table('disciplineLibrary'); }
   public static get powers(): Table { return this.db.table('powerLibrary'); }
 
+  public static get dataUnion(): r.Sequence {
+    return (this.races as any).union(this.classes, this.disciplines, this.powers);
+  }
+
   public static get log(): Table { return this.db.table('apiLog'); }
   public static get issues(): Table { return this.db.table('issues'); }
 

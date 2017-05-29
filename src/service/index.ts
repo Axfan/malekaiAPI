@@ -7,3 +7,4 @@ export { DisciplineService } from './discipline.service';
 export { PowerService } from './power.service';
 
 export { MetaService } from './meta.service';
+export { SearchService } from './search.service';
