@@ -15,7 +15,7 @@ DatabaseService.init().then(() => {
 
   const app = express();
 
-  const whitelist = [
+  /*const whitelist = [
     'http://localhost:4200',
     'https://crowfall.wiki',
     'https://test.crowfall.wiki',
@@ -29,7 +29,7 @@ DatabaseService.init().then(() => {
       else callback(`Your origin (${origin}) is not allowed by CORS!`);
     },
     methods: 'GET,POST'
-  }));
+  }));*/
 
   app.use(cors({ origin: '*', methods: 'GET,POST' }));
   // TODO: Brute!
