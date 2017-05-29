@@ -13,7 +13,8 @@ export class SearchApi {
   post(req: Request, res: Response): void {
     const params: [string, any][] = [];
     try {
-      if(!req.body || req.query) throw new Error('Nothing to search for');
+      if(!(req.body || req.query))
+        throw new Error('Nothing to search for: ' + JSON.stringify(req.body) + ', ' + JSON.stringify(req.query));
 
       const from = req.body ? req.body : req.query; // body params (i.e. graphql) : url params
       for(const key in from)
@@ -22,7 +23,7 @@ export class SearchApi {
     } catch (err) {
       err = new Rejection(err);
       res.status(err.status).send(err.message);
-      Logger.error('GET: /search', err);
+      Logger.error('POST: /search', err);
       return;
     }
 
@@ -30,7 +31,7 @@ export class SearchApi {
       value => res.json(value.map(v => v.toDTO())),
       err => {
         res.status(err.status).send(err.message);
-        Logger.error('GET: /search', err);
+        Logger.error('POST: /search', err);
     });
   }
 }
