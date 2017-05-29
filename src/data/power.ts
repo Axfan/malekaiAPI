@@ -26,7 +26,7 @@ export class Power implements IDataObject {
     const p = new Power();
     p.id = obj.id || '';
     p.name = obj.name || '';
-    p.description = obj.tooltip || '';
+    p.description = obj.description || '';
     p.icon = obj.icon || '';
 
     p.source = obj.source || '';
@@ -98,7 +98,7 @@ export class Power implements IDataObject {
     return {
       id: this.id,
       name: this.name,
-      tooltip: this.description,
+      description: this.description,
       icon: this.icon,
 
       source: this.source,
