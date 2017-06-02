@@ -8,7 +8,7 @@ import { IDataObject } from '../data/interfaces';
 export class SearchService {
 
   private static equals(doc: r.Expression<any>, key: string, param: any): r.Expression<any> {
-    if(typeof param === 'string') return (doc(key) as any).match(new RegExp(param, 'i'));
+    if(typeof param === 'string') return (doc(key) as any).match(`(?i)${param}`);
     else return doc(key).eq(param);
   }
 
