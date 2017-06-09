@@ -47,7 +47,7 @@ export class SearchApi {
     SearchService.search(params).then(
       value => {
         if(value.length > 0) res.json(value.map(v => v.toDTO()))
-        else res.sendStatus(404).send('{ message: "No items found with those parameters." }');
+        else res.status(404).send('{ "message": "No items found with those parameters." }');
       },
       err => {
         res.status(err.status).send(err.message);

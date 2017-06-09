@@ -4,9 +4,11 @@ import * as https from 'https';
 import * as cors from 'cors'; /// https://github.com/expressjs/cors
 import * as fs from 'fs';
 import * as rethinkdb from 'rethinkdb';
+import * as graphqlHttp from 'express-graphql';
 import { Logger } from './util';
 import { DatabaseService } from './service';
 import { Api } from './api';
+import { RootSchema } from './data/graphql/root-schema';
 
 console.log('Initializing database...');
 DatabaseService.init().then(() => {
@@ -49,6 +51,10 @@ DatabaseService.init().then(() => {
   const api = new Api();
 
   app.use('/', api.router);
+  app.use('/graphql', graphqlHttp({
+    schema: RootSchema,
+    graphiql: true
+  }));
 
   /*https.createServer({
     key: fs.readFileSync('privkey.pem'),

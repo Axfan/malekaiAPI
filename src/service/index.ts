@@ -6,5 +6,7 @@ export { ClassService } from './class.service';
 export { DisciplineService } from './discipline.service';
 export { PowerService } from './power.service';
 
+export { DataObjectService } from './data-object.service';
+
 export { MetaService } from './meta.service';
 export { SearchService } from './search.service';

@@ -9,7 +9,7 @@ export class DataParser {
       case Discipline.data_type: return Discipline.fromDBO(obj);
       case Power.data_type: return Power.fromDBO(obj);
       default:
-        console.warn(new Error('Could not parse object: no data_type!'))
+        console.warn(new Error(`Could not parse object: bad data_type "${obj.data_type}"!`));
         return obj;
     }
   }

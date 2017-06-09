@@ -19,9 +19,28 @@ export class RaceService {
   public static get(id: string): Promise<Race> {
     return new Promise<Race>((resolve, reject) => {
       db.run(this.table.get(id)).then((result: r.Cursor) => {
-        if(!result) { reject(new Rejection('Race not found with id ' + id, 404)); return; }
-        resolve(Race.fromDBO(result));
+        if(result) resolve(Race.fromDBO(result));
+        else reject(new Rejection('Race not found with id ' + id, 404));
       }, err => reject(new Rejection(err)));
+    });
+  }
+
+  public static getFromNames(names: string[]): Promise<Race[]> {
+    return new Promise<Race[]>((resolve, reject) => {
+      const col = r.expr(names);
+      db.run(this.table.filter((doc) => col.contains(doc('name') as any))).then((results: any[]) => {
+        if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Race.fromDBO(a)));
+        else resolve([]); // reject(new Rejection('No races found for names ' + names.join(', '), 404));
+      });
+    });
+  }
+
+  public static getFromName(name: string): Promise<Race> {
+    return new Promise<Race>((resolve, reject) => {
+      db.run(this.table.filter((doc) => doc('name').eq(name))).then((result: any[]) => {
+        if(result && result instanceof Array && result.length > 0) resolve(Race.fromDBO(result[0]));
+        else reject(new Rejection('No race found for name ' + name, 404));
+      });
     });
   }
 }

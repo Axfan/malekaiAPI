@@ -24,4 +24,13 @@ export class DisciplineService {
       }, err => reject(new Rejection(err)));
     });
   }
+
+  public static getFromName(name: string): Promise<Discipline> {
+    return new Promise<Discipline>((resolve, reject) => {
+      db.run(this.table.filter((doc) => doc('name').eq(name))).then((result: any[]) => {
+        if(result && result instanceof Array && result.length > 0) resolve(Discipline.fromDBO(result[0]));
+        else reject(new Rejection('No discipline found for name ' + name, 404));
+      });
+    });
+  }
 }

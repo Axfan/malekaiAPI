@@ -8,8 +8,13 @@ import { IDataObject } from '../data/interfaces';
 export class SearchService {
 
   private static equals(doc: r.Expression<any>, key: string, param: any): r.Expression<any> {
-    if(typeof param === 'string') return (doc(key) as any).match(`(?i)${param}`);
-    else return doc(key).eq(param);
+    if(param instanceof Array) { // i.e. it's an array
+      const col = r.expr(param);
+      return ((col as any).map(val => (doc(key) as any).contains(val)) as r.Sequence).contains(false as any).eq(false);
+    } else if(typeof param === 'string')
+      return (doc(key) as any).match(`(?i)${param}`);
+    else
+      return doc(key).eq(param);
   }
 
   public static search(params: [string, any][]): Promise<IDataObject[]> {
