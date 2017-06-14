@@ -79,11 +79,11 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
       description: 'The slots removed by the discipline.'
     },
     trays_granted: {
-      type: new GraphQLList(GraphQLString),
+      type: GraphQLString,
       description: 'The trays granted by the discipline.'
     },
     trays_removed: {
-      type: new GraphQLList(GraphQLString),
+      type: GraphQLString,
       description: 'The trays removed by the discipline.'
     },
     powers_granted: {
