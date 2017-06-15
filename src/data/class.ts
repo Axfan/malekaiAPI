@@ -10,16 +10,18 @@ export class Class implements IDataObject {
   description: string;
   icon: string;
   races: string[];
+  powers_granted: string[];
 
   static fromDTO(obj: any): Class {
     if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
-    const r = new Class();
-    r.id = obj.id || '';
-    r.name = obj.name || '';
-    r.description = obj.description || '';
-    r.icon = obj.icon || '';
-    r.races = obj.races instanceof Array ? obj.races.slice() : [];
-    return r;
+    const c = new Class();
+    c.id = obj.id || '';
+    c.name = obj.name || '';
+    c.description = obj.description || '';
+    c.icon = obj.icon || '';
+    c.races = obj.races instanceof Array ? obj.races.slice() : [];
+    c.powers_granted = obj.powers instanceof Array ? obj.powers.slice() : [];
+    return c;
   }
 
   static fromDBO(obj: any): Class {
@@ -33,12 +35,14 @@ export class Class implements IDataObject {
       this.description = clas.description || '';
       this.icon = clas.icon || '';
       this.races = clas.races ? clas.races.slice() : [];
+      this.powers_granted = clas.powers_granted ? clas.powers_granted.slice() : [];
     } else {
       this.id = '';
       this.name = '';
       this.description = '';
       this.icon = '';
       this.races = [];
+      this.powers_granted = [];
     }
   }
 
@@ -49,7 +53,8 @@ export class Class implements IDataObject {
       name: this.name,
       description: this.description,
       icon: this.icon,
-      races: this.races.slice()
+      races: this.races.slice(),
+      powers_granted: this.powers_granted.slice()
     };
   }
 

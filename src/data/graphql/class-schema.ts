@@ -1,7 +1,8 @@
 import { Class } from '../class';
-import { RaceService } from '../../service/race.service';
-import DataObjectInterface from './data-object-interface';
-import RaceSchema from './race-schema';
+import { RaceService, PowerService } from '../../service';
+import { DataObjectInterface } from './data-object-interface';
+import { RaceSchema } from './race-schema';
+import { PowerSchema } from './power-schema';
 
 import {
   GraphQLObjectType,
@@ -39,6 +40,11 @@ export const ClassSchema: GraphQLObjectType = new GraphQLObjectType({
       type: new GraphQLList(RaceSchema),
       description: 'The races the class can be used by.',
       resolve: (clas: Class) => RaceService.getFromNames(clas.races)
+    },
+    powers: {
+      type: new GraphQLList(PowerSchema),
+      description: 'The default powers the class gives.',
+      resolve: (clas: Class) => PowerService.getFromNames(clas.powers_granted)
     }
   }),
   interfaces: () => [ DataObjectInterface ]
