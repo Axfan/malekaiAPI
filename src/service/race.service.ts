@@ -25,6 +25,16 @@ export class RaceService {
     });
   }
 
+  public static getMany(ids: string[]): Promise<Race[]> {
+    return new Promise<Race[]>((resolve, reject) => {
+      const col = r.expr(ids);
+      db.run(this.table.filter((doc) => col.contains(doc('id') as any))).then((results: any[]) => {
+        if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Race.fromDBO(a)));
+        else resolve([]); // reject(new Rejection('No races found for names ' + names.join(', '), 404));
+      });
+    });
+  }
+
   public static getFromNames(names: string[]): Promise<Race[]> {
     return new Promise<Race[]>((resolve, reject) => {
       const col = r.expr(names);

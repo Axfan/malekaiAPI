@@ -56,10 +56,10 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'The type of the discipline (i.e. Major/Minor/Weapon).'
     },
-    can_equip: {
+    classes: {
       type: new GraphQLList(ClassSchema),
       description: 'The classes that can equip the discipline.',
-      resolve: (obj: Discipline) => ClassService.getFromNames(obj.can_equip)
+      resolve: (obj: Discipline) => ClassService.getMany(obj.classes)
     },
     stats_granted: {
       type: new GraphQLList(StatSchema),
@@ -86,10 +86,10 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'The trays removed by the discipline.'
     },
-    powers_granted: {
+    powers: {
       type: new GraphQLList(PowerSchema),
       description: 'The powers granted by the discipline.',
-      resolve: (obj: Discipline) => PowerService.getFromNames(obj.powers_granted)
+      resolve: (obj: Discipline) => PowerService.getMany(obj.powers)
     }
   }),
   interfaces: () => [ DataObjectInterface ]

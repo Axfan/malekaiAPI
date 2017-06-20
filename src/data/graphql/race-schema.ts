@@ -38,7 +38,7 @@ export const RaceSchema: GraphQLObjectType = new GraphQLObjectType({
     classes: {
       type: new GraphQLList(ClassSchema),
       description: 'The classes the race can be used by.',
-      resolve: (race: Race) => ClassService.getFromNames(race.classes)
+      resolve: (race: Race) => ClassService.getMany(race.classes)
     }
   }),
   interfaces: () => [ DataObjectInterface ]

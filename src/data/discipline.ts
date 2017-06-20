@@ -12,7 +12,7 @@ export class Discipline implements IDataObject {
 
   icon: string; // i.e. ''
 
-  can_equip: string[]; // i.e. ["Assassin","Duelist","Ranger"]
+  classes: string[]; // i.e. ["Assassin","Duelist","Ranger"]
 
   stats_granted: string[]; // i.e. ["Stealth"], ties in with stats_values
   stats_values: number[]; // i.e. [6.25], ties in with stats_granted
@@ -25,7 +25,7 @@ export class Discipline implements IDataObject {
   trays_granted: string;
   trays_removed: string;
 
-  powers_granted: string[]; // i.e.  ["Caltrops","Lay Low","Stink Bomb","Preparation"]
+  powers: string[]; // i.e.  ["Caltrops","Lay Low","Stink Bomb","Preparation"]
 
   public static fromDTO(obj: any) {
     if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
@@ -37,7 +37,7 @@ export class Discipline implements IDataObject {
 
     d.icon = obj.icon || '';
 
-    d.can_equip = obj.can_equip instanceof Array ? obj.can_equip.slice() : [];
+    d.classes = obj.can_equip instanceof Array ? obj.can_equip.slice() : [];
 
     d.stats_granted = obj.stats_granted instanceof Array ? obj.stats_granted.slice() : [];
     d.stats_values = obj.stats_values instanceof Array ? obj.stats_values.slice() : [];
@@ -50,7 +50,7 @@ export class Discipline implements IDataObject {
     d.trays_granted = obj.trays_granted || '';
     d.trays_removed = obj.trays_removed || '';
 
-    d.powers_granted = obj.powers_granted ? obj.powers_granted.slice() : [];
+    d.powers = obj.powers_granted ? obj.powers_granted.slice() : [];
     return d;
   }
 
@@ -68,7 +68,7 @@ export class Discipline implements IDataObject {
 
       this.icon = disc.icon || '';
 
-      this.can_equip = disc.can_equip ? disc.can_equip.slice() : [];
+      this.classes = disc.classes ? disc.classes.slice() : [];
 
       this.stats_granted = disc.stats_granted ? disc.stats_granted.slice() : [];
       this.stats_values = disc.stats_values ? disc.stats_values.slice() : [];
@@ -81,7 +81,7 @@ export class Discipline implements IDataObject {
       this.trays_granted = disc.trays_granted || '';
       this.trays_removed = disc.trays_removed || '';
 
-      this.powers_granted = disc.powers_granted ? disc.powers_granted.slice() : [];
+      this.powers = disc.powers ? disc.powers.slice() : [];
 
     } else {
 
@@ -92,7 +92,7 @@ export class Discipline implements IDataObject {
 
       this.icon =  '';
 
-      this.can_equip = [];
+      this.classes = [];
 
       this.stats_granted = [];
       this.stats_values = [];
@@ -105,7 +105,7 @@ export class Discipline implements IDataObject {
       this.trays_granted =  '';
       this.trays_removed =  '';
 
-      this.powers_granted = [];
+      this.powers = [];
     }
   }
 
@@ -120,7 +120,7 @@ export class Discipline implements IDataObject {
 
       icon: this.icon,
 
-      can_equip: this.can_equip,
+      can_equip: this.classes,
 
       stats_granted: this.stats_granted,
       stats_values: this.stats_values,
@@ -133,7 +133,7 @@ export class Discipline implements IDataObject {
       trays_granted: this.trays_granted,
       trays_removed: this.trays_removed,
 
-      powers_granted: this.powers_granted,
+      powers_granted: this.powers,
     };
   }
 

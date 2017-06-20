@@ -25,6 +25,16 @@ export class ClassService {
     });
   }
 
+  public static getMany(ids: string[]): Promise<Class[]> {
+    return new Promise<Class[]>((resolve, reject) => {
+      const col = r.expr(ids);
+      db.run(this.table.filter((doc) => col.contains(doc('id') as any))).then((results: any[]) => {
+        if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Class.fromDBO(a)));
+        else resolve([]); // reject(new Rejection('No classes found for names ' + names.join(', '), 404));
+      });
+    });
+  }
+
   public static getFromName(name: string): Promise<Class> {
     return new Promise<Class>((resolve, reject) => {
       db.run(this.table.filter((doc) => doc('name').eq(name))).then((result: any[]) => {

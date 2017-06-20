@@ -10,7 +10,7 @@ export class Power implements IDataObject {
   description: string
   icon: string;
 
-  source: string;
+  sources: { type: string, id: string }[];
 
   type: string;
   cast_type: string;
@@ -24,6 +24,7 @@ export class Power implements IDataObject {
   range: number;
 
   next_chain: string[];
+  prev_chain: string[];
 
   static fromDTO(obj: any): Power {
     if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
@@ -33,7 +34,7 @@ export class Power implements IDataObject {
     p.description = obj.description || '';
     p.icon = obj.icon || '';
 
-    p.source = obj.source || '';
+    p.sources = obj.sources instanceof Array ? obj.sources.map(a => { return { type: a.type, id: a.id }; }) : [];
 
     p.type = obj.type || '';
     p.cast_type = obj.cast_type || '';
@@ -47,6 +48,7 @@ export class Power implements IDataObject {
     p.range = obj.range || 0;
 
     p.next_chain = obj.next_chain instanceof Array ? obj.next_chain.slice() : [];
+    p.prev_chain = obj.prev_chain instanceof Array ? obj.prev_chain.slice() : [];
     return p;
   }
 
@@ -61,7 +63,7 @@ export class Power implements IDataObject {
       this.description = power.description || '';
       this.icon = power.icon || '';
 
-      this.source = power.source || '';
+      this.sources = power.sources instanceof Array ? power.sources.map(a => { return { type: a.type, id: a.id }; }) : [];
 
       this.type = power.type || '';
       this.cast_type = power.cast_type || '';
@@ -75,13 +77,14 @@ export class Power implements IDataObject {
       this.range = power.range || 0;
 
       this.next_chain = power.next_chain instanceof Array ? power.next_chain.slice() : [];
+      this.prev_chain = power.prev_chain instanceof Array ? power.prev_chain.slice() : [];
     } else {
       this.id = '';
       this.name = '';
       this.description = '';
       this.icon = '';
 
-      this.source = '';
+      this.sources = [];
 
       this.type = '';
       this.cast_type = '';
@@ -95,6 +98,7 @@ export class Power implements IDataObject {
       this.range = 0;
 
       this.next_chain = [];
+      this.prev_chain = [];
     }
   }
 
@@ -107,7 +111,7 @@ export class Power implements IDataObject {
       description: this.description,
       icon: this.icon,
 
-      source: this.source,
+      sources: this.sources.map(a => { return { type: a.type, id: a.id }; }),
 
       type: this.type,
       cast_type: this.cast_type,
@@ -120,7 +124,8 @@ export class Power implements IDataObject {
       max_targets: this.max_targets,
       range: this.range,
 
-      next_chain: this.next_chain.slice()
+      next_chain: this.next_chain.slice(),
+      prev_chain: this.prev_chain.slice()
     };
   }
 

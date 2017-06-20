@@ -10,7 +10,7 @@ export class Class implements IDataObject {
   description: string;
   icon: string;
   races: string[];
-  powers_granted: string[];
+  powers: string[];
 
   static fromDTO(obj: any): Class {
     if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
@@ -20,7 +20,7 @@ export class Class implements IDataObject {
     c.description = obj.description || '';
     c.icon = obj.icon || '';
     c.races = obj.races instanceof Array ? obj.races.slice() : [];
-    c.powers_granted = obj.powers instanceof Array ? obj.powers.slice() : [];
+    c.powers = obj.powers instanceof Array ? obj.powers.slice() : [];
     return c;
   }
 
@@ -35,14 +35,14 @@ export class Class implements IDataObject {
       this.description = clas.description || '';
       this.icon = clas.icon || '';
       this.races = clas.races ? clas.races.slice() : [];
-      this.powers_granted = clas.powers_granted ? clas.powers_granted.slice() : [];
+      this.powers = clas.powers ? clas.powers.slice() : [];
     } else {
       this.id = '';
       this.name = '';
       this.description = '';
       this.icon = '';
       this.races = [];
-      this.powers_granted = [];
+      this.powers = [];
     }
   }
 
@@ -54,7 +54,7 @@ export class Class implements IDataObject {
       description: this.description,
       icon: this.icon,
       races: this.races.slice(),
-      powers_granted: this.powers_granted.slice()
+      powers_granted: this.powers.slice()
     };
   }
 

@@ -31,10 +31,23 @@ export class PowerService {
     });
   }
 
-  public static getSource(power: Power): Promise<IDataObject> { // unused atm (currently using DataObjectService)
-    return new Promise<IDataObject>((resolve, reject) => {
-      db.run(this.parentUnion.filter(doc => doc('name').eq(power.source))).then((result: any[]) => {
-        if(result && result instanceof Array && result.length > 0) resolve(DataParser.parseDBO(result[0]));
+  public static getMany(ids: string[]): Promise<Power[]> {
+    return new Promise<Power[]>((resolve, reject) => {
+      const col = r.expr(ids);
+      db.run(this.table.filter((doc) => col.contains(doc('id') as any))).then((results: any[]) => {
+        if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Power.fromDBO(a)));
+        else resolve([]); // reject(new Rejection('No races found for names ' + names.join(', '), 404));
+      });
+    });
+  }
+
+  public static getSources(power: Power): Promise<IDataObject[]> { // unused atm (currently using DataObjectService)
+    return new Promise<IDataObject[]>((resolve, reject) => {
+      const col = r.expr(power.sources) as any;
+      db.run(this.parentUnion.filter(
+            doc => col.contains(a => a('type').eq(doc('data_type')).and(a('id').eq(doc('id'))))
+          )).then((results: any[]) => {
+        if(results && results instanceof Array && results.length > 0) resolve(results.map(a => DataParser.parseDBO(a)));
         else reject(new Rejection('No sources found for power ' + power.id, 404));
       })
     });

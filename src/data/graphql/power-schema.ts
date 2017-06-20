@@ -52,10 +52,10 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'The url to the icon of the power.'
     },
-    source: {
-      type: DataObjectInterface,
+    sources: {
+      type: new GraphQLList(DataObjectInterface),
       description: 'The source of the power.',
-      resolve: (obj: Power) => DataObjectService.getFromName(obj.source)
+      resolve: (obj: Power) => PowerService.getSources(obj)
     },
     type: {
       type: GraphQLString,
@@ -92,7 +92,12 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
     next_chain: {
       type: new GraphQLList(PowerSchema),
       description: 'The next powers in the chain.',
-      resolve: (obj: Power) => PowerService.getFromNames(obj.next_chain)
+      resolve: (obj: Power) => PowerService.getMany(obj.next_chain)
+    },
+    prev_chain: {
+      type: new GraphQLList(PowerSchema),
+      description: 'The previous powers in the chain.',
+      resolve: (obj: Power) => PowerService.getMany(obj.prev_chain)
     }
   }),
   interfaces: () => [ DataObjectInterface ]

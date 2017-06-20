@@ -18,6 +18,7 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
       name: 'RootQueryType',
       fields: {
         hello: {
+          description: 'Hello world!',
           type: GraphQLString,
           resolve() { return 'world'; }
         },
@@ -118,6 +119,7 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
         },
         races: {
           type: new GraphQLList(RaceSchema),
+          description: 'All the races.',
           resolve: (root) => {
             console.log(`gql: races {${root}}`);
             return RaceService.getAll();
@@ -125,6 +127,7 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
         },
         classes: {
           type: new GraphQLList(ClassSchema),
+          description: 'All the classes.',
           resolve: (root) => {
             console.log(`gql: classes {${root}}`);
             return ClassService.getAll();
@@ -132,6 +135,7 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
         },
         disciplines: {
           type: new GraphQLList(DisciplineSchema),
+          description: 'All the disciplines.',
           resolve: (root) => {
             console.log(`gql: disciplines {${root}}`);
             return DisciplineService.getAll();
@@ -139,6 +143,7 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
         },
         powers: {
           type: new GraphQLList(PowerSchema),
+          description: 'All the powers.',
           resolve: (root) => {
             console.log(`gql: powers {${root}}`);
             return PowerService.getAll();
