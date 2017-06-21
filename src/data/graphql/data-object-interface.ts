@@ -9,6 +9,7 @@ import {
   GraphQLInterfaceType,
   GraphQLObjectType,
   GraphQLNonNull,
+  GraphQLList,
   GraphQLString
 } from 'graphql';
 
@@ -35,6 +36,10 @@ export const DataObjectInterface: GraphQLInterfaceType = new GraphQLInterfaceTyp
     icon: {
       type: GraphQLString,
       description: 'The url to the icon of the data object.'
+    },
+    tags: {
+      type: new GraphQLList(GraphQLString),
+      description: 'The tags that describe the data object.'
     }
   }),
   resolveType (obj: IDataObject): GraphQLObjectType {

@@ -25,6 +25,7 @@ export class Power implements IDataObject {
 
   next_chain: string[];
   prev_chain: string[];
+  tags: string[];
 
   static fromDTO(obj: any): Power {
     if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
@@ -49,6 +50,8 @@ export class Power implements IDataObject {
 
     p.next_chain = obj.next_chain instanceof Array ? obj.next_chain.slice() : [];
     p.prev_chain = obj.prev_chain instanceof Array ? obj.prev_chain.slice() : [];
+
+    p.tags = obj.tags instanceof Array ? obj.tags.slice() : [];
     return p;
   }
 
@@ -78,6 +81,8 @@ export class Power implements IDataObject {
 
       this.next_chain = power.next_chain instanceof Array ? power.next_chain.slice() : [];
       this.prev_chain = power.prev_chain instanceof Array ? power.prev_chain.slice() : [];
+
+      this.tags = power.tags instanceof Array ? power.tags.slice() : [];
     } else {
       this.id = '';
       this.name = '';
@@ -99,6 +104,8 @@ export class Power implements IDataObject {
 
       this.next_chain = [];
       this.prev_chain = [];
+
+      this.tags = [];
     }
   }
 
@@ -125,7 +132,9 @@ export class Power implements IDataObject {
       range: this.range,
 
       next_chain: this.next_chain.slice(),
-      prev_chain: this.prev_chain.slice()
+      prev_chain: this.prev_chain.slice(),
+
+      tags: this.tags.slice(),
     };
   }
 

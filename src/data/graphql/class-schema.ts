@@ -45,6 +45,10 @@ export const ClassSchema: GraphQLObjectType = new GraphQLObjectType({
       type: new GraphQLList(PowerSchema),
       description: 'The default powers the class gives.',
       resolve: (clas: Class) => PowerService.getMany(clas.powers)
+    },
+    tags: {
+      type: new GraphQLList(GraphQLString),
+      description: 'The tags that describe the class.'
     }
   }),
   interfaces: () => [ DataObjectInterface ]

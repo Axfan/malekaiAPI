@@ -10,6 +10,7 @@ export class Race implements IDataObject {
   description: string;
   icon: string;
   classes: string[];
+  tags: string[];
 
   static fromDTO(obj: any): Race {
     if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
@@ -33,12 +34,14 @@ export class Race implements IDataObject {
       this.description = race.description || '';
       this.icon = race.icon || '';
       this.classes = race.classes ? race.classes.slice() : [];
+      this.tags = race.tags ? race.tags.slice() : [];
     } else {
       this.id = '';
       this.name = '';
       this.description = '';
       this.icon = '';
       this.classes = [];
+      this.tags = [];
     }
   }
 
@@ -49,7 +52,8 @@ export class Race implements IDataObject {
       name: this.name,
       description: this.description,
       icon: this.icon,
-      classes: this.classes.slice()
+      classes: this.classes.slice(),
+      tags: this.tags.slice(),
     };
   }
 

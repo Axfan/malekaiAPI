@@ -26,6 +26,7 @@ export class Discipline implements IDataObject {
   trays_removed: string;
 
   powers: string[]; // i.e.  ["Caltrops","Lay Low","Stink Bomb","Preparation"]
+  tags: string[];
 
   public static fromDTO(obj: any) {
     if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
@@ -37,7 +38,7 @@ export class Discipline implements IDataObject {
 
     d.icon = obj.icon || '';
 
-    d.classes = obj.can_equip instanceof Array ? obj.can_equip.slice() : [];
+    d.classes = obj.classes instanceof Array ? obj.classes.slice() : [];
 
     d.stats_granted = obj.stats_granted instanceof Array ? obj.stats_granted.slice() : [];
     d.stats_values = obj.stats_values instanceof Array ? obj.stats_values.slice() : [];
@@ -50,7 +51,8 @@ export class Discipline implements IDataObject {
     d.trays_granted = obj.trays_granted || '';
     d.trays_removed = obj.trays_removed || '';
 
-    d.powers = obj.powers_granted ? obj.powers_granted.slice() : [];
+    d.powers = obj.powers ? obj.powers.slice() : [];
+    d.tags = obj.tags ? obj.tags.slice() : [];
     return d;
   }
 
@@ -82,6 +84,7 @@ export class Discipline implements IDataObject {
       this.trays_removed = disc.trays_removed || '';
 
       this.powers = disc.powers ? disc.powers.slice() : [];
+      this.tags = disc.tags ? disc.tags.slice() : [];
 
     } else {
 
@@ -106,6 +109,7 @@ export class Discipline implements IDataObject {
       this.trays_removed =  '';
 
       this.powers = [];
+      this.tags = [];
     }
   }
 
@@ -120,7 +124,7 @@ export class Discipline implements IDataObject {
 
       icon: this.icon,
 
-      can_equip: this.classes,
+      classes: this.classes,
 
       stats_granted: this.stats_granted,
       stats_values: this.stats_values,
@@ -133,7 +137,8 @@ export class Discipline implements IDataObject {
       trays_granted: this.trays_granted,
       trays_removed: this.trays_removed,
 
-      powers_granted: this.powers,
+      powers: this.powers,
+      tags: this.powers,
     };
   }
 

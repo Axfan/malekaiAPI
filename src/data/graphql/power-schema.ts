@@ -98,6 +98,10 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
       type: new GraphQLList(PowerSchema),
       description: 'The previous powers in the chain.',
       resolve: (obj: Power) => PowerService.getMany(obj.prev_chain)
+    },
+    tags: {
+      type: new GraphQLList(GraphQLString),
+      description: 'The tags that describe the power.'
     }
   }),
   interfaces: () => [ DataObjectInterface ]

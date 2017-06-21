@@ -90,6 +90,10 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
       type: new GraphQLList(PowerSchema),
       description: 'The powers granted by the discipline.',
       resolve: (obj: Discipline) => PowerService.getMany(obj.powers)
+    },
+    tags: {
+      type: new GraphQLList(GraphQLString),
+      description: 'The tags that describe the discipline.'
     }
   }),
   interfaces: () => [ DataObjectInterface ]
