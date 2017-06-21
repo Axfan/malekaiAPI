@@ -94,10 +94,10 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
       description: 'The next powers in the chain.',
       resolve: (obj: Power) => PowerService.getMany(obj.next_chain)
     },
-    prev_chain: {
+    previous_chain: {
       type: new GraphQLList(PowerSchema),
       description: 'The previous powers in the chain.',
-      resolve: (obj: Power) => PowerService.getMany(obj.prev_chain)
+      resolve: (obj: Power) => PowerService.getMany(obj.previous_chain)
     },
     tags: {
       type: new GraphQLList(GraphQLString),

@@ -24,7 +24,7 @@ export class Power implements IDataObject {
   range: number;
 
   next_chain: string[];
-  prev_chain: string[];
+  previous_chain: string[];
   tags: string[];
 
   static fromDTO(obj: any): Power {
@@ -49,7 +49,7 @@ export class Power implements IDataObject {
     p.range = obj.range || 0;
 
     p.next_chain = obj.next_chain instanceof Array ? obj.next_chain.slice() : [];
-    p.prev_chain = obj.prev_chain instanceof Array ? obj.prev_chain.slice() : [];
+    p.previous_chain = obj.previous_chain instanceof Array ? obj.previous_chain.slice() : [];
 
     p.tags = obj.tags instanceof Array ? obj.tags.slice() : [];
     return p;
@@ -80,7 +80,7 @@ export class Power implements IDataObject {
       this.range = power.range || 0;
 
       this.next_chain = power.next_chain instanceof Array ? power.next_chain.slice() : [];
-      this.prev_chain = power.prev_chain instanceof Array ? power.prev_chain.slice() : [];
+      this.previous_chain = power.previous_chain instanceof Array ? power.previous_chain.slice() : [];
 
       this.tags = power.tags instanceof Array ? power.tags.slice() : [];
     } else {
@@ -103,7 +103,7 @@ export class Power implements IDataObject {
       this.range = 0;
 
       this.next_chain = [];
-      this.prev_chain = [];
+      this.previous_chain = [];
 
       this.tags = [];
     }
@@ -132,7 +132,7 @@ export class Power implements IDataObject {
       range: this.range,
 
       next_chain: this.next_chain.slice(),
-      prev_chain: this.prev_chain.slice(),
+      previous_chain: this.previous_chain.slice(),
 
       tags: this.tags.slice(),
     };
