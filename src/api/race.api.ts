@@ -1,9 +1,8 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { Race } from '../data';
 import { Logger } from '../util';
 import { RaceService } from '../service';
 import { Api, Route } from '../deco';
-import { atob, btoa } from '../polyfills';
 
 @Api('races')
 export class RaceApi {
@@ -11,7 +10,7 @@ export class RaceApi {
   constructor(router: Router) { }
 
   @Route()
-  getAll(req, res): void {
+  getAll(req: Request, res: Response): void {
     RaceService.getAll().then(
       value => res.json(value.map(v => v.toDTO())),
       err => {
@@ -21,7 +20,7 @@ export class RaceApi {
   }
 
   @Route(':id')
-  get(req, res) {
+  get(req: Request, res: Response) {
     try {
       // const is = atob(req.params.is);
       RaceService.get('' + req.params.id).then(

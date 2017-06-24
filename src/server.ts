@@ -17,22 +17,6 @@ DatabaseService.init().then(() => {
 
   const app = express();
 
-  /*const whitelist = [
-    'http://localhost:4200',
-    'https://crowfall.wiki',
-    'https://test.crowfall.wiki',
-    'https://michaelfedora.github.io',
-    undefined
-  ];
-
-  app.use(cors({
-    origin: (origin, callback) => {
-      if (whitelist.indexOf(origin) !== -1) callback(null, true);
-      else callback(`Your origin (${origin}) is not allowed by CORS!`);
-    },
-    methods: 'GET,POST'
-  }));*/
-
   app.use(cors({ origin: '*', methods: 'GET,POST' }));
   // TODO: Brute!
   // const bruteForce = new ExpressBrute(store);
@@ -44,7 +28,9 @@ DatabaseService.init().then(() => {
   const ip = '0.0.0.0';
 
   app.use((req, res, next) => {
-    Logger.log('HTTP', req.method + ': ' + req.originalUrl, ['http', req.method, req.baseUrl + '/' +  req.path], req.ip);
+    Logger.log('HTTP',
+              req.method + ': ' + req.originalUrl + ' from ' + req.hostname,
+              ['http', req.method, req.baseUrl + '/' +  req.path, req.hostname], req.ip);
     next();
   });
 

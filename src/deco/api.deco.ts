@@ -3,7 +3,7 @@ import { ApiRoute } from '../data/internal';
 
 export function Api(baseRoute?: string) {
 
-  if(baseRoute) {
+  if(baseRoute) { // the base route must begin and end with a '/'
     if(baseRoute[0] !== '/')
       baseRoute = '/' + baseRoute;
     if(baseRoute[baseRoute.length - 1] !== '/')
