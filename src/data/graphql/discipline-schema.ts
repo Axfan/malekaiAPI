@@ -4,6 +4,8 @@ import DataObjectInterface from './data-object-interface';
 import ClassSchema from './class-schema';
 import PowerSchema from './power-schema';
 
+import { Env } from '../../env';
+
 import {
   GraphQLObjectType,
   GraphQLNonNull,
@@ -50,7 +52,13 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
     },
     icon: {
       type: GraphQLString,
-      description: 'The url to the icon of the discipline.'
+      description: 'The url to the icon of the class.',
+      resolve: (disc: Discipline) => `${Env.cdnUrl}/images/disciplines/${disc.id}.png`
+    },
+    icon_svg: {
+      type: GraphQLString,
+      description: 'The url to the svg icon of the class.',
+      resolve: (disc: Discipline) => `${Env.cdnUrl}/svgs/disciplines/${disc.id}.svg`
     },
     type: {
       type: GraphQLString,

@@ -35,7 +35,11 @@ export const DataObjectInterface: GraphQLInterfaceType = new GraphQLInterfaceTyp
     },
     icon: {
       type: GraphQLString,
-      description: 'The url to the icon of the data object.'
+      description: 'The url to the icon of the data object.',
+    },
+    icon_svg: {
+      type: GraphQLString,
+      description: 'The url to the svg icon of the data object.',
     },
     tags: {
       type: new GraphQLList(GraphQLString),

@@ -3,6 +3,8 @@ import { ClassService } from '../../service/class.service';
 import DataObjectInterface from './data-object-interface';
 import ClassSchema from './class-schema';
 
+import { Env } from '../../env';
+
 import {
   GraphQLObjectType,
   GraphQLNonNull,
@@ -33,7 +35,13 @@ export const RaceSchema: GraphQLObjectType = new GraphQLObjectType({
     },
     icon: {
       type: GraphQLString,
-      description: 'The url to the icon of the race.'
+      description: 'The url to the icon of the class.',
+      resolve: (race: Race) => `${Env.cdnUrl}/images/races/${race.id}.png`
+    },
+    icon_svg: {
+      type: GraphQLString,
+      description: 'The url to the svg icon of the class.',
+      resolve: (race: Race) => `${Env.cdnUrl}/svgs/races/${race.id}.svg`
     },
     classes: {
       type: new GraphQLList(ClassSchema),

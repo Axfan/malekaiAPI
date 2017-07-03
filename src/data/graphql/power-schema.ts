@@ -3,6 +3,8 @@ import { PowerService, DataObjectService } from '../../service';
 import DataObjectInterface from './data-object-interface';
 import RaceSchema from './race-schema';
 
+import { Env } from '../../env';
+
 import {
   GraphQLObjectType,
   GraphQLNonNull,
@@ -50,7 +52,13 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
     },
     icon: {
       type: GraphQLString,
-      description: 'The url to the icon of the power.'
+      description: 'The url to the icon of the class.',
+      resolve: (power: Power) => `${Env.cdnUrl}/images/powers/${power.id}.png`
+    },
+    icon_svg: {
+      type: GraphQLString,
+      description: 'The url to the svg icon of the class.',
+      resolve: (power: Power) => `${Env.cdnUrl}/svgs/powers/${power.id}.svg`
     },
     sources: {
       type: new GraphQLList(DataObjectInterface),
