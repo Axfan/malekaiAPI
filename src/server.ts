@@ -28,8 +28,8 @@ DatabaseService.init().then(() => {
   const ip = '0.0.0.0';
 
   app.use((req, res, next) => {
-    const host = req.headers.host || req.headers.origin || req.ip;
-    Logger.log('HTTP', `${req.method}: ${req.originalUrl} from ${host}`,
+    const host = req.headers.origin || req.headers.host || req.ip;
+    Logger.log('HTTP', `${req.method}: ${req.hostname}/${req.originalUrl} from ${host}`,
                 ['http', req.method, `${req.baseUrl}/${req.path}`, host], req.ip);
     next();
   });
