@@ -1,18 +1,22 @@
 export class Issue {
 
-  date: Date;
-  table: string;
-  id: string;
-  field: string;
-  desc: string;
+  error_source: string; // i.e. 'crowfall.wiki', source should correspond to where the error is coming from
+  error_user: string; // user string/id of person who found error; use logged in info if user is logged in!
+  error_ip: string; // attempt to grab the IP of person submitting an error if done anonymously/for rate limiting
+  error_message: string; // users can submit brief message if they chose to (and interface allows it)
+  error_date: Date; // "now"
+  data_type: string; // ('discipline' or 'power' or 'class' or 'race' or 'recipe' or 'tradeskill', etc.)
+  data_id: string; // id of the data
 
   static fromDTO(obj: any): Issue {
     const i = new Issue();
-    i.date = new Date(obj.date);
-    i.table = obj.table || '';
-    i.id = obj.id || '';
-    i.field = obj.field || '';
-    i.desc = obj.desc || '';
+    i.error_source = obj.error_source || '';
+    i.error_user = obj.error_user || '';
+    i.error_ip = obj.error_ip || '';
+    i.error_message = obj.error_message || '';
+    i.error_date = new Date(obj.error_date);
+    i.data_type = obj.data_type || '';
+    i.data_id = obj.data_id || '';
     return i;
   }
 
@@ -22,27 +26,33 @@ export class Issue {
 
   constructor(issue?: Issue) {
     if(issue != null) {
-      this.date = new Date(issue.date);
-      this.table = issue.table || '';
-      this.id = issue.id || '';
-      this.field = issue.field || '';
-      this.desc = issue.desc || '';
+      this.error_source = issue.error_source || '';
+      this.error_user = issue.error_user || '';
+      this.error_ip = issue.error_ip || '';
+      this.error_message = issue.error_message || '';
+      this.error_date = new Date(issue.error_date);
+      this.data_type = issue.data_type || '';
+      this.data_id = issue.data_id || '';
     } else {
-      this.date = new Date();
-      this.table = '';
-      this.id = '';
-      this.field = '';
-      this.desc = '';
+      this.error_source = '';
+      this.error_user = '';
+      this.error_ip = '';
+      this.error_message = '';
+      this.error_date = new Date();
+      this.data_type = '';
+      this.data_id = '';
     }
   }
 
   toDTO(): any {
     return {
-      date: new Date(this.date),
-      table: this.table,
-      id: this.id,
-      field: this.field,
-      desc: this.desc
+      error_source: this.error_source,
+      error_user: this.error_user,
+      error_ip: this.error_ip,
+      error_message: this.error_message,
+      error_date: this.error_date,
+      data_type: this.data_type,
+      data_id: this.data_id,
     };
   }
 

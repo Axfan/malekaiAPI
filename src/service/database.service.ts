@@ -22,7 +22,7 @@ export class DatabaseService {
   }
 
   public static get log(): Table { return this.db.table('apiLog'); }
-  public static get issues(): Table { return this.db.table('issues'); }
+  public static get issues(): Table { return this.db.table('issuesQueue'); }
 
   public static run<T>(query: r.Operation<T>): Promise<T | any[]> {
     return this.pool.run(query);
@@ -77,8 +77,8 @@ export class DatabaseService {
     return new Promise<void>((resolve, reject) => {
       this.run(this.db.tableList()).then((list: string[]) => {
 
-        if(list.findIndex(t => t === 'issues') < 0) {
-          this.run(this.db.tableCreate('issues'))
+        if(list.findIndex(t => t === 'issuesQueue') < 0) {
+          this.run(this.db.tableCreate('issuesQueue'))
             .then(table => resolve()); // or index things
         } else resolve(); // or index things
       }).catch(err => reject(err));
