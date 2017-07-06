@@ -13,7 +13,7 @@ export class SearchService {
       return ((col as any).map(val => (doc(key) as any).contains(val)) as r.Sequence).contains(false as any).eq(false);
     } else if(typeof param === 'string') {
       const groups = param.split(/\W/).filter(a => a).map(a => `(?:${a})`);
-      return (doc(key) as any).match(`(?i)${groups.join('|')}`);
+      return (doc(key) as any).match(`(?i)${groups.join('\W*')}`);
     } else
       return doc(key).eq(param);
   }
