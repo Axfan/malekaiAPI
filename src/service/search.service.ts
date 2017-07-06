@@ -31,10 +31,11 @@ export class SearchService {
     });
   }
 
-  public static searchText(text: string, table?: string, limit?: number,
+  public static searchText(text: string, table?: string, skip?: number, limit?: number,
                           sortField?: string, sortDirection?: boolean): Promise<IDataObject[]> {
     table = table || '';
     limit = limit || 0;
+    skip = skip || 0;
     sortField = sortField || 'name';
     sortDirection = sortDirection || false;
     let toSearch: r.Sequence | r.Table;
@@ -52,6 +53,7 @@ export class SearchService {
       return (doc('name') as any).match(`(?i)${groups.join('\\W*')}`);
     }).orderBy(sortDirection ? sortField : r.desc(sortField));
 
+    if(skip) cmd = cmd.skip(skip);
     if(limit) cmd = cmd.limit(limit);
 
     return db.run(cmd).then(

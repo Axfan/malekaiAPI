@@ -46,6 +46,10 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
                 values: { RACES: {}, CLASSES: {}, DISCIPLINES: {}, POWERS: {} }
               })
             },
+            skip: {
+              description: 'Where to start the results.',
+              type: GraphQLInt
+            },
             limit: {
               description: 'Limit the results to an amount.',
               type: GraphQLInt
@@ -62,11 +66,11 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
               })
             }
           },
-          resolve: (root, { text, table, limit, sortField, sortDirection }) => {
+          resolve: (root, { text, table, skip, limit, sortField, sortDirection }) => {
             sortDirection = !(sortDirection || false);
             console.log(`gql: search (text: ${text}, table: ${table}, limit: ${limit}, `
                       + `sortField: ${sortField}, sortDirection: ${sortDirection}) {${root}}`);
-            return SearchService.searchText(text, table, limit, sortField, sortDirection);
+            return SearchService.searchText(text, table, skip, limit, sortField, sortDirection);
           }
         },
         data_object: {
