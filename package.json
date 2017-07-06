@@ -34,7 +34,7 @@
     "@types/express-graphql": "0.0.33",
     "@types/graphql": "^0.9.3",
     "@types/jsonwebtoken": "^7.2.1",
-    "@types/node": "^8.0.0",
+    "@types/node": "^8.0.8",
     "@types/rethinkdb": "^2.3.3",
     "typescript": "^2.4.1"
   }

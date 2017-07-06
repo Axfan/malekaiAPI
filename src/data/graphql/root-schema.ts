@@ -63,6 +63,7 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
             }
           },
           resolve: (root, { text, table, limit, sortField, sortDirection }) => {
+            sortDirection = !(sortDirection || false);
             console.log(`gql: search (text: ${text}, table: ${table}, limit: ${limit}, `
                       + `sortField: ${sortField}, sortDirection: ${sortDirection}) {${root}}`);
             return SearchService.searchText(text, table, limit, sortField, sortDirection);
