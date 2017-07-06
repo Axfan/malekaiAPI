@@ -47,12 +47,12 @@ export const ClassSchema: GraphQLObjectType = new GraphQLObjectType({
     races: {
       type: new GraphQLList(RaceSchema),
       description: 'The races the class can be used by.',
-      resolve: (clas: Class) => RaceService.getMany(clas.races)
+      resolve: (clas: Class) => RaceService.load(clas.races)
     },
     powers: {
       type: new GraphQLList(PowerSchema),
       description: 'The default powers the class gives.',
-      resolve: (clas: Class) => PowerService.getMany(clas.powers)
+      resolve: (clas: Class) => PowerService.load(clas.powers)
     },
     tags: {
       type: new GraphQLList(GraphQLString),

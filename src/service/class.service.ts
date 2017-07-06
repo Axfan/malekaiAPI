@@ -1,10 +1,13 @@
 import * as r from 'rethinkdb';
+import * as DataLoader from 'dataloader';
 import { DatabaseService as db } from './database.service';
 
 import { Class } from '../data';
 import { Rejection } from '../data/internal';
 
 export class ClassService {
+
+  private static loader = new DataLoader<string, Class>(k => ClassService.batchLoad(k));
 
   public static get table(): r.Table { return db.classes; }
 
@@ -14,6 +17,22 @@ export class ClassService {
         resolve(result.map(o => Class.fromDBO(o)));
       }).catch(err => reject(new Rejection(err)));
     });
+  }
+
+  private static batchLoad(keys: string[]): Promise<(Class | Error)[]> {
+    return db.run(this.table.getAll(...keys)).then((res: Class[]) => {
+      const idxRes = new Map<string, Class>();
+      for(const r of res)
+        idxRes.set(r.id, r);
+      return keys.map(k => idxRes.get(k) || new Error('Key not found: ' + k));
+    });
+  }
+
+  public static load(key: string): Promise<Class>;
+  public static load(keys: string[]): Promise<Class[]>;
+  public static load(keys: string | string[]): Promise<Class | Class[]> {
+    if(keys instanceof Array) return this.loader.loadMany(keys);
+    else return this.loader.load(keys as string);
   }
 
   public static get(id: string): Promise<Class> {

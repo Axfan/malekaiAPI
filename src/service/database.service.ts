@@ -1,7 +1,7 @@
 import { Db, Table, Connection } from 'rethinkdb';
 import * as r from 'rethinkdb';
-import { DbPool } from '../data/internal';
 import { series } from 'async';
+import { DbPool } from '../data/internal';
 
 
 export class DatabaseService {

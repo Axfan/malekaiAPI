@@ -1,4 +1,5 @@
 import * as r from 'rethinkdb';
+import * as DataLoader from 'dataloader';
 import { DatabaseService as db } from './database.service';
 
 import { Race } from '../data';
@@ -6,7 +7,25 @@ import { Rejection } from '../data/internal';
 
 export class RaceService {
 
+  private static loader = new DataLoader<string, Race>(k => RaceService.batchLoad(k));
+
   public static get table(): r.Table { return db.races; }
+
+  private static batchLoad(keys: string[]): Promise<(Race | Error)[]> {
+    return db.run(this.table.getAll(...keys)).then((res: Race[]) => {
+      const idxRes = new Map<string, Race>();
+      for(const r of res)
+        idxRes.set(r.id, r);
+      return keys.map(k => idxRes.get(k) || new Error('Key not found: ' + k));
+    });
+  }
+
+  public static load(key: string): Promise<Race>;
+  public static load(keys: string[]): Promise<Race[]>;
+  public static load(keys: string | string[]): Promise<Race | Race[]> {
+    if(keys instanceof Array) return this.loader.loadMany(keys);
+    else return this.loader.load(keys as string);
+  }
 
   public static getAll(): Promise<Race[]> {
     return new Promise<Race[]>((resolve, reject) => {

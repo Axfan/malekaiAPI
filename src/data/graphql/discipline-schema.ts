@@ -67,7 +67,7 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
     classes: {
       type: new GraphQLList(ClassSchema),
       description: 'The classes that can equip the discipline.',
-      resolve: (obj: Discipline) => ClassService.getMany(obj.classes)
+      resolve: (obj: Discipline) => ClassService.load(obj.classes)
     },
     stats_granted: {
       type: new GraphQLList(StatSchema),
@@ -97,7 +97,7 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
     powers: {
       type: new GraphQLList(PowerSchema),
       description: 'The powers granted by the discipline.',
-      resolve: (obj: Discipline) => PowerService.getMany(obj.powers)
+      resolve: (obj: Discipline) => PowerService.load(obj.powers)
     },
     tags: {
       type: new GraphQLList(GraphQLString),

@@ -1,5 +1,6 @@
 import { Power } from '../power';
 import { PowerService, DataObjectService } from '../../service';
+import { DataLoaderParser } from '../../util';
 import DataObjectInterface from './data-object-interface';
 import RaceSchema from './race-schema';
 
@@ -63,7 +64,7 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
     sources: {
       type: new GraphQLList(DataObjectInterface),
       description: 'The source of the power.',
-      resolve: (obj: Power) => PowerService.getSources(obj)
+      resolve: (obj: Power) => obj.sources.map(a => DataLoaderParser.parseAndLoad(a))
     },
     type: {
       type: GraphQLString,
@@ -100,12 +101,12 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
     next_chain: {
       type: new GraphQLList(PowerSchema),
       description: 'The next powers in the chain.',
-      resolve: (obj: Power) => PowerService.getMany(obj.next_chain)
+      resolve: (obj: Power) => PowerService.load(obj.next_chain)
     },
     previous_chain: {
       type: new GraphQLList(PowerSchema),
       description: 'The previous powers in the chain.',
-      resolve: (obj: Power) => PowerService.getMany(obj.previous_chain)
+      resolve: (obj: Power) => PowerService.load(obj.previous_chain)
     },
     tags: {
       type: new GraphQLList(GraphQLString),

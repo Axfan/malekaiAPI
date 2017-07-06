@@ -1,4 +1,5 @@
 import * as r from 'rethinkdb';
+import * as DataLoader from 'dataloader';
 import { DatabaseService as db } from './database.service';
 
 import { IDataObject } from '../data/interfaces';
@@ -8,10 +9,28 @@ import { DataParser } from '../util';
 
 export class PowerService {
 
+  private static loader = new DataLoader<string, Power>(k => PowerService.batchLoad(k));
+
   public static get table(): r.Table { return db.powers; }
 
   public static get parentUnion(): r.Sequence {
     return (db.races as any).union(db.classes, db.disciplines);
+  }
+
+  private static batchLoad(keys: string[]): Promise<(Power | Error)[]> {
+    return db.run(this.table.getAll(...keys)).then((res: Power[]) => {
+      const idxRes = new Map<string, Power>();
+      for(const r of res)
+        idxRes.set(r.id, r);
+      return keys.map(k => idxRes.get(k) || new Error('Key not found: ' + k));
+    });
+  }
+
+  public static load(key: string): Promise<Power>;
+  public static load(keys: string[]): Promise<Power[]>;
+  public static load(keys: string | string[]): Promise<Power | Power[]> {
+    if(keys instanceof Array) return this.loader.loadMany(keys);
+    else return this.loader.load(keys as string);
   }
 
   public static getAll(): Promise<Power[]> {
