@@ -12,14 +12,15 @@ export class RaceService {
   public static get table(): r.Table { return db.races; }
 
   private static batchLoad(keys: string[]): Promise<(Race | Error)[]> {
-    return db.run(this.table.getAll(...keys)).then((res: Race[]) => {
+    return db.run(this.table.getAll(...keys)).then((res: any[]) => {
+      res = res.map(a => Race.fromDBO(a));
       const idxRes = new Map<string, Race>();
-      for(const r of res)
-        idxRes.set(r.id, r);
+      for(const a of res)
+        idxRes.set(a.id, a);
       return keys.map(k => {
-        const r = idxRes.get(k);
-        if(!r) console.error(`Race not found with id "${k}"`);
-        return r;
+        const a = idxRes.get(k);
+        if(!a) console.error(`Race not found with id "${k}"`);
+        return a;
       });
     });
   }

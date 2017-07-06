@@ -1,7 +1,7 @@
 import * as r from 'rethinkdb';
 import { DatabaseService as db } from './database.service';
 
-import { DataParser } from '../util';
+import { DataParser, sort } from '../util';
 import { Rejection } from '../data/internal';
 import { IDataObject } from '../data/interfaces';
 
@@ -29,5 +29,31 @@ export class SearchService {
         resolve(result.map(a => DataParser.parseDBO(a)));
       }).catch(err => reject(new Rejection(err)));
     });
+  }
+
+  public static searchText(text: string, table?: string, limit?: number,
+                          sortField?: string, sortDirection?: boolean): Promise<IDataObject[]> {
+    sortField = sortField || 'name';
+    let toSearch: r.Sequence | r.Table;
+
+    switch(table.toLocaleLowerCase()) {
+      case 'races': toSearch = db.races; break;
+      case 'classes': toSearch = db.classes; break;
+      case 'disciplines': toSearch = db.disciplines; break;
+      case 'powers': toSearch = db.powers; break;
+      default: toSearch = db.dataUnion;
+    }
+
+    let cmd = toSearch.filter((doc) => {
+      const groups = text.split(/\W/).filter(a => a).map(a => `(?:${a})`);
+      return (doc('name') as any).match(`(?i)${groups.join('\\W*')}`);
+    }).orderBy(sortDirection ? sortField : r.desc(sortField));
+
+    if(limit) cmd = cmd.limit(limit);
+
+    return db.run(cmd).then(
+      (result: any[]) => result.map(a => DataParser.parseDBO(a))
+                          .sort((a, b) => sortDirection ? sort(a[sortField], b[sortField]) : sort(b[sortField], a[sortField])),
+        err => { throw new Rejection(err); });
   }
 }

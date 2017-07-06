@@ -3,13 +3,22 @@ import RaceSchema from './race-schema';
 import ClassSchema from './class-schema';
 import DisciplineSchema from './discipline-schema';
 import PowerSchema from './power-schema';
-import { RaceService, ClassService, DisciplineService, PowerService, DataObjectService } from '../../service';
+import {
+  RaceService,
+  ClassService,
+  DisciplineService,
+  PowerService,
+  DataObjectService,
+  SearchService
+} from '../../service';
 
 import {
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLNonNull,
   GraphQLString,
+  GraphQLInt,
+  GraphQLEnumType,
   GraphQLList
 } from 'graphql';
 
@@ -21,6 +30,43 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
           description: 'Hello world!',
           type: GraphQLString,
           resolve() { return 'world'; }
+        },
+        search: {
+          description: 'Search the Database',
+          type: new GraphQLList(DataObjectInterface),
+          args: {
+            text: {
+              description: 'The search text.',
+              type: new GraphQLNonNull(GraphQLString),
+            },
+            table: {
+              description: 'The table to search. Leave empty for "all".',
+              type: new GraphQLEnumType({
+                name: 'TableEnum',
+                values: { RACES: {}, CLASSES: {}, DISCIPLINES: {}, POWERS: {} }
+              })
+            },
+            limit: {
+              description: 'Limit the results to an amount.',
+              type: GraphQLInt
+            },
+            sortField: {
+              description: 'How to order the results.',
+              type: GraphQLString
+            },
+            sortDirection: {
+              description: 'The sort direction',
+              type: new GraphQLEnumType({
+                name: 'SortDirection',
+                values: { ASCENDING: { value: true }, DESCENDING: { value: false } }
+              })
+            }
+          },
+          resolve: (root, { text, table, limit, sortField, sortDirection }) => {
+            console.log(`gql: search (text: ${text}, table: ${table}, limit: ${limit}, `
+                      + `sortField: ${sortField}, sortDirection: ${sortDirection}) {${root}}`);
+            return SearchService.searchText(text, table, limit, sortField, sortDirection);
+          }
         },
         data_object: {
           type: DataObjectInterface,

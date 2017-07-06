@@ -12,14 +12,15 @@ export class DisciplineService {
   public static get table(): r.Table { return db.disciplines; }
 
   private static batchLoad(keys: string[]): Promise<(Discipline | Error)[]> {
-    return db.run(this.table.getAll(...keys)).then((res: Discipline[]) => {
+    return db.run(this.table.getAll(...keys)).then((res: any[]) => {
+      res = res.map(a => Discipline.fromDBO(a));
       const idxRes = new Map<string, Discipline>();
-      for(const r of res)
-        idxRes.set(r.id, r);
+      for(const a of res)
+        idxRes.set(a.id, a);
       return keys.map(k => {
-        const r = idxRes.get(k);
-        if(!r) console.error(`Discipline not found with id "${k}"`);
-        return r;
+        const a = idxRes.get(k);
+        if(!a) console.error(`Discipline not found with id "${k}"`);
+        return a;
       });
     });
   }

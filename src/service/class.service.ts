@@ -20,14 +20,15 @@ export class ClassService {
   }
 
   private static batchLoad(keys: string[]): Promise<(Class | Error)[]> {
-    return db.run(this.table.getAll(...keys)).then((res: Class[]) => {
+    return db.run(this.table.getAll(...keys)).then((res: any[]) => {
+      res = res.map(a => Class.fromDBO(a));
       const idxRes = new Map<string, Class>();
-      for(const r of res)
-        idxRes.set(r.id, r);
+      for(const a of res)
+        idxRes.set(a.id, a);
       return keys.map(k => {
-        const r = idxRes.get(k);
-        if(!r) console.error(`Class not found with id "${k}"`);
-        return r;
+        const a = idxRes.get(k);
+        if(!a) console.error(`Class not found with id "${k}"`);
+        return a;
       });
     });
   }

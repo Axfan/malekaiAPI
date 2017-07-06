@@ -10,7 +10,9 @@ export class DataLoaderParser {
       case Discipline.data_type: return DisciplineService.load(obj.id);
       case Power.data_type: return PowerService.load(obj.id);
       default:
-        return Promise.resolve(new Error(`Could not parse loader: bad type "${obj.type}"!`));
+        return Promise.resolve(new Error(
+`Could not parse loader: bad type "${obj.type}"!
+Object: ${JSON.stringify(obj, null, 2)}`));
     }
   }
 }

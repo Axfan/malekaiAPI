@@ -18,14 +18,15 @@ export class PowerService {
   }
 
   private static batchLoad(keys: string[]): Promise<(Power | Error)[]> {
-    return db.run(this.table.getAll(...keys)).then((res: Power[]) => {
+    return db.run(this.table.getAll(...keys)).then((res: any[]) => {
+      res = res.map(a => Power.fromDBO(a));
       const idxRes = new Map<string, Power>();
-      for(const r of res)
-        idxRes.set(r.id, r);
+      for(const a of res)
+        idxRes.set(a.id, a);
       return keys.map(k => {
-        const r = idxRes.get(k);
-        if(!r) console.error(`Power not found with id "${k}"`);
-        return r;
+        const a = idxRes.get(k);
+        if(!a) console.error(`Power not found with id "${k}"`);
+        return a;
       });
     });
   }

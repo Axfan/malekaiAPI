@@ -14,14 +14,15 @@ export class DataObjectService {
 
   private static batchLoad(keys: string[]): Promise<(IDataObject | Error)[]> {
     const col = r.expr(keys);
-    return db.run(this.table.filter((doc) => col.contains(doc('id') as any))).then((res: IDataObject[]) => {
+    return db.run(this.table.filter((doc) => col.contains(doc('id') as any))).then((res: any[]) => {
+      res = res.map(a => DataParser.parseDBO(a));
       const idxRes = new Map<string, IDataObject>();
-      for(const r of res)
-        idxRes.set(r.id, r);
+      for(const a of res)
+        idxRes.set(a.id, a);
       return keys.map(k => {
-        const r = idxRes.get(k);
-        if(!r) console.error(`Data Object not found with id "${k}"`);
-        return r;
+        const a = idxRes.get(k);
+        if(!a) console.error(`Data Object not found with id "${k}"`);
+        return a;
       });
     });
   }
