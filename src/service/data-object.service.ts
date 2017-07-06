@@ -3,13 +3,12 @@ import * as DataLoader from 'dataloader';
 import { DatabaseService as db } from './database.service';
 
 import { IDataObject } from '../data/interfaces';
-import { Race, Class, Discipline, Power } from '../data';
 import { Rejection } from '../data/internal';
 import { DataParser } from '../util';
 
 export class DataObjectService {
 
-  private static loader = new DataLoader<string, Power>(k => DataObjectService.batchLoad(k));
+  private static loader = new DataLoader<string, IDataObject>(k => DataObjectService.batchLoad(k));
 
   public static get table(): r.Sequence { return db.dataUnion; }
 
