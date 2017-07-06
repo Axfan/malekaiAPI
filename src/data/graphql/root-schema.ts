@@ -58,7 +58,7 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
               description: 'The sort direction',
               type: new GraphQLEnumType({
                 name: 'SortDirection',
-                values: { ASCENDING: { value: true }, DESCENDING: { value: false } }
+                values: { ASCENDING: { value: false }, DESCENDING: { value: true } },
               })
             }
           },

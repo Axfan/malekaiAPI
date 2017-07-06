@@ -33,7 +33,10 @@ export class SearchService {
 
   public static searchText(text: string, table?: string, limit?: number,
                           sortField?: string, sortDirection?: boolean): Promise<IDataObject[]> {
+    table = table || '';
+    limit = limit || 0;
     sortField = sortField || 'name';
+    sortDirection = sortDirection || false;
     let toSearch: r.Sequence | r.Table;
 
     switch(table.toLocaleLowerCase()) {
