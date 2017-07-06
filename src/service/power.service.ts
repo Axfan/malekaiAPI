@@ -22,14 +22,18 @@ export class PowerService {
       const idxRes = new Map<string, Power>();
       for(const r of res)
         idxRes.set(r.id, r);
-      return keys.map(k => idxRes.get(k) || new Error('Key not found: ' + k));
+      return keys.map(k => {
+        const r = idxRes.get(k);
+        if(!r) console.error(`Power not found with id "${k}"`);
+        return r;
+      });
     });
   }
 
   public static load(key: string): Promise<Power>;
   public static load(keys: string[]): Promise<Power[]>;
   public static load(keys: string | string[]): Promise<Power | Power[]> {
-    if(keys instanceof Array) return this.loader.loadMany(keys);
+    if(keys instanceof Array) return this.loader.loadMany(keys).then(a => a.filter(b => b));
     else return this.loader.load(keys as string);
   }
 

@@ -16,14 +16,18 @@ export class DisciplineService {
       const idxRes = new Map<string, Discipline>();
       for(const r of res)
         idxRes.set(r.id, r);
-      return keys.map(k => idxRes.get(k) || new Error('Key not found: ' + k));
+      return keys.map(k => {
+        const r = idxRes.get(k);
+        if(!r) console.error(`Discipline not found with id "${k}"`);
+        return r;
+      });
     });
   }
 
   public static load(key: string): Promise<Discipline>;
   public static load(keys: string[]): Promise<Discipline[]>;
   public static load(keys: string | string[]): Promise<Discipline | Discipline[]> {
-    if(keys instanceof Array) return this.loader.loadMany(keys);
+    if(keys instanceof Array) return this.loader.loadMany(keys).then(a => a.filter(b => b));
     else return this.loader.load(keys as string);
   }
 
