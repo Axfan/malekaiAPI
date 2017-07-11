@@ -3,7 +3,7 @@
 The api for the malekai project.
 
 ## Route Reference
-*Standard api route is [https://api.crowfall.wiki](https://api.crowfall.wiki)*
+*Standard api route is [https://api.malekai.network](https://api.malekai.network)*
 
  - `GET /races` - fetches all the races
    - `GET /races/{id}` - fetches a race with the specified id
@@ -30,7 +30,7 @@ The api for the malekai project.
 
  - `GET /graphql` - we have graphql support!
    - Schemas are in [/src/data/graphql](/src/data/graphql)
-   - `graphiql` is enabled so you can have fun [exploring](https://api.crowfall.wiki/graphql)!
+   - `graphiql` is enabled so you can have fun [exploring](https://api.malekai.network/graphql)!
 
 ## To setup:
 
