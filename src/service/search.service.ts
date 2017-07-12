@@ -49,8 +49,12 @@ export class SearchService {
     }
 
     let cmd = toSearch.filter((doc) => {
-      const groups = text.split(/\W/).filter(a => a).map(a => `(?:${a})`);
-      return (doc('name') as any).match(`(?i)${groups.join('\\W*')}`);
+      const groups = text.split(/\W/).filter(a => a);
+      const col: r.Sequence = r.expr(groups) as any;
+      const regex = `(?i)${groups.map(a => `(?:${a})`).join('\\W*')}`;
+      return (doc('name') as any).match(regex)
+                .or(col.contains(doc('tags') as any))
+                .or((doc('description') as any).match(regex));
     }).orderBy(sortDirection ? sortField : r.desc(sortField));
 
     if(skip) cmd = cmd.skip(skip);
