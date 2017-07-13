@@ -53,13 +53,11 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
     },
     icon: {
       type: GraphQLString,
-      description: 'The url to the icon of the class.',
-      resolve: (power: Power) => `${Env.cdnUrl}/images/powers/${power.id}.png`
+      description: 'The url to the icon of the class.'
     },
     icon_svg: {
       type: GraphQLString,
-      description: 'The url to the svg icon of the class.',
-      resolve: (power: Power) => `${Env.cdnUrl}/svgs/powers/${power.id}.svg`
+      description: 'The url to the svg icon of the class.'
     },
     sources: {
       type: new GraphQLList(DataObjectInterface),

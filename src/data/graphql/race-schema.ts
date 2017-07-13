@@ -35,13 +35,11 @@ export const RaceSchema: GraphQLObjectType = new GraphQLObjectType({
     },
     icon: {
       type: GraphQLString,
-      description: 'The url to the icon of the class.',
-      resolve: (race: Race) => `${Env.cdnUrl}/images/races/${race.id}.png`
+      description: 'The url to the icon of the class.'
     },
     icon_svg: {
       type: GraphQLString,
-      description: 'The url to the svg icon of the class.',
-      resolve: (race: Race) => `${Env.cdnUrl}/svgs/races/${race.id}.svg`
+      description: 'The url to the svg icon of the class.'
     },
     classes: {
       type: new GraphQLList(ClassSchema),

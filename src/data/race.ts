@@ -1,5 +1,7 @@
 import { IDataObject } from './interfaces';
 
+import { Env } from '../env';
+
 export class Race implements IDataObject {
 
   static get data_type(): string { return 'race'; }
@@ -8,7 +10,6 @@ export class Race implements IDataObject {
   id: string;
   name: string;
   description: string;
-  icon: string;
   classes: string[];
   tags: string[];
 
@@ -18,7 +19,6 @@ export class Race implements IDataObject {
     r.id = obj.id || '';
     r.name = obj.name || '';
     r.description = obj.description || '';
-    r.icon = obj.icon || '';
     r.classes = obj.classes instanceof Array ? obj.classes.slice() : [];
     return r;
   }
@@ -32,14 +32,12 @@ export class Race implements IDataObject {
       this.id = race.id || '';
       this.name = race.name || '';
       this.description = race.description || '';
-      this.icon = race.icon || '';
       this.classes = race.classes ? race.classes.slice() : [];
       this.tags = race.tags ? race.tags.slice() : [];
     } else {
       this.id = '';
       this.name = '';
       this.description = '';
-      this.icon = '';
       this.classes = [];
       this.tags = [];
     }
@@ -51,7 +49,8 @@ export class Race implements IDataObject {
       id: this.id,
       name: this.name,
       description: this.description,
-      icon: this.icon,
+      icon: `${Env.cdnUrl}/images/races/${this.id}.png`,
+      icon_svg: `${Env.cdnUrl}/svgs/races/${this.id}.svg`,
       classes: this.classes.slice(),
       tags: this.tags.slice(),
     };

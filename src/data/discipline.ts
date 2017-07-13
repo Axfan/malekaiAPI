@@ -1,5 +1,7 @@
 import { IDataObject } from './interfaces';
 
+import { Env } from '../env';
+
 export class Discipline implements IDataObject {
 
   static get data_type(): string { return 'discipline'; }
@@ -9,8 +11,6 @@ export class Discipline implements IDataObject {
   name: string; // i.e. "Agent Provocateur"
   description: string; // i.e. "Agent Provocateurs are sneaky, well-hidden, and difficult to track."
   type: string; // i.e. major/weapon/minor
-
-  icon: string; // i.e. ''
 
   classes: string[]; // i.e. ["Assassin","Duelist","Ranger"]
 
@@ -35,8 +35,6 @@ export class Discipline implements IDataObject {
     d.name = obj.name || '';
     d.description = obj.description || '';
     d.type = obj.type || '';
-
-    d.icon = obj.icon || '';
 
     d.classes = obj.classes instanceof Array ? obj.classes.slice() : [];
 
@@ -68,8 +66,6 @@ export class Discipline implements IDataObject {
       this.description = disc.description || '';
       this.type = disc.type || '';
 
-      this.icon = disc.icon || '';
-
       this.classes = disc.classes ? disc.classes.slice() : [];
 
       this.stats_granted = disc.stats_granted ? disc.stats_granted.slice() : [];
@@ -92,8 +88,6 @@ export class Discipline implements IDataObject {
       this.name =  '';
       this.description = '';
       this.type = '';
-
-      this.icon =  '';
 
       this.classes = [];
 
@@ -122,7 +116,8 @@ export class Discipline implements IDataObject {
       description: this.description,
       type: this.type,
 
-      icon: this.icon,
+      icon: `${Env.cdnUrl}/images/disciplines/${this.type}/${this.id}.png`,
+      icon_svg: `${Env.cdnUrl}/svgs/disciplines/${this.type}/${this.id}.svg`,
 
       classes: this.classes,
 

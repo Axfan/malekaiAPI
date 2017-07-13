@@ -1,5 +1,7 @@
 import { IDataObject } from './interfaces';
 
+import { Env } from '../env';
+
 export class Power implements IDataObject {
 
   static get data_type(): string { return 'power'; }
@@ -8,7 +10,6 @@ export class Power implements IDataObject {
   id: string;
   name: string;
   description: string
-  icon: string;
 
   sources: { type: string, id: string }[];
 
@@ -33,7 +34,6 @@ export class Power implements IDataObject {
     p.id = obj.id || '';
     p.name = obj.name || '';
     p.description = obj.description || '';
-    p.icon = obj.icon || '';
 
     p.sources = obj.sources instanceof Array ? obj.sources.map(a => { return { type: a.type, id: a.id }; }) : [];
 
@@ -64,7 +64,6 @@ export class Power implements IDataObject {
       this.id = power.id || '';
       this.name = power.name || '';
       this.description = power.description || '';
-      this.icon = power.icon || '';
 
       this.sources = power.sources instanceof Array ? power.sources.map(a => { return { type: a.type, id: a.id }; }) : [];
 
@@ -87,7 +86,6 @@ export class Power implements IDataObject {
       this.id = '';
       this.name = '';
       this.description = '';
-      this.icon = '';
 
       this.sources = [];
 
@@ -116,7 +114,8 @@ export class Power implements IDataObject {
       id: this.id,
       name: this.name,
       description: this.description,
-      icon: this.icon,
+      icon: `${Env.cdnUrl}/images/powers/${this.id}.png`,
+      icon_svg: `${Env.cdnUrl}/svgs/powers/${this.id}.svg`,
 
       sources: this.sources.map(a => { return { type: a.type, id: a.id }; }),
 

@@ -1,5 +1,7 @@
 import { IDataObject } from './interfaces';
 
+import { Env } from '../env';
+
 export class Class implements IDataObject {
 
   static get data_type(): string { return 'class'; }
@@ -8,7 +10,6 @@ export class Class implements IDataObject {
   id: string;
   name: string;
   description: string;
-  icon: string;
   races: string[];
   powers: string[];
   tags: string[];
@@ -19,7 +20,6 @@ export class Class implements IDataObject {
     c.id = obj.id || '';
     c.name = obj.name || '';
     c.description = obj.description || '';
-    c.icon = obj.icon || '';
     c.races = obj.races instanceof Array ? obj.races.slice() : [];
     c.powers = obj.powers instanceof Array ? obj.powers.slice() : [];
     c.tags = obj.tags instanceof Array ? obj.tags.slice() : [];
@@ -35,7 +35,6 @@ export class Class implements IDataObject {
       this.id = clas.id || '';
       this.name = clas.name || '';
       this.description = clas.description || '';
-      this.icon = clas.icon || '';
       this.races = clas.races ? clas.races.slice() : [];
       this.powers = clas.powers ? clas.powers.slice() : [];
       this.tags = clas.tags ? clas.tags.slice() : [];
@@ -43,7 +42,6 @@ export class Class implements IDataObject {
       this.id = '';
       this.name = '';
       this.description = '';
-      this.icon = '';
       this.races = [];
       this.powers = [];
       this.tags = [];
@@ -56,7 +54,8 @@ export class Class implements IDataObject {
       id: this.id,
       name: this.name,
       description: this.description,
-      icon: this.icon,
+      icon: `${Env.cdnUrl}/images/classes/${this.id}.png`,
+      icon_svg: `${Env.cdnUrl}/svgs/classes/${this.id}.svg`,
       races: this.races.slice(),
       powers: this.powers.slice(),
       tags: this.tags.slice(),

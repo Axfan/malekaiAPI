@@ -52,13 +52,11 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
     },
     icon: {
       type: GraphQLString,
-      description: 'The url to the icon of the class.',
-      resolve: (disc: Discipline) => `${Env.cdnUrl}/images/disciplines/${disc.id}.png`
+      description: 'The url to the icon of the class.'
     },
     icon_svg: {
       type: GraphQLString,
-      description: 'The url to the svg icon of the class.',
-      resolve: (disc: Discipline) => `${Env.cdnUrl}/svgs/disciplines/${disc.id}.svg`
+      description: 'The url to the svg icon of the class.'
     },
     type: {
       type: GraphQLString,
