@@ -56,7 +56,7 @@ export function LoadCrowfallData(): Promise<void> {
       }
     }
     if(!fs.existsSync('crowfall-data')) {
-      git.clone('https://github.com/MichaelFedora/crowfall-data', './crowfall-data', null, logic);
+      git.clone('https://github.com/MalekaiProject/crowfall-data', './crowfall-data', null, logic);
     } else {
       git.cwd('./crowfall-data').pull(logic);
     }
