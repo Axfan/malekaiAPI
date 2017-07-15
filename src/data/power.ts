@@ -107,6 +107,14 @@ export class Power implements IDataObject {
     }
   }
 
+  getIcon(): string {
+    return `${Env.cdnUrl}/images/classes/${this.type}/${this.id}.png`
+  }
+
+  getIconSVG(): string {
+    return `${Env.cdnUrl}/svgs/classes/${this.type}/${this.id}.svg`
+  }
+
   toDTO(): any {
     return {
       data_type: this.data_type,
@@ -114,8 +122,8 @@ export class Power implements IDataObject {
       id: this.id,
       name: this.name,
       description: this.description,
-      icon: `${Env.cdnUrl}/images/powers/${this.id}.png`,
-      icon_svg: `${Env.cdnUrl}/svgs/powers/${this.id}.svg`,
+      icon: this.getIcon(),
+      icon_svg: this.getIconSVG(),
 
       sources: this.sources.map(a => { return { type: a.type, id: a.id }; }),
 

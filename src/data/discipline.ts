@@ -107,8 +107,17 @@ export class Discipline implements IDataObject {
     }
   }
 
-  toDTO(): any {
+  getIcon(): string {
     const category = this.type === 'race' ? 'races' : 'disciplines';
+    return `${Env.cdnUrl}/images/${category}/${this.type}/${this.id}.png`
+  }
+
+  getIconSVG(): string {
+    const category = this.type === 'race' ? 'races' : 'disciplines';
+    return `${Env.cdnUrl}/svgs/${category}/${this.type}/${this.id}.svg`
+  }
+
+  toDTO(): any {
     return {
       data_type: this.data_type,
 
@@ -117,8 +126,8 @@ export class Discipline implements IDataObject {
       description: this.description,
       type: this.type,
 
-      icon: `${Env.cdnUrl}/images/${category}/${this.type}/${this.id}.png`,
-      icon_svg: `${Env.cdnUrl}/svgs/${category}/${this.type}/${this.id}.svg`,
+      icon: this.getIcon(),
+      icon_svg: this.getIconSVG(),
 
       classes: this.classes,
 

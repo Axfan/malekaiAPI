@@ -48,14 +48,22 @@ export class Class implements IDataObject {
     }
   }
 
+  getIcon(): string {
+    return `${Env.cdnUrl}/images/classes/${this.type}/${this.id}.png`
+  }
+
+  getIconSVG(): string {
+    return `${Env.cdnUrl}/svgs/classes/${this.type}/${this.id}.svg`
+  }
+
   toDTO(): any {
     return {
       data_type: this.data_type,
       id: this.id,
       name: this.name,
       description: this.description,
-      icon: `${Env.cdnUrl}/images/classes/${this.id}.png`,
-      icon_svg: `${Env.cdnUrl}/svgs/classes/${this.id}.svg`,
+      icon: this.getIcon(),
+      icon_svg: this.getIconSVG(),
       races: this.races.slice(),
       powers: this.powers.slice(),
       tags: this.tags.slice(),
