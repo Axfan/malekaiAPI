@@ -108,6 +108,7 @@ export class Discipline implements IDataObject {
   }
 
   toDTO(): any {
+    const category = this.type === 'race' ? 'races' : 'disciplines';
     return {
       data_type: this.data_type,
 
@@ -116,8 +117,8 @@ export class Discipline implements IDataObject {
       description: this.description,
       type: this.type,
 
-      icon: `${Env.cdnUrl}/images/disciplines/${this.type}/${this.id}.png`,
-      icon_svg: `${Env.cdnUrl}/svgs/disciplines/${this.type}/${this.id}.svg`,
+      icon: `${Env.cdnUrl}/images/${category}/${this.type}/${this.id}.png`,
+      icon_svg: `${Env.cdnUrl}/svgs/${category}/${this.type}/${this.id}.svg`,
 
       classes: this.classes,
 
