@@ -109,12 +109,12 @@ export class Discipline implements IDataObject {
 
   getIcon(): string {
     const category = this.type === 'race' ? 'races' : 'disciplines';
-    return `${Env.cdnUrl}/images/${category}/${this.type}/${this.id}.png`
+    return `${Env.cdnUrl}/images/${category}/${this.id}.png`
   }
 
   getIconSVG(): string {
     const category = this.type === 'race' ? 'races' : 'disciplines';
-    return `${Env.cdnUrl}/svgs/${category}/${this.type}/${this.id}.svg`
+    return `${Env.cdnUrl}/svgs/${category}/${this.id}.svg`
   }
 
   toDTO(): any {

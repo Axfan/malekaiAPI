@@ -49,11 +49,11 @@ export class Class implements IDataObject {
   }
 
   getIcon(): string {
-    return `${Env.cdnUrl}/images/classes/${this.type}/${this.id}.png`
+    return `${Env.cdnUrl}/images/classes/${this.id}.png`
   }
 
   getIconSVG(): string {
-    return `${Env.cdnUrl}/svgs/classes/${this.type}/${this.id}.svg`
+    return `${Env.cdnUrl}/svgs/classes/${this.id}.svg`
   }
 
   toDTO(): any {
