@@ -1,7 +1,7 @@
 import { Class } from '../class';
-import { RaceService, PowerService } from '../../service';
+import { PowerService, DisciplineService } from '../../service';
 import { DataObjectInterface } from './data-object-interface';
-import { RaceSchema } from './race-schema';
+import { DisciplineSchema } from './discipline-schema';
 import { PowerSchema } from './power-schema';
 
 import { Env } from '../../env';
@@ -43,9 +43,9 @@ export const ClassSchema: GraphQLObjectType = new GraphQLObjectType({
       description: 'The url to the svg icon of the class.'
     },
     races: {
-      type: new GraphQLList(RaceSchema),
+      type: new GraphQLList(DisciplineSchema),
       description: 'The races the class can be used by.',
-      resolve: (clas: Class) => RaceService.load(clas.races)
+      resolve: (clas: Class) => DisciplineService.load(clas.races, { include: ['race'] })
     },
     powers: {
       type: new GraphQLList(PowerSchema),

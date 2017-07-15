@@ -6,15 +6,17 @@ import { IDataObject } from '../data/interfaces';
 import { Power } from '../data';
 import { Rejection } from '../data/internal';
 import { DataParser } from '../util';
+import { bindLogger} from '../util/logger';
 
 export class PowerService {
 
   private static loader = new DataLoader<string, Power>(k => PowerService.batchLoad(k));
 
   public static get table(): r.Table { return db.powers; }
+  public static l = bindLogger('DisciplineService');
 
   public static get parentUnion(): r.Sequence {
-    return (db.races as any).union(db.classes, db.disciplines);
+    return db.classes.union(db.disciplines);
   }
 
   private static batchLoad(keys: string[]): Promise<(Power | Error)[]> {
@@ -25,7 +27,7 @@ export class PowerService {
         idxRes.set(a.id, a);
       return keys.map(k => {
         const a = idxRes.get(k);
-        if(!a) console.error(`Power not found with id "${k}"`);
+        if(!a) this.l.error(`Power not found with id "${k}"`);
         return a;
       });
     });
@@ -58,7 +60,7 @@ export class PowerService {
   public static getMany(ids: string[]): Promise<Power[]> {
     return new Promise<Power[]>((resolve, reject) => {
       const col = r.expr(ids);
-      db.run(this.table.filter((doc) => col.contains(doc('id') as any))).then((results: any[]) => {
+      db.run(this.table.filter((doc) => col.contains(doc('id')))).then((results: any[]) => {
         if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Power.fromDBO(a)));
         else resolve([]); // reject(new Rejection('No races found for names ' + names.join(', '), 404));
       });
@@ -67,7 +69,7 @@ export class PowerService {
 
   public static getSources(power: Power): Promise<IDataObject[]> { // unused atm (currently using DataObjectService)
     return new Promise<IDataObject[]>((resolve, reject) => {
-      const col = r.expr(power.sources) as any;
+      const col = r.expr(power.sources);
       db.run(this.parentUnion.filter(
             doc => col.contains(a => a('type').eq(doc('data_type')).and(a('id').eq(doc('id'))))
           )).then((results: any[]) => {
@@ -89,7 +91,7 @@ export class PowerService {
   public static getFromNames(names: string[]): Promise<Power[]> {
     return new Promise<Power[]>((resolve, reject) => {
       const col = r.expr(names);
-      db.run(this.table.filter((doc) => col.contains(doc('name') as any))).then((results: any[]) => {
+      db.run(this.table.filter((doc) => col.contains(doc('name')))).then((results: any[]) => {
         if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Power.fromDBO(a)));
         else resolve([]); // reject(new Rejection('No powers found for names ' + names.join(', '), 404));
       });

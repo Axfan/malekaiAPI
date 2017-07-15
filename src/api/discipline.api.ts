@@ -3,7 +3,6 @@ import { Discipline } from '../data';
 import { Logger } from '../util';
 import { DisciplineService } from '../service';
 import { Api, Route } from '../deco';
-import { atob, btoa } from '../polyfills';
 
 @Api('disciplines')
 export class DisciplineApi {
@@ -12,7 +11,7 @@ export class DisciplineApi {
 
   @Route()
   getAll(req, res): void {
-    DisciplineService.getAll().then(
+    DisciplineService.getAll({ exclude: ['race'] }).then(
       value => res.json(value.map(v => v.toDTO())),
       err => {
         res.status(err.status).send(err.message);
@@ -24,7 +23,7 @@ export class DisciplineApi {
   get(req, res) {
     try {
       // const id = atob(req.params.id);
-      DisciplineService.get('' + req.params.id).then(
+      DisciplineService.get('' + req.params.id, { exclude: ['race'] }).then(
         value => res.json(value.toDTO()),
         err => {
           res.status(err.status).send(err.message);

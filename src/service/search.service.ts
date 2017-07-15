@@ -9,11 +9,11 @@ export class SearchService {
 
   private static equals(doc: r.Expression<any>, key: string, param: any): r.Expression<any> {
     if(param instanceof Array) { // i.e. it's an array
-      const col = r.expr(param);
-      return ((col as any).map(val => (doc(key) as any).contains(val)) as r.Sequence).contains(false as any).eq(false);
+      const col: r.Sequence = r.expr(param) as any;
+      return col.map(val => doc(key).contains(val)).contains(false).eq(false);
     } else if(typeof param === 'string') {
       const groups = param.split(/\W/).filter(a => a).map(a => `(?:${a})`);
-      return (doc(key) as any).match(`(?i)${groups.join('\\W*')}`);
+      return doc<string>(key).match(`(?i)${groups.join('\\W*')}`);
     } else
       return doc(key).eq(param);
   }
@@ -41,7 +41,6 @@ export class SearchService {
     let toSearch: r.Sequence | r.Table;
 
     switch(table.toLocaleLowerCase()) {
-      case 'races': toSearch = db.races; break;
       case 'classes': toSearch = db.classes; break;
       case 'disciplines': toSearch = db.disciplines; break;
       case 'powers': toSearch = db.powers; break;
@@ -52,11 +51,11 @@ export class SearchService {
       const groups = text.split(/\W/).filter(a => a);
       const col: r.Sequence = r.expr(groups) as any;
       const regex = `(?i)${groups.map(a => `(?:${a})`).join('\\W*')}`;
-      return (doc('name') as any).match(regex)
-                .or((doc('data_type') as any).match(regex))
-                .or((doc('description') as any).match(regex))
-                .or(col.contains(doc('tags') as any))
-                .or((doc('type') as any).match(regex));
+      return doc('name').match(regex)
+                .or(doc('data_type').match(regex))
+                .or(doc('description').match(regex))
+                .or(col.contains(doc('tags')))
+                .or(doc('type').match(regex));
     }).orderBy(sortDirection ? sortField : r.desc(sortField));
 
     if(skip) cmd = cmd.skip(skip);

@@ -1,5 +1,6 @@
 import * as r from 'rethinkdb';
 import * as genericPool from 'generic-pool';
+import LoggerLite from '../../util/logger-lite';
 
 /**
  * Inspired from 'chrisvariety' (chrisvariety at github).
@@ -44,11 +45,11 @@ export class DbPool {
         this.pool.release(connection);
         return result;
       }).catch(e => {
-        console.error('ERROR in Pool: ' + e);
+        LoggerLite.error('[DbPool]', 'ERROR in Pool: ' + e);
         throw e;
       });
     }).catch(e => {
-      console.error('ERROR in Pool (2): ' + e);
+      LoggerLite.error('[DbPool]', 'ERROR in Pool (2): ' + e);
       throw e;
     })
   }

@@ -10,7 +10,7 @@ export class Discipline implements IDataObject {
   id: string; // i.e. "agent_provocateur"
   name: string; // i.e. "Agent Provocateur"
   description: string; // i.e. "Agent Provocateurs are sneaky, well-hidden, and difficult to track."
-  type: string; // i.e. major/weapon/minor
+  type: string; // i.e. major/weapon/minor/race
 
   classes: string[]; // i.e. ["Assassin","Duelist","Ranger"]
 

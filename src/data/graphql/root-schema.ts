@@ -1,10 +1,8 @@
 import DataObjectInterface from './data-object-interface';
-import RaceSchema from './race-schema';
 import ClassSchema from './class-schema';
 import DisciplineSchema from './discipline-schema';
 import PowerSchema from './power-schema';
 import {
-  RaceService,
   ClassService,
   DisciplineService,
   PowerService,
@@ -68,8 +66,6 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
           },
           resolve: (root, { text, table, skip, limit, sortField, sortDirection }) => {
             sortDirection = !(sortDirection || false);
-            console.log(`gql: search (text: ${text}, table: ${table}, limit: ${limit}, `
-                      + `sortField: ${sortField}, sortDirection: ${sortDirection}) {${root}}`);
             return SearchService.searchText(text, table, skip, limit, sortField, sortDirection);
           }
         },
@@ -87,13 +83,12 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
             }
           },
           resolve: (root, { id, name }) => {
-            console.log(`gql: data_object (id: ${id}, name: ${name}) {${root}}`);
             if(id) return DataObjectService.get(id);
             else return DataObjectService.getFromName(name);
           }
         },
         race: {
-          type: RaceSchema,
+          type: DisciplineSchema,
           description: 'A race.',
           args: {
             id: {
@@ -106,9 +101,8 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
             }
           },
           resolve: (root, { id, name }) => {
-            console.log(`gql: race (id: ${id}, name: ${name}) {${root}}`);
-            if(id) return RaceService.get(id);
-            else return RaceService.getFromName(name);
+            if(id) return DisciplineService.get(id, { include: ['race'] });
+            else return DisciplineService.getFromName(name, { include: ['race'] });
           }
         },
         class: {
@@ -125,7 +119,6 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
             }
           },
           resolve: (root, { id, name }) => {
-            console.log(`gql: class (id: ${id}, name: ${name}) {${root}}`);
             if(id) return ClassService.get(id);
             else return ClassService.getFromName(name);
           }
@@ -144,9 +137,8 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
             }
           },
           resolve: (root, { id, name }) => {
-            console.log(`gql: discipline (id: ${id}, name: ${name}) {${root}}`);
-            if(id) return DisciplineService.get(id);
-            else return DisciplineService.getFromName(name);
+            if(id) return DisciplineService.get(id, { exclude: ['race'] });
+            else return DisciplineService.getFromName(name, { exclude: ['race'] });
           }
         },
         power: {
@@ -163,24 +155,21 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
             }
           },
           resolve: (root, { id, name }) => {
-            console.log(`gql: power (id: ${id}, name: ${name}) {${root}}`);
             if(id) return PowerService.get(id);
             else return PowerService.getFromName(name);
           }
         },
         races: {
-          type: new GraphQLList(RaceSchema),
+          type: new GraphQLList(DisciplineSchema),
           description: 'All the races.',
           resolve: (root) => {
-            console.log(`gql: races {${root}}`);
-            return RaceService.getAll();
+            return DisciplineService.getAll({ include: ['race'] });
           }
         },
         classes: {
           type: new GraphQLList(ClassSchema),
           description: 'All the classes.',
           resolve: (root) => {
-            console.log(`gql: classes {${root}}`);
             return ClassService.getAll();
           }
         },
@@ -188,21 +177,19 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
           type: new GraphQLList(DisciplineSchema),
           description: 'All the disciplines.',
           resolve: (root) => {
-            console.log(`gql: disciplines {${root}}`);
-            return DisciplineService.getAll();
+            return DisciplineService.getAll({ exclude: ['race'] });
           }
         },
         powers: {
           type: new GraphQLList(PowerSchema),
           description: 'All the powers.',
           resolve: (root) => {
-            console.log(`gql: powers {${root}}`);
             return PowerService.getAll();
           }
         }
       },
     }),
-    types: [ RaceSchema, ClassSchema, DisciplineSchema, PowerSchema ]
+    types: [ ClassSchema, DisciplineSchema, PowerSchema ]
   });
 
 export default RootSchema;

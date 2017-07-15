@@ -7,15 +7,17 @@ import * as cors from 'cors'; /// https://github.com/expressjs/cors
 import * as fs from 'fs';
 import * as rethinkdb from 'rethinkdb';
 import * as graphqlHttp from 'express-graphql';
-import { Logger } from './util';
+import { bindLogger, Logger } from './util/logger';
 import { DatabaseService } from './service';
 import { Api } from './api';
 import { RootSchema } from './data/graphql/root-schema';
 
+const logger = bindLogger('MAIN');
+
 console.log('Initializing database...');
 DatabaseService.init().then(() => {
-  // Logger.init(); -- unused
-  console.log('Database Initialized');
+
+  logger.log('Database Initialized');
 
   const app = express();
 
@@ -50,10 +52,10 @@ DatabaseService.init().then(() => {
   }, app).listen(port); /// https://github.com/ebekker/ACMESharp/wiki/Quick-Start */
 
   app.listen(port, ip);
-  console.log('API started on ' + ip + ':' + port);
+  logger.log('API started on ' + ip + ':' + port);
 
 }, err => {
 
-  Logger.error('Failed to start up due to database issues', err, ['error', 'startup']);
+  logger.error('Failed to start up due to database issues' + err, ['error', 'startup']);
   process.exit(1);
 });

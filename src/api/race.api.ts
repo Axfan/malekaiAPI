@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
-import { Race } from '../data';
+import { Discipline } from '../data';
 import { Logger } from '../util';
-import { RaceService } from '../service';
+import { DisciplineService } from '../service';
 import { Api, Route } from '../deco';
 
 @Api('races')
@@ -11,7 +11,7 @@ export class RaceApi {
 
   @Route()
   getAll(req: Request, res: Response): void {
-    RaceService.getAll().then(
+    DisciplineService.getAll({ include: ['race'] }).then(
       value => res.json(value.map(v => v.toDTO())),
       err => {
         res.status(err.status).send(err.message);
@@ -23,7 +23,7 @@ export class RaceApi {
   get(req: Request, res: Response) {
     try {
       // const is = atob(req.params.is);
-      RaceService.get('' + req.params.id).then(
+      DisciplineService.get('' + req.params.id, { include: ['race'] }).then(
         value => res.json(value.toDTO()),
         err => {
           res.status(err.status).send(err.message);

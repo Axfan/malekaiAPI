@@ -2,7 +2,6 @@ import { Power } from '../power';
 import { PowerService, DataObjectService } from '../../service';
 import { DataLoaderParser } from '../../util';
 import DataObjectInterface from './data-object-interface';
-import RaceSchema from './race-schema';
 
 import { Env } from '../../env';
 

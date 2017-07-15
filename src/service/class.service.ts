@@ -5,11 +5,14 @@ import { DatabaseService as db } from './database.service';
 import { Class } from '../data';
 import { Rejection } from '../data/internal';
 
+import { bindLogger } from '../util/logger';
+
 export class ClassService {
 
   private static loader = new DataLoader<string, Class>(k => ClassService.batchLoad(k));
 
   public static get table(): r.Table { return db.classes; }
+  public static l = bindLogger('ClassService');
 
   public static getAll(): Promise<Class[]> {
     return new Promise<Class[]>((resolve, reject) => {
@@ -27,7 +30,7 @@ export class ClassService {
         idxRes.set(a.id, a);
       return keys.map(k => {
         const a = idxRes.get(k);
-        if(!a) console.error(`Class not found with id "${k}"`);
+        if(!a) this.l.error(`Class not found with id "${k}"`);
         return a;
       });
     });
@@ -52,7 +55,7 @@ export class ClassService {
   public static getMany(ids: string[]): Promise<Class[]> {
     return new Promise<Class[]>((resolve, reject) => {
       const col = r.expr(ids);
-      db.run(this.table.filter((doc) => col.contains(doc('id') as any))).then((results: any[]) => {
+      db.run(this.table.filter((doc) => col.contains(doc('id')))).then((results: any[]) => {
         if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Class.fromDBO(a)));
         else resolve([]); // reject(new Rejection('No classes found for names ' + names.join(', '), 404));
       });
@@ -71,7 +74,7 @@ export class ClassService {
   public static getFromNames(names: string[]): Promise<Class[]> {
     return new Promise<Class[]>((resolve, reject) => {
       const col = r.expr(names);
-      db.run(this.table.filter((doc) => col.contains(doc('name') as any))).then((results: any[]) => {
+      db.run(this.table.filter((doc) => col.contains(doc('name')))).then((results: any[]) => {
         if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Class.fromDBO(a)));
         else resolve([]); // reject(new Rejection('No classes found for names ' + names.join(', '), 404));
       });

@@ -6,22 +6,25 @@ import { IDataObject } from '../data/interfaces';
 import { Rejection } from '../data/internal';
 import { DataParser } from '../util';
 
+import { bindLogger } from '../util/logger';
+
 export class DataObjectService {
 
   private static loader = new DataLoader<string, IDataObject>(k => DataObjectService.batchLoad(k));
 
   public static get table(): r.Sequence { return db.dataUnion; }
+  public static l = bindLogger('DataObjectService');
 
   private static batchLoad(keys: string[]): Promise<(IDataObject | Error)[]> {
     const col = r.expr(keys);
-    return db.run(this.table.filter((doc) => col.contains(doc('id') as any))).then((res: any[]) => {
+    return db.run(this.table.filter((doc) => col.contains(doc('id')))).then((res: any[]) => {
       res = res.map(a => DataParser.parseDBO(a));
       const idxRes = new Map<string, IDataObject>();
       for(const a of res)
         idxRes.set(a.id, a);
       return keys.map(k => {
         const a = idxRes.get(k);
-        if(!a) console.error(`Data Object not found with id "${k}"`);
+        if(!a) this.l.error(`Data Object not found with id "${k}"`);
         return a;
       });
     });

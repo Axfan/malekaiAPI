@@ -5,7 +5,7 @@ export class Issue {
   error_ip: string; // attempt to grab the IP of person submitting an error if done anonymously/for rate limiting
   error_message: string; // users can submit brief message if they chose to (and interface allows it)
   error_date: Date; // "now"
-  data_type: string; // ('discipline' or 'power' or 'class' or 'race' or 'recipe' or 'tradeskill', etc.)
+  data_type: string; // ('discipline' or 'power' or 'class' or 'recipe' or 'tradeskill', etc.)
   data_id: string; // id of the data
 
   static fromDTO(obj: any): Issue {

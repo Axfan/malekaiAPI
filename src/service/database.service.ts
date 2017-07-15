@@ -1,8 +1,6 @@
 import { Db, Table, Connection } from 'rethinkdb';
 import * as r from 'rethinkdb';
-import { series } from 'async';
 import { DbPool } from '../data/internal';
-
 
 export class DatabaseService {
 
@@ -12,13 +10,29 @@ export class DatabaseService {
 
   public static get db(): Db { return r.db(this.dbName); }
 
-  public static get races(): Table { return this.db.table('raceLibrary'); }
+  public static get tables() { return ['class', 'discipline', 'power']; }
+
   public static get classes(): Table { return this.db.table('classLibrary'); }
   public static get disciplines(): Table { return this.db.table('disciplineLibrary'); }
   public static get powers(): Table { return this.db.table('powerLibrary'); }
+  public static getTable(name: string): Table {
+    const t = this.tables.find(a => name.substr(0, a.length) === a);
+    if(t === 'class') return this.classes;
+    if(t === 'discipline') return this.disciplines;
+    if(t === 'power') return this.powers;
+    return null;
+  }
 
   public static get dataUnion(): r.Sequence {
-    return (this.races as any).union(this.classes, this.disciplines, this.powers);
+    return this.classes.union(this.disciplines, this.powers);
+  }
+
+  public static emptyTables(): Promise<any> {
+    return Promise.all([
+      this.run(this.classes.delete()),
+      this.run(this.disciplines.delete()),
+      this.run(this.powers.delete())
+    ]);
   }
 
   public static get log(): Table { return this.db.table('apiLog'); }
@@ -34,14 +48,16 @@ export class DatabaseService {
         host: '127.0.0.1',
         port: 28015
       });
-      Promise.all([
-        this.initData('raceLibrary'),
-        this.initData('classLibrary'),
-        this.initData('disciplineLibrary'),
-        this.initData('powerLibrary'),
+      this.run(r.dbList()).then((result: string[]) => {
+        if(result.indexOf('crowfallData') < 0)
+          return this.run(r.dbCreate('crowfallData')).then(a => console.log('Created db "crowfallData"!'));
+        else
+          return Promise.resolve();
+      }).then(() => Promise.all([
+        ...this.tables.map(a => this.initData(a + 'Library')),
         this.initLog(),
         this.initIssues(),
-      ]).then(() => resolve()).catch(err => { reject(err); return; });
+      ]).then(() => resolve()).catch(err => { reject(err); return; }));
     });
   }
 
@@ -65,7 +81,7 @@ export class DatabaseService {
 
         if(list.findIndex(t => t === 'apiLog') < 0) {
           this.run(this.db.tableCreate('apiLog')).then(table => {
-            (this.log as any).indexCreate('tags', { multi: true }).run()
+            this.run(this.log.indexCreate('tags', { multi: true }))
               .then(result => resolve());
           });
         } else resolve();

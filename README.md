@@ -38,6 +38,8 @@ Install node v6+, start up a rethinkdb server with default ports/etc.
 
 `npm install` the project.
 
+`npm run load-crowfall-data` downloads and updates the database with new data from git.
+
 ## To run:
 
 `npm start` or `npm run tsc && node dist/server.js`.

@@ -1,9 +1,10 @@
 import { IDataObject } from '../interfaces';
-import { Race, Class, Discipline, Power } from '..';
-import RaceSchema from './race-schema';
+import { Class, Discipline, Power } from '..';
 import ClassSchema from './class-schema';
 import DisciplineSchema from './discipline-schema';
 import PowerSchema from './power-schema';
+
+import { Logger } from '../../util/logger';
 
 import {
   GraphQLInterfaceType,
@@ -48,13 +49,12 @@ export const DataObjectInterface: GraphQLInterfaceType = new GraphQLInterfaceTyp
   }),
   resolveType (obj: IDataObject): GraphQLObjectType {
     switch(obj.data_type) {
-      case Race.data_type: return RaceSchema;
       case Class.data_type: return ClassSchema;
       case Discipline.data_type: return DisciplineSchema;
       case Power.data_type: return PowerSchema;
       default:
-        console.error(`Object: ${JSON.stringify(obj, null, 2)}`);
-        console.warn(new Error(`Could not parse object: bad data_type "${obj.data_type}"!`));
+        Logger.error('DataObjectInterface', `Object: ${JSON.stringify(obj, null, 2)}`);
+        Logger.warn('DataObjectInterface', new Error(`Could not parse object: bad data_type "${obj.data_type}"!`));
     }
   }
 });
