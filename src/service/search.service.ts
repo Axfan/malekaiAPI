@@ -53,8 +53,10 @@ export class SearchService {
       const col: r.Sequence = r.expr(groups) as any;
       const regex = `(?i)${groups.map(a => `(?:${a})`).join('\\W*')}`;
       return (doc('name') as any).match(regex)
+                .or((doc('data_type') as any).match(regex))
+                .or((doc('description') as any).match(regex))
                 .or(col.contains(doc('tags') as any))
-                .or((doc('description') as any).match(regex));
+                .or((doc('type') as any).match(regex));
     }).orderBy(sortDirection ? sortField : r.desc(sortField));
 
     if(skip) cmd = cmd.skip(skip);
