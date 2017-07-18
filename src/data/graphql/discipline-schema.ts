@@ -58,7 +58,7 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
     icon_svg: {
       type: GraphQLString,
       description: 'The url to the svg icon of the class.',
-      resolve: (disc: Discipline) => disc.getIcon()
+      resolve: (disc: Discipline) => disc.getIconSVG()
     },
     type: {
       type: GraphQLString,

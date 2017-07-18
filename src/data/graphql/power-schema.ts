@@ -58,7 +58,7 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
     icon_svg: {
       type: GraphQLString,
       description: 'The url to the svg icon of the class.',
-      resolve: (power: Power) => power.getIcon()
+      resolve: (power: Power) => power.getIconSVG()
     },
     sources: {
       type: new GraphQLList(DataObjectInterface),
