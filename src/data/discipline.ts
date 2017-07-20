@@ -138,7 +138,7 @@ export class Discipline implements IDataObject {
       tray_removed: this.tray_removed,
 
       powers: this.powers,
-      tags: this.powers,
+      tags: this.tags,
     };
   }
 
