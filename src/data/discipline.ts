@@ -14,16 +14,15 @@ export class Discipline implements IDataObject {
 
   classes: string[]; // i.e. ["Assassin","Duelist","Ranger"]
 
-  stats_granted: string[]; // i.e. ["Stealth"], ties in with stats_values
-  stats_values: number[]; // i.e. [6.25], ties in with stats_granted
+  stats: { name: string, value: number }[];
 
-  equips_granted: string[];
+  equips: string[];
 
   slots_granted: string[];
   slots_removed: string[];
 
-  trays_granted: string;
-  trays_removed: string;
+  tray_granted: string;
+  tray_removed: string;
 
   powers: string[]; // i.e.  ["Caltrops","Lay Low","Stink Bomb","Preparation"]
   tags: string[];
@@ -38,16 +37,15 @@ export class Discipline implements IDataObject {
 
     d.classes = obj.classes instanceof Array ? obj.classes.slice() : [];
 
-    d.stats_granted = obj.stats_granted instanceof Array ? obj.stats_granted.slice() : [];
-    d.stats_values = obj.stats_values instanceof Array ? obj.stats_values.slice() : [];
+    d.stats = obj.stats instanceof Array ? obj.stats.slice() : [];
 
-    d.equips_granted = obj.equips_granted instanceof Array ? obj.equips_granted.slice() : [];
+    d.equips = obj.equips instanceof Array ? obj.equips.slice() : [];
 
     d.slots_granted = obj.slots_granted instanceof Array ? obj.slots_granted.slice() : [];
     d.slots_removed = obj.slots_removed instanceof Array ? obj.slots_removed.slice() : [];
 
-    d.trays_granted = obj.trays_granted || '';
-    d.trays_removed = obj.trays_removed || '';
+    d.tray_granted = obj.tray_granted || '';
+    d.tray_removed = obj.tray_removed || '';
 
     d.powers = obj.powers ? obj.powers.slice() : [];
     d.tags = obj.tags ? obj.tags.slice() : [];
@@ -68,16 +66,15 @@ export class Discipline implements IDataObject {
 
       this.classes = disc.classes ? disc.classes.slice() : [];
 
-      this.stats_granted = disc.stats_granted ? disc.stats_granted.slice() : [];
-      this.stats_values = disc.stats_values ? disc.stats_values.slice() : [];
+      this.stats = disc.stats ? disc.stats.slice() : [];
 
-      this.equips_granted = disc.equips_granted ? disc.equips_granted.slice() : [];
+      this.equips = disc.equips ? disc.equips.slice() : [];
 
       this.slots_granted = disc.slots_granted ? disc.slots_granted.slice() : [];
       this.slots_removed = disc.slots_removed ? disc.slots_removed.slice() : [];
 
-      this.trays_granted = disc.trays_granted || '';
-      this.trays_removed = disc.trays_removed || '';
+      this.tray_granted = disc.tray_granted || '';
+      this.tray_removed = disc.tray_removed || '';
 
       this.powers = disc.powers ? disc.powers.slice() : [];
       this.tags = disc.tags ? disc.tags.slice() : [];
@@ -91,16 +88,15 @@ export class Discipline implements IDataObject {
 
       this.classes = [];
 
-      this.stats_granted = [];
-      this.stats_values = [];
+      this.stats = [];
 
-      this.equips_granted = [];
+      this.equips = [];
 
       this.slots_granted = [];
       this.slots_removed = [];
 
-      this.trays_granted =  '';
-      this.trays_removed =  '';
+      this.tray_granted =  '';
+      this.tray_removed =  '';
 
       this.powers = [];
       this.tags = [];
@@ -131,16 +127,15 @@ export class Discipline implements IDataObject {
 
       classes: this.classes,
 
-      stats_granted: this.stats_granted,
-      stats_values: this.stats_values,
+      stats: this.stats.map(a => Object.assign({}, a)),
 
-      equips_granted: this.equips_granted,
+      equips: this.equips,
 
       slots_granted: this.slots_granted,
       slots_removed: this.slots_removed,
 
-      trays_granted: this.trays_granted,
-      trays_removed: this.trays_removed,
+      tray_granted: this.tray_granted,
+      tray_removed: this.tray_removed,
 
       powers: this.powers,
       tags: this.powers,

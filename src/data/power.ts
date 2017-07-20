@@ -11,7 +11,7 @@ export class Power implements IDataObject {
   name: string;
   description: string
 
-  sources: { type: string, id: string }[];
+  sources: { id: string, data_type: string }[];
 
   type: string;
   cast_type: string;
@@ -35,7 +35,7 @@ export class Power implements IDataObject {
     p.name = obj.name || '';
     p.description = obj.description || '';
 
-    p.sources = obj.sources instanceof Array ? obj.sources.map(a => { return { type: a.type, id: a.id }; }) : [];
+    p.sources = obj.sources instanceof Array ? obj.sources.map(a => { return { data_type: a.data_type, id: a.id }; }) : [];
 
     p.type = obj.type || '';
     p.cast_type = obj.cast_type || '';
@@ -65,7 +65,7 @@ export class Power implements IDataObject {
       this.name = power.name || '';
       this.description = power.description || '';
 
-      this.sources = power.sources instanceof Array ? power.sources.map(a => { return { type: a.type, id: a.id }; }) : [];
+      this.sources = power.sources instanceof Array ? power.sources.map(a => { return { data_type: a.data_type, id: a.id }; }) : [];
 
       this.type = power.type || '';
       this.cast_type = power.cast_type || '';
@@ -125,12 +125,12 @@ export class Power implements IDataObject {
       icon: this.getIcon(),
       icon_svg: this.getIconSVG(),
 
-      sources: this.sources.map(a => { return { type: a.type, id: a.id }; }),
+      sources: this.sources.map(a => Object.assign({}, a)),
 
       type: this.type,
       cast_type: this.cast_type,
 
-      cost: { pips: this.cost.pips, resource: this.cost.resource },
+      cost: Object.assign({}, this.cost),
       duration: this.duration,
       cooldown: this.cooldown,
 

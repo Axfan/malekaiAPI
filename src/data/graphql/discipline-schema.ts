@@ -69,12 +69,11 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
       description: 'The classes that can equip the discipline.',
       resolve: (obj: Discipline) => ClassService.load(obj.classes)
     },
-    stats_granted: {
+    stats: {
       type: new GraphQLList(StatSchema),
       description: 'The stats that are granted by the discipline.',
-      resolve: (obj: Discipline) => obj.stats_granted.map((v, i) => ({ name: v, value: obj.stats_values[i] }))
     },
-    equips_granted: {
+    equips: {
       type: new GraphQLList(GraphQLString),
       description: 'The equips granted by the discipline.' // fix
     },
@@ -86,11 +85,11 @@ export const DisciplineSchema: GraphQLObjectType = new GraphQLObjectType({
       type: new GraphQLList(GraphQLString),
       description: 'The slots removed by the discipline.'
     },
-    trays_granted: {
+    tray_granted: {
       type: GraphQLString,
       description: 'The trays granted by the discipline.'
     },
-    trays_removed: {
+    tray_removed: {
       type: GraphQLString,
       description: 'The trays removed by the discipline.'
     },
