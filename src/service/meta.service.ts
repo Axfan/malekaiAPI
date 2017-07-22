@@ -16,14 +16,11 @@ export class MetaService {
     });
   }
 
-  public static getIssue(data_id: string): Promise<Issue> {
-    return new Promise<Issue>((resolve, reject) => {
-      db.run(this.issuesTable.filter(doc => doc('data_id').eq(data_id))).then((result: any[]) => {
-        if(!result || result.length === 0) { reject(new Rejection('Issue not found with data_id ' + data_id, 404)); return; }
-        if(result.length > 0)
-          Logger.warn('MetaService', 'Multiple issues with the same id :U');
-        resolve(Issue.fromDBO(result[0]));
-      }, err => reject(new Rejection(err)));
+  public static hasIssue(data_id: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      db.run(this.issuesTable.filter(doc => doc('data_id').eq(data_id)).isEmpty()).then(
+        (result: boolean) => resolve(!result),
+        err => reject(new Rejection(err)));
     });
   }
 

@@ -31,8 +31,8 @@ export class MetaApi {
   get(req, res) {
     try {
       // const data_id = atob(req.params.data_id);
-      MetaService.getIssue('' + req.params.data_id).then(
-        value => res.json(true),
+      MetaService.hasIssue('' + req.params.data_id).then(
+        value => res.json(value),
         err => {
           Logger.error('GET: /meta/issue/' + req.params.data_id, err);
           err = err instanceof Rejection ? err : new Rejection(err);
