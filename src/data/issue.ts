@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export class Issue {
 
   error_source: string; // i.e. 'crowfall.wiki', source should correspond to where the error is coming from
@@ -8,7 +10,26 @@ export class Issue {
   data_type: string; // ('discipline' or 'power' or 'class' or 'recipe' or 'tradeskill', etc.)
   data_id: string; // id of the data
 
-  static fromDTO(obj: any): Issue {
+  static fromDTO(obj: any, req: Request): Issue {
+
+    // assert
+    if(!obj.data_type) throw new Error('No data_type in issue!');
+    if(!obj.data_ip) throw new Error('No data_id in issue!');
+    if(typeof obj.data_type !== 'string') throw new Error('Malformed data_type in issue! Should be a string.');
+    if(typeof obj.data_ip !== 'string') throw new Error('Malformed data_id in issue! Should be a string.');
+
+    const i = new Issue();
+    i.error_source = typeof obj.error_source === 'string' ? obj.error_source : '';
+    i.error_user = typeof obj.error_user === 'string' ? obj.error_suer : '';
+    i.error_ip = req.ip;
+    i.error_message = typeof obj.error_message === 'string' ? obj.error_message : '';
+    i.error_date = new Date();
+    i.data_type = obj.data_type;
+    i.data_id = obj.data_id;
+    return i;
+  }
+
+  static fromDBO(obj: any): Issue {
     const i = new Issue();
     i.error_source = obj.error_source || '';
     i.error_user = obj.error_user || '';
@@ -18,10 +39,6 @@ export class Issue {
     i.data_type = obj.data_type || '';
     i.data_id = obj.data_id || '';
     return i;
-  }
-
-  static fromDBO(obj: any): Issue {
-    return this.fromDTO(obj);
   }
 
   constructor(issue?: Issue) {

@@ -10,12 +10,9 @@ export class MetaService {
 
   public static createIssue(issue: Issue): Promise<void> {
     return new Promise<void>((resolve: () => void, reject: (a: Rejection) => void) => {
-      const data = issue.toDBO();
-      data.Date = new Date();
-      db.run(this.issuesTable.insert(data)).then((result: r.WriteResult) => {
-        data.id = result.generated_keys[0];
-        resolve();
-      }, err => reject(new Rejection(err)));
+      db.run(this.issuesTable.insert(issue.toDBO())).then(
+        (result: r.WriteResult) => resolve(),
+        err => reject(new Rejection(err)));
     });
   }
 

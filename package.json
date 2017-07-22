@@ -20,12 +20,12 @@
     "express-brute": "^1.0.1",
     "express-graphql": "^0.6.6",
     "generic-pool": "^3.1.7",
-    "graphql": "^0.10.4",
+    "graphql": "^0.10.5",
     "jsonfile": "^3.0.1",
     "jsonwebtoken": "^7.4.1",
     "moment": "^2.18.1",
     "rethinkdb": "^2.3.3",
-    "simple-git": "^1.73.0",
+    "simple-git": "^1.74.1",
     "source-map-support": "^0.4.15"
   },
   "devDependencies": {
@@ -36,8 +36,8 @@
     "@types/express-graphql": "0.0.33",
     "@types/graphql": "^0.9.4",
     "@types/jsonwebtoken": "^7.2.2",
-    "@types/node": "^8.0.13",
+    "@types/node": "^8.0.14",
     "@types/rethinkdb": "^2.3.3",
-    "typescript": "^2.4.1"
+    "typescript": "^2.4.2"
   }
 }

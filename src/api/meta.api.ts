@@ -1,5 +1,6 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { Issue } from '../data';
+import { Rejection } from '../data/internal';
 import { Logger } from '../util';
 import { MetaService } from '../service';
 import { Api, Route } from '../deco';
@@ -10,18 +11,19 @@ export class MetaApi {
   constructor(router: Router) { }
 
   @Route('issue')
-  postIssue(req, res): void {
+  postIssue(req: Request, res: Response): void {
     try {
-      const issue = Issue.fromDTO(req.body);
+      const issue = Issue.fromDTO(req.body, req);
       MetaService.createIssue(issue).then(
         () => res.sendStatus(204),
         err => {
-          res.status(err.status).send(err.message);
           Logger.error('POST: /issue', err);
+          err = err instanceof Rejection ? err : new Rejection(err);
+          res.status(err.status).send(err.message);
       });
     } catch (err) {
-        res.sendStatus(500);
         Logger.error('POST: /issue', err);
+        res.sendStatus(500);
     }
   }
 }
