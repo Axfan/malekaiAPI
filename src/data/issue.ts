@@ -14,9 +14,9 @@ export class Issue {
 
     // assert
     if(!obj.data_type) throw new Error('No data_type in issue!');
-    if(!obj.data_ip) throw new Error('No data_id in issue!');
+    if(!obj.data_id) throw new Error('No data_id in issue!');
     if(typeof obj.data_type !== 'string') throw new Error('Malformed data_type in issue! Should be a string.');
-    if(typeof obj.data_ip !== 'string') throw new Error('Malformed data_id in issue! Should be a string.');
+    if(typeof obj.data_id !== 'string') throw new Error('Malformed data_id in issue! Should be a string.');
 
     const i = new Issue();
     i.error_source = typeof obj.error_source === 'string' ? obj.error_source : '';
