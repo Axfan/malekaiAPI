@@ -32,7 +32,7 @@ export class MetaApi {
   get(req, res) {
     try {
       // const data_id = atob(req.params.data_id);
-      MetaService.hasIssue('' + req.params.data.data_type, '' + req.params.data_id).then(
+      MetaService.hasIssue('' + req.params.data_type, '' + req.params.data_id).then(
         value => res.json(value),
         err => {
           Logger.error('GET: /meta/issue/' + req.params.data_type + '/' + req.params.data_id, err);
