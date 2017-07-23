@@ -9,6 +9,7 @@ export class Issue {
   error_date: Date; // "now"
   data_type: string; // ('discipline' or 'power' or 'class' or 'recipe' or 'tradeskill', etc.)
   data_id: string; // id of the data
+  status: 'open' | 'closed';
 
   static fromDTO(obj: any, req: Request): Issue {
 
@@ -26,6 +27,7 @@ export class Issue {
     i.error_date = new Date();
     i.data_type = obj.data_type;
     i.data_id = obj.data_id;
+    i.status = (obj.status === 'open' || obj.status === 'closed') ? obj.status : 'open';
     return i;
   }
 
@@ -38,6 +40,7 @@ export class Issue {
     i.error_date = new Date(obj.error_date);
     i.data_type = obj.data_type || '';
     i.data_id = obj.data_id || '';
+    i.status = obj.status;
     return i;
   }
 
@@ -50,6 +53,7 @@ export class Issue {
       this.error_date = new Date(issue.error_date);
       this.data_type = issue.data_type || '';
       this.data_id = issue.data_id || '';
+      this.status = issue.status || 'open';
     } else {
       this.error_source = '';
       this.error_user = '';
@@ -58,6 +62,7 @@ export class Issue {
       this.error_date = new Date();
       this.data_type = '';
       this.data_id = '';
+      this.status = 'open';
     }
   }
 
@@ -70,6 +75,7 @@ export class Issue {
       error_date: this.error_date,
       data_type: this.data_type,
       data_id: this.data_id,
+      status: this.status,
     };
   }
 
