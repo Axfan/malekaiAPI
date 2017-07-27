@@ -2,10 +2,10 @@
   "name": "malekai-api",
   "version": "0.1.0",
   "description": "The api for the malekai project",
-  "main": "server.js",
+  "main": "api.js",
   "private": true,
   "scripts": {
-    "start": "tsc && node dist/server.js",
+    "start": "tsc && node dist/api.js",
     "tsc": "tsc",
     "load-crowfall-data": "tsc && node dist/load-crowfall-data.js"
   },
