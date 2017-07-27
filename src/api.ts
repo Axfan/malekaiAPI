@@ -9,7 +9,7 @@ import * as rethinkdb from 'rethinkdb';
 import * as graphqlHttp from 'express-graphql';
 import { bindLogger, Logger } from './util/logger';
 import { DatabaseService } from './service';
-import { Api } from './api';
+import { Api } from './api/api';
 import { RootSchema } from './data/graphql/root-schema';
 
 const logger = bindLogger('MAIN');
