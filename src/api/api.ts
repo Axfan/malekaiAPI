@@ -5,6 +5,7 @@ import { RaceApi } from './race.api';
 import { ClassApi } from './class.api';
 import { DisciplineApi } from './discipline.api';
 import { PowerApi } from './power.api';
+import { ChangelogApi } from './changelog.api';
 
 export class Api {
 
@@ -29,6 +30,9 @@ export class Api {
   private _powers: PowerApi;
   public get powers(): PowerApi { return this._powers; }
 
+  private _changelog: ChangelogApi;
+  public get changelog(): ChangelogApi { return this._changelog; }
+
   constructor() {
     this._meta = new MetaApi(this.router);
     this._search = new SearchApi(this.router);
@@ -36,6 +40,7 @@ export class Api {
     this._classes = new ClassApi(this.router);
     this._disciplines = new DisciplineApi(this.router);
     this._powers = new PowerApi(this.router);
+    this._changelog = new ChangelogApi(this.router);
 
     this.router.get('/', (req, res) => {
       res.json({ message: 'hello world!' });

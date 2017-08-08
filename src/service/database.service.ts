@@ -15,6 +15,7 @@ export class DatabaseService {
   public static get classes(): Table { return this.db.table('classLibrary'); }
   public static get disciplines(): Table { return this.db.table('disciplineLibrary'); }
   public static get powers(): Table { return this.db.table('powerLibrary'); }
+
   public static getTable(name: string): Table {
     const t = this.tables.find(a => name.substr(0, a.length) === a);
     if(t === 'class') return this.classes;
@@ -37,6 +38,7 @@ export class DatabaseService {
 
   public static get log(): Table { return this.db.table('apiLog'); }
   public static get issues(): Table { return this.db.table('issuesQueue'); }
+  public static get changelogs(): Table { return this.db.table('changeLog'); }
 
   public static run<T>(query: r.Operation<T>): Promise<T | any[]> {
     return this.pool.run(query);

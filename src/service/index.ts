@@ -5,6 +5,8 @@ export { ClassService } from './class.service';
 export { DisciplineService } from './discipline.service';
 export { PowerService } from './power.service';
 
+export { ChangelogService } from './changelog.service';
+
 export { DataObjectService } from './data-object.service';
 
 export { MetaService } from './meta.service';
