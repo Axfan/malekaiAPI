@@ -19,13 +19,23 @@ export class SearchService {
   }
 
   public static search(params: [string, any][]): Promise<IDataObject[]> {
+    const def = { 1: 50 };
+    const skip = (params.find(a => a[0] === 'skip') || def)[1];
+    let limit = (params.find(a => a[0] === 'limit') || def)[1];
+    limit = Math.max(limit < 1 ? 1 : limit, 50);
+
+    let cmd = db.dataUnion.filter((doc) => {
+      let current = this.equals(doc, params[0][0], params[0][1]);
+      for(let i = 1; i < params.length; i++)
+        current = current.and(this.equals(doc, params[i][0], params[i][1]));
+      return current;
+    });
+
+    if(skip) cmd = cmd.skip(skip);
+    if(limit) cmd = cmd.limit(limit);
+
     return new Promise<any[]>((resolve: (a: IDataObject[]) => void, reject: (a: Rejection) => void) => {
-      db.run(db.dataUnion.filter((doc) => {
-        let current = this.equals(doc, params[0][0], params[0][1]);
-        for(let i = 1; i < params.length; i++)
-          current = current.and(this.equals(doc, params[i][0], params[i][1]));
-        return current;
-      })).then((result: any[]) => {
+      db.run(cmd).then((result: any[]) => {
         resolve(result.map(a => DataParser.parseDBO(a)));
       }).catch(err => reject(new Rejection(err)));
     });
@@ -34,7 +44,8 @@ export class SearchService {
   public static searchText(text: string, table?: string, skip?: number, limit?: number,
                           sortField?: string, sortDirection?: boolean): Promise<IDataObject[]> {
     table = table || '';
-    limit = limit || 0;
+    limit = limit == null ? 50 : limit;
+    limit = Math.max(limit < 1 ? 1 : limit, 50);
     skip = skip || 0;
     sortField = sortField || 'name';
     sortDirection = sortDirection || false;

@@ -49,7 +49,7 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
               type: GraphQLInt
             },
             limit: {
-              description: 'Limit the results to an amount.',
+              description: 'Limit the results to an amount. Capped between 1 and 50.',
               type: GraphQLInt
             },
             sortField: {

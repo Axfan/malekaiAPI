@@ -9,6 +9,7 @@ export class ChangelogService {
   public static get table(): r.Table { return db.changelogs; }
 
   public static getLast(amt: number): Promise<Changelog[]> {
+    amt = Math.max(amt < 1 ? 1 : amt, 50);
     return new Promise<Changelog[]>((resolve, reject) => {
       db.run(this.table.orderBy('changedate').limit(amt)).then((results: any[]) => {
         if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Changelog.fromDBO(a)));
@@ -18,6 +19,7 @@ export class ChangelogService {
   }
 
   public static get(data_type: string, id: string, amt: number): Promise<Changelog[]> {
+    amt = Math.max(amt < 1 ? 1 : amt, 50);
     return new Promise<Changelog[]>((resolve, reject) => {
       db.run(this.table.filter((doc) => doc('data_type').eq(data_type).and(doc('applies_to').eq(id)))
           .orderBy('changedate').limit(amt)).then((results: any[]) => {

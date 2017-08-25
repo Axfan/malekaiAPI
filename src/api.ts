@@ -34,7 +34,8 @@ DatabaseService.init().then(() => {
   app.use((req, res, next) => {
     const host = req.headers.origin || req.headers.host || req.ip;
     Logger.log('HTTP', `${req.method} ${req.hostname}${req.originalUrl} from ${host}`,
-                ['http', req.method, `${req.hostname}${req.originalUrl}`, host], req.ip);
+                ['http', req.method, `${req.hostname}${req.originalUrl}`, (host instanceof Array ? host.join('::') : host)],
+                req.ip);
     next();
   });
 
