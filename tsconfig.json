@@ -8,7 +8,12 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["webworker", "es6", "scripthost"]
+    "lib": [
+      "webworker",
+      "es2017",
+      "esnext.asynciterable",
+      "scripthost"
+    ]
   },
   "include": [
     "src/**/*.ts"
