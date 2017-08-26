@@ -88,7 +88,7 @@ export function LoadCrowfallData(): Promise<void> {
 
           // removed deleted objects
           await db.run(tbl.filter(doc => r.not(col.contains(doc('id')))).delete({ returnChanges: true })).then((val: any) => {
-            for(const v of val.changes)
+            if(val.changes) for(const v of val.changes)
               console.log('- Removed ' + v.old_val.data_type + ' ' + v.old_val.name);
           });
         }
@@ -99,6 +99,9 @@ export function LoadCrowfallData(): Promise<void> {
         return;
       }
     }
+
+    console.log('== Fetching data...');
+
     if(!fs.existsSync('crowfall-data')) {
       git.clone('https://github.com/MalekaiProject/crowfall-data', './crowfall-data', null, logic);
     } else {
@@ -111,5 +114,7 @@ export function LoadCrowfallData(): Promise<void> {
 }
 
 export default LoadCrowfallData;
+
+console.log('== Initializing DB...');
 
 db.init().then(() => LoadCrowfallData()).then(d => { console.log('Done loading!'); process.exit(); }).catch(e => console.error(e));
