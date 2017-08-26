@@ -19,7 +19,7 @@ export class Changelog {
     log.data_type = obj.data_type || '';
     log.applies_to = obj.applies_to || '';
     log.change = obj.change || '';
-    log.attributes = obj.changes instanceof Array ? obj.changes.slice().map(a => { return {
+    log.attributes = obj.attributes instanceof Array ? obj.attributes.slice().map(a => { return {
         attribute_name: a.attribute_name || '',
         attribute_new_value: a.attribute_new_value || null,
         attribute_old_value: a.attribute_old_value || null,
