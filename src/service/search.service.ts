@@ -31,8 +31,9 @@ export class SearchService {
       return current;
     });
 
-    if(skip) cmd = cmd.skip(skip);
-    if(limit) cmd = cmd.limit(limit);
+    if(skip && limit) cmd = cmd.slice(skip, skip + limit);
+    else if(skip) cmd = cmd.skip(skip);
+    else if(limit) cmd = cmd.limit(limit);
 
     return new Promise<any[]>((resolve: (a: IDataObject[]) => void, reject: (a: Rejection) => void) => {
       db.run(cmd).then((result: any[]) => {
@@ -69,8 +70,9 @@ export class SearchService {
                 .or(doc('type').match(regex));
     }).orderBy(sortDirection ? sortField : r.desc(sortField));
 
-    if(skip) cmd = cmd.skip(skip);
-    if(limit) cmd = cmd.limit(limit);
+    if(skip && limit) cmd = cmd.slice(skip, skip + limit);
+    else if(skip) cmd = cmd.skip(skip);
+    else if(limit) cmd = cmd.limit(limit);
 
     return db.run(cmd).then(
       (result: any[]) => result.map(a => DataParser.parseDBO(a))
