@@ -43,7 +43,7 @@ export const ClassSchema: GraphQLObjectType = new GraphQLObjectType({
     changedate: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'The date which the change occured.',
-      resolve: (cl: Changelog) => cl.changedate.toUTCString()
+      resolve: (cl: Changelog) => JSON.stringify(cl.changedate)
     },
     data_type: {
       type: new GraphQLNonNull(GraphQLString),
