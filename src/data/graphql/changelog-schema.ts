@@ -19,19 +19,20 @@ const AttributeChangeSchema: GraphQLObjectType = new GraphQLObjectType({
   name: 'attribute_change',
   description: 'An attribute change entry.',
   fields: () => ({
-    attribute_name: {
+    name: {
       type:  new GraphQLNonNull(GraphQLString),
-      description: 'The name of the attribute.'
+      description: 'The name of the attribute.',
+      resolve: (a: AttributeChange) => a.attribute_name
     },
-    attribute_new_value: {
+    new_value: {
       type:  new GraphQLNonNull(GraphQLString),
       description: 'The JSON string new value of the stat.',
-      resolve: (a: AttributeChange) => JSON.stringify(a.attribute_new_value)
+      resolve: (a: AttributeChange) => JSON.stringify(a.attribute_new_value).replace(/^"|"$/g, '')
     },
-    attribute_old_value: {
+    old_value: {
       type:  new GraphQLNonNull(GraphQLString),
       description: 'The JSON string old value of the stat.',
-      resolve: (a: AttributeChange) => JSON.stringify(a.attribute_old_value)
+      resolve: (a: AttributeChange) => JSON.stringify(a.attribute_old_value).replace(/^"|"$/g, '')
     }
   })
 });
@@ -43,7 +44,7 @@ export const ClassSchema: GraphQLObjectType = new GraphQLObjectType({
     changedate: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'The date which the change occured.',
-      resolve: (cl: Changelog) => JSON.stringify(cl.changedate)
+      resolve: (cl: Changelog) => JSON.stringify(cl.changedate).replace(/^"|"$/g, '')
     },
     data_type: {
       type: new GraphQLNonNull(GraphQLString),
