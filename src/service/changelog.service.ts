@@ -12,8 +12,13 @@ export class ChangelogService {
     skip = skip || 0;
     amt = (amt == null || typeof amt !== 'number') ? 50 : amt;
     amt = Math.max(amt < 1 ? 1 : amt, 50);
+
+    let cmd = this.table.orderBy('changedate').limit(amt);
+    if(skip) cmd = cmd.skip(skip);
+    cmd = cmd.limit(amt);
+
     return new Promise<Changelog[]>((resolve, reject) => {
-      db.run(this.table.orderBy('changedate').limit(amt)).then((results: any[]) => {
+      db.run(cmd).then((results: any[]) => {
         if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Changelog.fromDBO(a)));
         else resolve([]); // reject(new Rejection('No races found for names ' + names.join(', '), 404));
       });
@@ -24,10 +29,13 @@ export class ChangelogService {
     skip = skip || 0;
     amt = (amt == null || typeof amt !== 'number') ? 50 : amt;
     amt = Math.max(amt < 1 ? 1 : amt, 50);
-    return new Promise<Changelog[]>((resolve, reject) => {
-      db.run(this.table.filter((doc) => doc('data_type').eq(data_type).and(doc('applies_to').eq(id)))
-          .orderBy('changedate').limit(amt)).then((results: any[]) => {
 
+    let cmd = this.table.filter((doc) => doc('data_type').eq(data_type).and(doc('applies_to').eq(id))).orderBy('changedate');
+    if(skip) cmd.skip(skip);
+    cmd = cmd.limit(amt);
+
+    return new Promise<Changelog[]>((resolve, reject) => {
+      db.run(cmd).then((results: any[]) => {
         if(results && results instanceof Array && results.length > 0) resolve(results.map(a => Changelog.fromDBO(a)));
         else resolve([]); // reject(new Rejection('No races found for names ' + names.join(', '), 404));
       });
