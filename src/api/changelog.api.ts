@@ -13,9 +13,10 @@ export class ChangelogApi {
   get(req: Request, res: Response) {
      try {
       // const id = atob(req.params.id);
-      const skip = (req.query.skip && typeof req.query.skip === 'number') ? req.query.skip : 0;
-      let amt = (req.query.amount && typeof req.query.amount === 'number') ? req.query.last : 50;
-      amt = Math.max(amt < 1 ? 1 : amt, 50);
+      const skip = req.query.skip ? Number.parseInt(req.query.skip) || 0 : 0;
+      let amt = req.query.amount ? Number.parseInt(req.query.amount) || 0 : 50;
+      amt = Math.min(amt < 1 ? 1 : amt, 50);
+
       ChangelogService.getLast(skip, amt).then(
         value => res.json(value.map(a => a.toDTO())),
         err => {
@@ -32,9 +33,10 @@ export class ChangelogApi {
   getId(req: Request, res: Response) {
     try {
       // const id = atob(req.params.id);
-      const skip = (req.query.skip && typeof req.query.skip === 'number') ? req.query.skip : 0;
-      let amt = (req.query.amount && typeof req.query.amount === 'number') ? req.query.last : 50;
-      amt = Math.max(amt < 1 ? 1 : amt, 50);
+      const skip = req.query.skip ? Number.parseInt(req.query.skip) || 0 : 0;
+      let amt = req.query.amount ? Number.parseInt(req.query.amount) || 0 : 50;
+
+      amt = Math.min(amt < 1 ? 1 : amt, 50);
       ChangelogService.get('' + req.params.data_type, '' + req.params.id, skip, amt).then(
         value => res.json(value.map(a => a.toDTO())),
         err => {

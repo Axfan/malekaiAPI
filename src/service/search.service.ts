@@ -22,7 +22,7 @@ export class SearchService {
     const def = { 1: 50 };
     const skip = (params.find(a => a[0] === 'skip') || def)[1];
     let limit = (params.find(a => a[0] === 'limit') || def)[1];
-    limit = Math.max(limit < 1 ? 1 : limit, 50);
+    limit = Math.min(limit < 1 ? 1 : limit, 50);
 
     let cmd = db.dataUnion.filter((doc) => {
       let current = this.equals(doc, params[0][0], params[0][1]);
@@ -45,7 +45,7 @@ export class SearchService {
                           sortField?: string, sortDirection?: boolean): Promise<IDataObject[]> {
     table = table || '';
     limit = limit == null ? 50 : limit;
-    limit = Math.max(limit < 1 ? 1 : limit, 50);
+    limit = Math.min(limit < 1 ? 1 : limit, 50);
     skip = skip || 0;
     sortField = sortField || 'name';
     sortDirection = sortDirection || false;
