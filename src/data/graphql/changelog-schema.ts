@@ -26,12 +26,12 @@ const AttributeChangeSchema: GraphQLObjectType = new GraphQLObjectType({
     },
     new_value: {
       type:  new GraphQLNonNull(GraphQLString),
-      description: 'The JSON string new value of the stat.',
+      description: 'The JSON string\'d new value of the stat.',
       resolve: (a: AttributeChange) => JSON.stringify(a.attribute_new_value).replace(/^"|"$/g, '')
     },
     old_value: {
       type:  new GraphQLNonNull(GraphQLString),
-      description: 'The JSON string old value of the stat.',
+      description: 'The JSON string\'d old value of the stat.',
       resolve: (a: AttributeChange) => JSON.stringify(a.attribute_old_value).replace(/^"|"$/g, '')
     }
   })
@@ -60,12 +60,8 @@ export const ClassSchema: GraphQLObjectType = new GraphQLObjectType({
       description: 'The english changelog text.'
     },
     attributes: {
-      type: new GraphQLList(GraphQLString),
-      description: 'A list of attributes about the changes.'
-    },
-    changes: {
       type: new GraphQLList(AttributeChangeSchema),
-      description: 'A list of specific changes that happened within the object.'
+      description: 'A list of attributes about the changes.'
     }
   })
 });

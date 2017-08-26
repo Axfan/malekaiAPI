@@ -7,9 +7,7 @@ export class Changelog {
 
   change: string; // description, etc
 
-  attributes: string[]; // tags or something about things changed
-
-  changes: {
+  attributes: {
     attribute_name: string;
     attribute_new_value: any;
     attribute_old_value: any;
@@ -21,8 +19,7 @@ export class Changelog {
     log.data_type = obj.data_type || '';
     log.applies_to = obj.applies_to || '';
     log.change = obj.change || '';
-    log.attributes = obj.attributes instanceof Array ? obj.attributes.slice() : [];
-    log.changes = obj.changes instanceof Array ? obj.changes.slice().map(a => { return {
+    log.attributes = obj.changes instanceof Array ? obj.changes.slice().map(a => { return {
         attribute_name: a.attribute_name || '',
         attribute_new_value: a.attribute_new_value || null,
         attribute_old_value: a.attribute_old_value || null,
@@ -40,8 +37,7 @@ export class Changelog {
       this.data_type = log.data_type || '';
       this.applies_to = log.applies_to || '';
       this.change = log.change || '';
-      this.attributes = log.attributes.slice();
-      this.changes = log.changes.slice();  // I know, keeps references.. but I don't want to use
+      this.attributes = log.attributes.slice(); // I know, keeps references.. but I don't want to use
       //                                      the resources to deep copy.
     } else {
       this.changedate = new Date();
@@ -49,7 +45,6 @@ export class Changelog {
       this.applies_to = '';
       this.change = '';
       this.attributes = [];
-      this.changes = [];
     }
   }
 
@@ -59,8 +54,7 @@ export class Changelog {
       data_type: this.data_type,
       applies_to: this.applies_to,
       change: this.change,
-      attributes: this.attributes.slice(),
-      changes: this.changes.map(a => Object.assign({}, a))
+      attributes: this.attributes.map(a => Object.assign({}, a))
     };
   }
 
