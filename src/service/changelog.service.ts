@@ -11,10 +11,10 @@ export class ChangelogService {
   public static getLast(skip: number, amt: number): Promise<Changelog[]> {
 
     skip = skip || 0;
-    amt = (amt == null || typeof amt !== 'number') ? 50 : amt;
+    amt = amt == null ? 50 : amt;
     amt = Math.min(amt < 1 ? 1 : amt, 50);
 
-    let cmd = this.table.orderBy('changedate').limit(amt);
+    let cmd = this.table.orderBy('changedate');
     if(skip) cmd = cmd.slice(skip, skip + amt);
     else cmd = cmd.limit(amt);
 
