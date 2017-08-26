@@ -10,8 +10,7 @@
     "experimentalDecorators": true,
     "lib": [
       "webworker",
-      "es2017",
-      "esnext.asynciterable",
+      "esnext",
       "scripthost"
     ]
   },

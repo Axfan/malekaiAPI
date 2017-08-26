@@ -29,7 +29,6 @@
     "source-map-support": "^0.4.16"
   },
   "devDependencies": {
-    "@types/async": "^2.0.42",
     "@types/body-parser": "^1.16.5",
     "@types/express": "^4.0.37",
     "@types/express-brute": "^0.0.35",
