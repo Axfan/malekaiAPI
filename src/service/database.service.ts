@@ -59,6 +59,7 @@ export class DatabaseService {
         ...this.tables.map(a => this.initData(a + 'Library')),
         this.initLog(),
         this.initIssues(),
+        this.initChangelogs(),
       ]).then(() => resolve()).catch(err => { reject(err); return; }));
     });
   }
@@ -97,6 +98,18 @@ export class DatabaseService {
 
         if(list.findIndex(t => t === 'issuesQueue') < 0) {
           this.run(this.db.tableCreate('issuesQueue'))
+            .then(table => resolve()); // or index things
+        } else resolve(); // or index things
+      }).catch(err => reject(err));
+    });
+  }
+
+  private static initChangelogs(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.run(this.db.tableList()).then((list: string[]) => {
+
+        if(list.findIndex(t => t === 'changeLog') < 0) {
+          this.run(this.db.tableCreate('changeLog'))
             .then(table => resolve()); // or index things
         } else resolve(); // or index things
       }).catch(err => reject(err));

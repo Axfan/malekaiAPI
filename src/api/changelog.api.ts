@@ -13,8 +13,10 @@ export class ChangelogApi {
   get(req: Request, res: Response) {
      try {
       // const id = atob(req.params.id);
-      // const amt = (req.query.last && typeof req.query.last === 'number') ? req.query.last : 50;
-      ChangelogService.getLast(50).then(
+      const skip = (req.query.skip && typeof req.query.skip === 'number') ? req.query.skip : 0;
+      let amt = (req.query.amount && typeof req.query.amount === 'number') ? req.query.last : 50;
+      amt = Math.max(amt < 1 ? 1 : amt, 50);
+      ChangelogService.getLast(skip, amt).then(
         value => res.json(value.map(a => a.toDTO())),
         err => {
           res.status(err.status).send(err.message);
@@ -30,8 +32,10 @@ export class ChangelogApi {
   getId(req: Request, res: Response) {
     try {
       // const id = atob(req.params.id);
-      // const amt = (req.query.last && typeof req.query.last === 'number') ? Math.min(0, Math.max(req.query.last, 500)) : 50;
-      ChangelogService.get('' + req.params.data_type, '' + req.params.id, 50).then(
+      const skip = (req.query.skip && typeof req.query.skip === 'number') ? req.query.skip : 0;
+      let amt = (req.query.amount && typeof req.query.amount === 'number') ? req.query.last : 50;
+      amt = Math.max(amt < 1 ? 1 : amt, 50);
+      ChangelogService.get('' + req.params.data_type, '' + req.params.id, skip, amt).then(
         value => res.json(value.map(a => a.toDTO())),
         err => {
           res.status(err.status).send(err.message);

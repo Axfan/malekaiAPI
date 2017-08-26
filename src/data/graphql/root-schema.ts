@@ -2,10 +2,12 @@ import DataObjectInterface from './data-object-interface';
 import ClassSchema from './class-schema';
 import DisciplineSchema from './discipline-schema';
 import PowerSchema from './power-schema';
+import ChangelogSchema from './changelog-schema';
 import {
   ClassService,
   DisciplineService,
   PowerService,
+  ChangelogService,
   DataObjectService,
   SearchService
 } from '../../service';
@@ -159,6 +161,31 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
             else return PowerService.getFromName(name);
           }
         },
+        changelog: {
+          type: new GraphQLList(ChangelogSchema),
+          description: 'All the changelogs for a specific data object.',
+          args: {
+            data_type: {
+              description: 'The data type of the object',
+              type: new GraphQLNonNull(GraphQLString)
+            },
+            id: {
+              description: 'The id of the object',
+              type: new GraphQLNonNull(GraphQLString)
+            },
+            skip: {
+              description: 'The amount to skip.',
+              type: GraphQLInt
+            },
+            amount: {
+              description: 'The amount to get.',
+              type: GraphQLInt
+            }
+          },
+          resolve: (root, { data_type, id, skip, amount }) => {
+            return ChangelogService.get(data_type, id, skip, amount);
+          }
+        },
         races: {
           type: new GraphQLList(DisciplineSchema),
           description: 'All the races.',
@@ -185,6 +212,23 @@ export const RootSchema: GraphQLSchema = new GraphQLSchema({
           description: 'All the powers.',
           resolve: (root) => {
             return PowerService.getAll();
+          }
+        },
+        changelogs: {
+          type: new GraphQLList(ChangelogSchema),
+          description: 'All the changelogs.',
+          args: {
+            skip: {
+              description: 'The amount to skip.',
+              type: GraphQLInt
+            },
+            amount: {
+              description: 'The amount to get.',
+              type: GraphQLInt
+            }
+          },
+          resolve: (root, { skip, amount }) => {
+            return ChangelogService.getLast(skip, amount);
           }
         }
       },
