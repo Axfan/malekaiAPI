@@ -60,3 +60,7 @@ DatabaseService.init().then(() => {
   logger.error('Failed to start up due to database issues' + err, ['error', 'startup']);
   process.exit(1);
 });
+
+process.on('unhandledRejection', err => {
+  logger.error(err).catch(() => {}).then(() => process.exit(1));
+});
