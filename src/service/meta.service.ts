@@ -19,7 +19,8 @@ export class MetaService {
   public static hasIssue(data_type: string, data_id: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       db.run(this.issuesTable.filter(doc => doc('data_id').eq(data_id)
-                                            .and(doc('data_type').eq(data_type)))
+                                            .and(doc('data_type').eq(data_type))
+                                            .and(doc('status').eq('open')))
                               .isEmpty()).then(
         (result: boolean) => resolve(!result),
         err => reject(new Rejection(err)));
