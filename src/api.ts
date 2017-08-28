@@ -20,6 +20,7 @@ DatabaseService.init().then(() => {
   logger.log('Database Initialized');
 
   const app = express();
+  app.enable('trust proxy');
 
   app.use(cors({ origin: '*', methods: 'GET,POST' }));
   // TODO: Brute!
@@ -33,9 +34,9 @@ DatabaseService.init().then(() => {
 
   app.use((req, res, next) => {
     const host = req.headers.origin || req.headers.host || req.ip;
-    Logger.log('HTTP', `${req.method} ${req.hostname}${req.originalUrl} from ${host}`,
+    Logger.log('HTTP', `${req.method} ${req.hostname}${req.originalUrl} from ${host} (ip: ${req.ip}, ips: [${req.ips}])`,
                 ['http', req.method, `${req.hostname}${req.originalUrl}`, (host instanceof Array ? host.join('::') : host)],
-                req.ip);
+                `[${req.ips.toString()}]`);
     next();
   });
 
