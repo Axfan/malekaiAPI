@@ -12,16 +12,16 @@ export class SearchService {
       const col: r.Sequence = r.expr(param) as any;
       return col.map(val => doc(key).contains(val)).contains(false).eq(false);
     } else if(typeof param === 'string') {
-      const groups = param.split(/\W/).filter(a => a).map(a => `(?:${a})`);
-      return doc<string>(key).match(`(?i)${groups.join('\\W*')}`);
+      const groups = param.split(/\W/).filter(a => a);
+      const regex = `(?i)${groups.map(a => `(?:${a})`).join('\\W*')}`;
+      return doc<string>(key).match(regex);
     } else
       return doc(key).eq(param);
   }
 
   public static search(params: [string, any][]): Promise<IDataObject[]> {
-    const def = { 1: 50 };
-    const skip = (params.find(a => a[0] === 'skip') || def)[1];
-    let limit = (params.find(a => a[0] === 'limit') || def)[1];
+    const skip = (params.find(a => a[0] === 'skip') || { 1: 0 })[1];
+    let limit = (params.find(a => a[0] === 'limit') || { 1: 50 })[1];
     limit = Math.min(limit < 1 ? 1 : limit, 50);
 
     let cmd = db.dataUnion.filter((doc) => {
@@ -60,7 +60,6 @@ export class SearchService {
     }
 
     const groups = text.split(/\W/).filter(a => a);
-    const col: r.Sequence = r.expr(groups) as any;
     const regex = `(?i)${groups.map(a => `(?:${a})`).join('\\W*')}`;
 
     let cmd = toSearch.filter(doc => {
