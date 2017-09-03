@@ -59,14 +59,15 @@ export class SearchService {
       default: toSearch = db.dataUnion;
     }
 
-    let cmd = toSearch.filter((doc) => {
-      const groups = text.split(/\W/).filter(a => a);
-      const col: r.Sequence = r.expr(groups) as any;
-      const regex = `(?i)${groups.map(a => `(?:${a})`).join('\\W*')}`;
+    const groups = text.split(/\W/).filter(a => a);
+    const col: r.Sequence = r.expr(groups) as any;
+    const regex = `(?i)${groups.map(a => `(?:${a})`).join('\\W*')}`;
+
+    let cmd = toSearch.filter(doc => {
       return doc('name').match(regex)
                 .or(doc('data_type').match(regex))
                 .or(doc('description').match(regex))
-                .or(col.contains(doc('tags')))
+                .or(doc('tags').contains(d => d.match(regex)))
                 .or(doc('type').match(regex));
     }).orderBy(sortDirection ? sortField : r.desc(sortField));
 
@@ -74,9 +75,10 @@ export class SearchService {
     else if(skip) cmd = cmd.skip(skip);
     else if(limit) cmd = cmd.limit(limit);
 
+    const sortFun = sortDirection ? (a, b) => sort(a[sortField], b[sortField]) : (a, b) =>  sort(b[sortField], a[sortField]);
+
     return db.run(cmd).then(
-      (result: any[]) => result.map(a => DataParser.parseDBO(a))
-                          .sort((a, b) => sortDirection ? sort(a[sortField], b[sortField]) : sort(b[sortField], a[sortField])),
+        (result: any[]) => result.map(a => DataParser.parseDBO(a)).sort(sortFun),
         err => { throw new Rejection(err); });
   }
 }
