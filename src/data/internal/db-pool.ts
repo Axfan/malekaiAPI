@@ -20,7 +20,7 @@ export class DbPool {
     clear(): void;
   };
 
-  constructor(connectOptions: any) {
+  constructor(connectOptions: r.ConnectionOptions) {
 
     this.pool = genericPool.createPool({
       create: (done) => r.connect(connectOptions),
