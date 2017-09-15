@@ -149,7 +149,7 @@ export function LoadCrowfallData(): Promise<void> {
             return cleanEntries(a);
           });
           fields = data.length > 0 ? genFields(data[0]) : null;
-          fs.writeFileSync(`./csv/${type}_disciplines.csv`, json2csv({ data: data }));
+          fs.writeFileSync(`./csv/${type}_disciplines.csv`, json2csv({ data: data, fields: fields }));
         }
 
         console.log('== Classes');
