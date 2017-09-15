@@ -18,11 +18,11 @@ const CostSchema: GraphQLObjectType = new GraphQLObjectType({
   name: 'cost',
   description: 'A cost.',
   fields: () => ({
-    pips: {
-      type: GraphQLInt,
-      description: 'The pip cost.'
+    name: {
+      type: GraphQLString,
+      description: 'The name of the resource.'
     },
-    resource: {
+    cost: {
       type: GraphQLFloat,
       description: 'The resource cost.'
     }
@@ -74,7 +74,7 @@ export const PowerSchema: GraphQLObjectType = new GraphQLObjectType({
       description: 'The cast type of the power.'
     },
     cost: {
-      type: CostSchema,
+      type: new GraphQLList(CostSchema),
       description: 'The cost of the power.'
     },
     duration: {

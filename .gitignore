@@ -8,9 +8,10 @@ secret.json
 /tmp
 .LICENSE.txt
 
-# dependencies
+# dependencies & random data stuff
 /node_modules
 /crowfall-data
+/csv
 
 # IDEs and editors
 /.idea

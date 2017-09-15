@@ -57,7 +57,6 @@ DatabaseService.init().then(() => {
     cb(null, user);
   });
 
-  app.options('*', cors());
   app.use(cors({ origin: '*', methods: 'GET,POST' }));
   // TODO: Brute!
   // const bruteForce = new ExpressBrute(store);
@@ -76,8 +75,8 @@ DatabaseService.init().then(() => {
     {
       clientID: secret.discord.clientID,
       clientSecret: secret.discord.clientSecret,
-      callbackURL: process.env.production ? 'https://api.malekai.network/auth/discord/callback' :
-                                            'http://127.0.0.1:7070/auth/discord/callback',
+      callbackURL: process.env.production ? 'https://api.malekai.network/secure/auth/discord/callback' :
+                                            'http://127.0.0.1:7070/secure/auth/discord/callback',
       scope: discordScope,
     }, (accessToken, refreshToken, profile, cb) => {
       console.log('Authed:', profile.id);
@@ -122,13 +121,14 @@ DatabaseService.init().then(() => {
   const origin = process.env.production ? 'https://malekai.org' : 'http://127.0.0.1:4200';
   const site = origin + (process.env.production ? '/' :  '/#/');
 
-  const authRouter = express.Router();
-  authRouter.use(cors({ origin: origin, credentials: true, methods: 'GET' }) )
-  authRouter.get('/discord', passport.authenticate('discord', { scope: discordScope }, (req, res) => { }));
-  authRouter.get('/discord/callback', passport.authenticate('discord', { failureRedirect: site }), (req, res) => res.redirect(site));
-  authRouter.get('/logout', (req, res) => { req.logout(); res.redirect(site); });
-  authRouter.get('/confirm', (req, res) => req.isAuthenticated() ? res.send('true') : res.send('false'));
-  app.use('/auth', authRouter);
+  const authRouter = express.Router(); // @todo try to allow multiple origins
+  authRouter.options('*', cors({ origin: origin, credentials: true }));
+  authRouter.use(cors({ origin: origin, credentials: true, methods: 'GET,POST,UPDATE,DELETE' }))
+  authRouter.get('/auth/discord', passport.authenticate('discord', { scope: discordScope }, (req, res) => { }));
+  authRouter.get('/auth/discord/callback', passport.authenticate('discord', { failureRedirect: site }), (req, res) => res.redirect(site));
+  authRouter.get('/auth/logout', (req, res) => { req.logout(); res.redirect(site); });
+  authRouter.get('/authed', (req, res) => req.isAuthenticated() ? res.send('true') : res.send('false'));
+  app.use('/secure', authRouter); /// @todo: move to secure.api.ts, add routes to POST,UPDATE, and DELETE
 
   /*https.createServer({
     key: fs.readFileSync('privkey.pem'),

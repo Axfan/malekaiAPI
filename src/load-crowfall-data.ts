@@ -5,9 +5,46 @@ import * as path from 'path';
 import * as simpleGit from 'simple-git';
 import * as jsonfile from 'jsonfile';
 import * as r from 'rethinkdb';
+import * as json2csv from 'json2csv';
 import { DatabaseService as db } from './service/database.service';
 
+import { Class, Discipline, Power } from './data';
+
 const git = simpleGit('');
+
+function capitalize(str: string) {
+  if(!str) return str;
+  return str.split(/\s+|-|_/g).map(a => `${a[0].toLocaleUpperCase() + a.slice(1)}`).filter(a => a).join(' ');
+}
+
+function cleanEntries(obj: any) {
+  for(const key in obj) {
+    if(obj[key] instanceof Array) {
+      if(obj[key].length <= 0) {
+        obj[key] = '';
+      } else if(typeof obj[key][0] === 'string') {
+        obj[key] = (obj[key] as string[]).map(b => capitalize(b)).join(', ');
+      } else if(typeof obj[key][0] === 'object') {
+        if(Object.keys(obj[key][0]).reduce((s, k, i) => s && i < 2 && (k === 'name' || k === 'value'), true)) {
+          obj[key] = (obj[key] as { name: string, value: string }[]).map(
+            a => `${capitalize(a.name)}: ${typeof a.value === 'string' ? capitalize(a.value) : a.value}`
+          ).join(', ');
+        } else if(Object.keys(obj[key][0]).reduce((s, k, i) => s && i < 2 && (k === 'data_type' || k === 'id'), true)) {
+          obj[key] = (obj[key] as { data_type: string, id: string }[]).map(
+            a => `${capitalize(a.id)} (${capitalize(a.data_type)})`
+          ).join(', ');
+        } else if(Object.keys(obj[key][0]).reduce((s, k, i) => s && i < 2 && (k === 'name' || k === 'cost'), true)) {
+          obj[key] = (obj[key] as { name: string, cost: number }[]).map(
+            a => `${capitalize(a.name)}: ${a.cost}`
+          ).join(', ');
+        }
+      }
+    } else if (typeof obj[key] === 'string' && key !== 'description' && key !== 'name' && obj[key]) {
+      obj[key] = capitalize(obj[key] as string);
+    }
+  }
+  return obj;
+}
 
 const bufferSize = 99;
 async function loadDir(dir: string, ids: {[key: string]: string[]}, data_type?: string) {
@@ -92,6 +129,49 @@ export function LoadCrowfallData(): Promise<void> {
               console.log('- Removed ' + v.old_val.data_type + ' ' + v.old_val.name);
           });
         }
+
+        console.log('=== Generating CSVs')
+        // generate CSV
+        if(!fs.existsSync('./csv')) fs.mkdirSync('./csv');
+
+        let data: any[];
+        let fields: json2csv.Field[];
+        const genFields = obj => Object.keys(data[0]).map(key => { return { label: capitalize(key), value: key } });
+        console.log('== Disciplines');
+
+        for(const type of ['race', 'major', 'minor']) {
+          console.log('= ' + type[0].toLocaleUpperCase() + type.slice(1))
+          data = (await db.run(db.disciplines.filter({ type: type })) as Discipline[]).map(a => {
+            a = Discipline.fromDBO(a);
+            if(a.type !== null) delete a.type;
+            if(a.data_type !== null) delete a.data_type;
+            if(a.id !== null) delete a.id;
+            return cleanEntries(a);
+          });
+          fields = data.length > 0 ? genFields(data[0]) : null;
+          fs.writeFileSync(`./csv/${type}_disciplines.csv`, json2csv({ data: data }));
+        }
+
+        console.log('== Classes');
+        data = (await db.run(db.classes) as Class[]).map(a => {
+          a = Class.fromDBO(a);
+          if(a.data_type !== null) delete a.data_type;
+          if(a.id !== null) delete a.id;
+          return cleanEntries(a);
+        });
+        fields = data.length > 0 ? genFields(data[0]) : null;
+        fs.writeFileSync('./csv/classes.csv', json2csv({ data: data, fields: fields }));
+
+        console.log('== Powers');
+        data = (await db.run(db.powers) as Power[]).map(a => {
+          a = Power.fromDBO(a);
+          if(a.data_type !== null) delete a.data_type;
+          if(a.id !== null) delete a.id;
+          return cleanEntries(a);
+        });
+        fields = data.length > 0 ? genFields(data[0]) : null;
+        fs.writeFileSync('./csv/powers.csv', json2csv({ data: data, fields: fields }));
+
         resolve();
         return;
       } catch (e) {
@@ -117,4 +197,4 @@ export default LoadCrowfallData;
 
 console.log('== Initializing DB...');
 
-db.init().then(() => LoadCrowfallData()).then(d => { console.log('Done loading!'); process.exit(); }).catch(e => console.error(e));
+db.init().then(() => LoadCrowfallData()).then(d => { console.log('Done loading!'); process.exit(); }).catch(e => { console.error(e); process.exit(); });
