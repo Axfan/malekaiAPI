@@ -1,5 +1,5 @@
 export { Logger } from './logger';
-export { DataParser } from './data-parser';
+export { DataUtil } from './data-util';
 export { DataLoaderParser } from './data-loader-parser';
 export function pluralize(s: string): string { return /s$/.test(s) ? `${s}es` : `${s}s`; }
 export function sort(a: any, b: any): number {

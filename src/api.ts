@@ -118,18 +118,6 @@ DatabaseService.init().then(() => {
     console.error(e);
   });*/
 
-  const origin = process.env.production ? 'https://malekai.org' : 'http://127.0.0.1:4200';
-  const site = origin + (process.env.production ? '/' :  '/#/');
-
-  const authRouter = express.Router(); // @todo try to allow multiple origins
-  authRouter.options('*', cors({ origin: origin, credentials: true }));
-  authRouter.use(cors({ origin: origin, credentials: true, methods: 'GET,POST,UPDATE,DELETE' }))
-  authRouter.get('/auth/discord', passport.authenticate('discord', { scope: discordScope }, (req, res) => { }));
-  authRouter.get('/auth/discord/callback', passport.authenticate('discord', { failureRedirect: site }), (req, res) => res.redirect(site));
-  authRouter.get('/auth/logout', (req, res) => { req.logout(); res.redirect(site); });
-  authRouter.get('/authed', (req, res) => req.isAuthenticated() ? res.send('true') : res.send('false'));
-  app.use('/secure', authRouter); /// @todo: move to secure.api.ts, add routes to POST,UPDATE, and DELETE
-
   /*https.createServer({
     key: fs.readFileSync('privkey.pem'),
     cert: fs.readFileSync('cert.pem')

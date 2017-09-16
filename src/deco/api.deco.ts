@@ -19,7 +19,7 @@ export function Api(baseRoute?: string) {
       constructor(...args: any[]);
       constructor(router: Router, ...args: any[]) {
         if(typeof router !== typeof Router) throw new Error('No router was passed!');
-        super(args);
+        super(router, ...args);
         // const router = Router();
         this.__routes.forEach(route => {
           try {

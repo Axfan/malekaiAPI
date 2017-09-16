@@ -1,7 +1,7 @@
 import * as r from 'rethinkdb';
 import { DatabaseService as db } from './database.service';
 
-import { DataParser, sort } from '../util';
+import { DataUtil, sort } from '../util';
 import { Rejection } from '../data/internal';
 import { IDataObject } from '../data/interfaces';
 
@@ -37,7 +37,7 @@ export class SearchService {
 
     return new Promise<any[]>((resolve: (a: IDataObject[]) => void, reject: (a: Rejection) => void) => {
       db.run(cmd).then((result: any[]) => {
-        resolve(result.map(a => DataParser.parseDBO(a)));
+        resolve(result.map(a => DataUtil.parseDBO(a)));
       }).catch(err => reject(new Rejection(err)));
     });
   }
@@ -77,7 +77,7 @@ export class SearchService {
     const sortFun = sortDirection ? (a, b) => sort(a[sortField], b[sortField]) : (a, b) =>  sort(b[sortField], a[sortField]);
 
     return db.run(cmd).then(
-        (result: any[]) => result.map(a => DataParser.parseDBO(a)).sort(sortFun),
+        (result: any[]) => result.map(a => DataUtil.parseDBO(a)).sort(sortFun),
         err => { throw new Rejection(err); });
   }
 }

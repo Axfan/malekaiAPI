@@ -5,7 +5,7 @@ import { DatabaseService as db } from './database.service';
 import { IDataObject } from '../data/interfaces';
 import { Power } from '../data';
 import { Rejection } from '../data/internal';
-import { DataParser } from '../util';
+import { DataUtil } from '../util';
 import { bindLogger} from '../util/logger';
 
 export class PowerService {
@@ -73,7 +73,7 @@ export class PowerService {
       db.run(this.parentUnion.filter(
             doc => col.contains(a => a('type').eq(doc('data_type')).and(a('id').eq(doc('id'))))
           )).then((results: any[]) => {
-        if(results && results instanceof Array && results.length > 0) resolve(results.map(a => DataParser.parseDBO(a)));
+        if(results && results instanceof Array && results.length > 0) resolve(results.map(a => DataUtil.parseDBO(a)));
         else reject(new Rejection('No sources found for power ' + power.id, 404));
       })
     });
