@@ -2,7 +2,6 @@ import { Request } from 'express';
 
 export class Issue {
 
-  error_source: string; // i.e. 'crowfall.wiki', source should correspond to where the error is coming from
   error_user: string; // user string/id of person who found error; use logged in info if user is logged in!
   error_ip: string; // attempt to grab the IP of person submitting an error if done anonymously/for rate limiting
   error_message: string; // users can submit brief message if they chose to (and interface allows it)
@@ -20,7 +19,6 @@ export class Issue {
     if(typeof obj.data_id !== 'string') throw new Error('Malformed data_id in issue! Should be a string.');
 
     const i = new Issue();
-    i.error_source = typeof obj.error_source === 'string' ? obj.error_source : '';
     i.error_user = typeof obj.error_user === 'string' ? obj.error_suer : '';
     i.error_ip = req.ip;
     i.error_message = typeof obj.error_message === 'string' ? obj.error_message : '';
@@ -33,7 +31,6 @@ export class Issue {
 
   static fromDBO(obj: any): Issue {
     const i = new Issue();
-    i.error_source = obj.error_source || '';
     i.error_user = obj.error_user || '';
     i.error_ip = obj.error_ip || '';
     i.error_message = obj.error_message || '';
@@ -46,7 +43,6 @@ export class Issue {
 
   constructor(issue?: Issue) {
     if(issue != null) {
-      this.error_source = issue.error_source || '';
       this.error_user = issue.error_user || '';
       this.error_ip = issue.error_ip || '';
       this.error_message = issue.error_message || '';
@@ -55,7 +51,6 @@ export class Issue {
       this.data_id = issue.data_id || '';
       this.status = issue.status || 'open';
     } else {
-      this.error_source = '';
       this.error_user = '';
       this.error_ip = '';
       this.error_message = '';
@@ -68,7 +63,6 @@ export class Issue {
 
   toDTO(): any {
     return {
-      error_source: this.error_source,
       error_user: this.error_user,
       error_ip: this.error_ip,
       error_message: this.error_message,
