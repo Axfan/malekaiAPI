@@ -33,6 +33,8 @@ let secret: {
   };
 };
 
+console.log(`Starting API in the ${process.env.NODE_ENV || 'development(?)'} environment!`);
+
 try {
   secret = jsonfile.readFileSync('./secret.json');
 } catch(e) {

@@ -17,8 +17,8 @@ export class SecureApi {
 
   constructor(router: Router) {
 
-    const origin = process.env.production ? 'https://malekai.org' : 'http://127.0.0.1:4200';
-    this.site = origin + (process.env.production ? '/' :  '/#/');
+    const origin = process.env.NODE_ENV === 'production' ? 'https://malekai.org' : 'http://127.0.0.1:4200';
+    this.site = origin + (process.env.NODE_ENV === 'production' ? '/' :  '/#/');
 
     router.options('*', cors({ origin: origin, credentials: true }));
     router.use(cors({ origin: origin, credentials: true, methods: 'GET,POST,UPDATE,DELETE' }));
