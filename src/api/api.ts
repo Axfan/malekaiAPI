@@ -55,5 +55,9 @@ export class Api {
     this.router.get('/', (req, res) => {
       res.json({ message: 'hello world!' });
     });
+
+    this.router.get('/env', (req, res) => {
+      res.json({ message: process.env.NODE_ENV || '{null}' });
+    });
   }
 }

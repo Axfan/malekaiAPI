@@ -36,7 +36,7 @@ let secret: {
 try {
   secret = jsonfile.readFileSync('./secret.json');
 } catch(e) {
-  console.error('Couldn\'t read "secret"! ' + e);
+  console.error(`Couldn't read "secret"! ${e}`);
   process.exit(1);
 }
 
@@ -67,13 +67,13 @@ DatabaseService.init().then(() => {
     resave: false,
     saveUninitialized: false,
     store: new SessionStore(),
-    cookie: { domain: process.env.production ? 'malekai.org' : '127.0.0.1' }
+    cookie: { domain: process.env.NODE_ENV === 'production' ? 'malekai.org' : '127.0.0.1' }
   }));
 
   passport.use(new DiscordStrategy({
       clientID: secret.discord.clientID,
       clientSecret: secret.discord.clientSecret,
-      callbackURL: process.env.production ? 'https://api.malekai.network/secure/auth/discord/callback' :
+      callbackURL: process.env.NODE_ENV === 'production' ? 'https://api.malekai.network/secure/auth/discord/callback' :
                                             'http://127.0.0.1:7070/secure/auth/discord/callback',
       scope: discordScope,
     }, (accessToken, refreshToken, profile, cb) => {
