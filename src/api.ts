@@ -17,8 +17,7 @@ import { RootSchema } from './data/graphql/root-schema';
 import { SessionStore } from './data/internal/session-store';
 
 import * as passport from 'passport';
-import * as passportDiscord from 'passport-discord';
-const DiscordStrategy = passportDiscord.Strategy
+import { Strategy as DiscordStrategy } from 'passport-discord';
 
 const logger = bindLogger('MAIN');
 
@@ -71,8 +70,7 @@ DatabaseService.init().then(() => {
     cookie: { domain: process.env.production ? 'malekai.org' : '127.0.0.1' }
   }));
 
-  passport.use(new DiscordStrategy(
-    {
+  passport.use(new DiscordStrategy({
       clientID: secret.discord.clientID,
       clientSecret: secret.discord.clientSecret,
       callbackURL: process.env.production ? 'https://api.malekai.network/secure/auth/discord/callback' :
@@ -81,8 +79,7 @@ DatabaseService.init().then(() => {
     }, (accessToken, refreshToken, profile, cb) => {
       console.log('Authed:', profile.id);
       cb(null, profile);
-    }
-  ));
+    }));
 
   app.use(passport.initialize());
   app.use(passport.session());

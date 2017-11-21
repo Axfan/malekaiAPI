@@ -23,8 +23,11 @@ export class SecureApi {
     router.options('*', cors({ origin: origin, credentials: true }));
     router.use(cors({ origin: origin, credentials: true, methods: 'GET,POST,UPDATE,DELETE' }));
 
-    router.get('/auth/discord', passport.authenticate('discord', { scope: this.discordScope }, (req, res) => { }));
-    router.get('/auth/discord/callback', passport.authenticate('discord', { failureRedirect: this.site }), (req, res) => res.redirect(this.site));
+    router.get('/auth/discord',
+              passport.authenticate('discord', { scope: this.discordScope }));
+    router.get('/auth/discord/callback',
+              passport.authenticate('discord', { failureRedirect: this.site }),
+              (req, res) => res.redirect(this.site));
   }
 
   @Route('authed')

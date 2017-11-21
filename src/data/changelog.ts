@@ -6,12 +6,11 @@ export class Changelog {
   applies_to: string; // id
 
   change: string; // description, etc
+  action: string; // 'added' | 'removed' | 'updated'
 
-  attributes: {
-    attribute_name: string;
-    attribute_new_value: any;
-    attribute_old_value: any;
-  }[];
+  attribute_name: string;
+  attribute_new_value: string;
+  attribute_old_value: string;
 
   static fromDTO(obj: any): Changelog {
     const log = new Changelog();
@@ -19,11 +18,10 @@ export class Changelog {
     log.data_type = obj.data_type || '';
     log.applies_to = obj.applies_to || '';
     log.change = obj.change || '';
-    log.attributes = obj.attributes instanceof Array ? obj.attributes.slice().map(a => { return {
-        attribute_name: a.attribute_name || '',
-        attribute_new_value: a.attribute_new_value || null,
-        attribute_old_value: a.attribute_old_value || null,
-      }; }) : [];
+    log.action = obj.action || '';
+    log.attribute_name = obj.attribute_name || '';
+    log.attribute_new_value = obj.attribute_new_value || '';
+    log.attribute_old_value = obj.attriute_old_value || '';
     return log;
   }
 
@@ -37,14 +35,19 @@ export class Changelog {
       this.data_type = log.data_type || '';
       this.applies_to = log.applies_to || '';
       this.change = log.change || '';
-      this.attributes = log.attributes.slice(); // I know, keeps references.. but I don't want to use
-      //                                      the resources to deep copy.
+      this.action = log.action || '';
+      this.attribute_name = log.attribute_name || '';
+      this.attribute_new_value = log.attribute_new_value || '';
+      this.attribute_old_value = log.attribute_old_value || '';
     } else {
       this.changedate = new Date();
       this.data_type = '';
       this.applies_to = '';
       this.change = '';
-      this.attributes = [];
+      this.action = '';
+      this.attribute_name = '';
+      this.attribute_new_value = '';
+      this.attribute_old_value = '';
     }
   }
 
@@ -54,7 +57,10 @@ export class Changelog {
       data_type: this.data_type,
       applies_to: this.applies_to,
       change: this.change,
-      attributes: this.attributes.map(a => Object.assign({}, a))
+      action: this.action,
+      attribute_name: this.attribute_name,
+      attribute_new_value: this.attribute_new_value,
+      attribute_old_value: this.attribute_old_value,
     };
   }
 

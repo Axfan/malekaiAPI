@@ -1,6 +1,7 @@
 import { Changelog } from '../changelog';
 import { DataObjectService } from '../../service';
 import { DataObjectInterface } from './data-object-interface';
+import { DataLoaderParser } from '../../util/data-loader-parser';
 
 import {
   GraphQLObjectType,
@@ -9,37 +10,9 @@ import {
   GraphQLList,
 } from 'graphql';
 
-interface AttributeChange {
-  attribute_name: string;
-  attribute_new_value: any;
-  attribute_old_value: any;
-}
-
-const AttributeChangeSchema: GraphQLObjectType = new GraphQLObjectType({
-  name: 'attribute_change',
-  description: 'An attribute change entry.',
-  fields: () => ({
-    name: {
-      type:  new GraphQLNonNull(GraphQLString),
-      description: 'The name of the attribute.',
-      resolve: (a: AttributeChange) => a.attribute_name
-    },
-    new_value: {
-      type:  new GraphQLNonNull(GraphQLString),
-      description: 'The JSON string\'d new value of the stat.',
-      resolve: (a: AttributeChange) => JSON.stringify(a.attribute_new_value).replace(/^"|"$/g, '')
-    },
-    old_value: {
-      type:  new GraphQLNonNull(GraphQLString),
-      description: 'The JSON string\'d old value of the stat.',
-      resolve: (a: AttributeChange) => JSON.stringify(a.attribute_old_value).replace(/^"|"$/g, '')
-    }
-  })
-});
-
-export const ClassSchema: GraphQLObjectType = new GraphQLObjectType({
+export const ChangelogSchema: GraphQLObjectType = new GraphQLObjectType({
   name: 'changelog',
-  description: 'A class.',
+  description: 'A changelog entry.',
   fields: () => ({
     changedate: {
       type: new GraphQLNonNull(GraphQLString),
@@ -50,20 +23,41 @@ export const ClassSchema: GraphQLObjectType = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString),
       description: 'The data type of the object which was changed.',
     },
+    id: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: 'The id of the object which was changed.',
+      resolve: (cl: Changelog) => cl.applies_to
+    },
     applies_to: {
       type: DataObjectInterface,
       description: 'The object which was changed.',
-      resolve: (cl: Changelog) => DataObjectService.get(cl.applies_to)
+      resolve: (cl: Changelog) => {
+        if(cl.applies_to !== '*' && cl.action !== 'removed')
+          return DataLoaderParser.parseAndLoad({ data_type: cl.data_type, id: cl.applies_to });
+        else return null;
+      }
     },
     change: {
       type: GraphQLString,
       description: 'The english changelog text.'
     },
-    attributes: {
-      type: new GraphQLList(AttributeChangeSchema),
-      description: 'A list of attributes about the changes.'
+    action: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: 'The change action: can be "added", "removed", or "updated".'
+    },
+    attribute_name: {
+      type:  new GraphQLNonNull(GraphQLString),
+      description: 'The name of the attribute that was changed.',
+    },
+    attribute_new_value: {
+      type:  new GraphQLNonNull(GraphQLString),
+      description: 'The stringified new value of the attribute.',
+    },
+    attribute_old_value: {
+      type:  new GraphQLNonNull(GraphQLString),
+      description: 'The stringified old value of the attribute.',
     }
   })
 });
 
-export default ClassSchema;
+export default ChangelogSchema;
