@@ -37,7 +37,7 @@ export class SecureApi {
       else res.send('false');
     } catch (e) {
       res.status(500).send('' + e);
-      Logger.error('GET: /secure', e);
+      Logger.error('GET: /secure/authed', e);
     }
   }
 
@@ -48,7 +48,7 @@ export class SecureApi {
       res.redirect(this.site);
     } catch (e) {
       res.status(500).send('' + e);
-      Logger.error('GET: /secure', e);
+      Logger.error('GET: /secure/auth/logout', e);
     }
   }
 
@@ -66,11 +66,11 @@ export class SecureApi {
       }).catch(err => {
         if(!(err instanceof Rejection)) err = new Rejection(err);
         res.status(err.status).send(err.message);
-        Logger.error('GET: /disciplines', err);
+        Logger.error(`PUT: /secure/${req.params.data_type}/${req.params.id}`, err);
       });
     } catch (e) {
       res.status(500).send('' + e);
-      Logger.error('GET: /secure', e);
+      Logger.error(`PUT: /secure/${req.params.data_type}/${req.params.id}`, e);
     }
   }
 
@@ -87,11 +87,11 @@ export class SecureApi {
       }).catch(err => {
         if(!(err instanceof Rejection)) err = new Rejection(err);
         res.status(err.status).send(err.message);
-        Logger.error('GET: /disciplines', err);
+        Logger.error(`DELETE: /secure/${req.params.data_type}/${req.params.id}`, err);
       });
     } catch (e) {
       res.status(500).send('' + e);
-      Logger.error('GET: /secure', e);
+      Logger.error(`DELETE: /secure/${req.params.data_type}/${req.params.id}`, e);
     }
   }
 
@@ -108,11 +108,11 @@ export class SecureApi {
       }).catch(err => {
         if(!(err instanceof Rejection)) err = new Rejection(err);
         res.status(err.status).send(err.message);
-        Logger.error('GET: /disciplines', err);
+        Logger.error(`POST: /secure/${req.params.data_type}`, err);
       });
     } catch (e) {
       res.status(500).send('' + e);
-      Logger.error('GET: /secure', e);
+      Logger.error(`POST: /secure/${req.params.data_type}`, e);
     }
   }
 }

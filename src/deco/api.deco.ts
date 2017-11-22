@@ -19,16 +19,18 @@ export function Api(baseRoute?: string) {
       constructor(...args: any[]);
       constructor(router: Router, ...args: any[]) {
         if(typeof router !== typeof Router) throw new Error('No router was passed!');
-        super(router, ...args);
+        const r = Router();
+        super(r, ...args);
         // const router = Router();
         this.__routes.forEach(route => {
           try {
-            router[route.type](baseRoute + route.route, route.reqHandler);
+            r[route.type](route.route, route.reqHandler);
           } catch(e) {
               throw new Error(`Couldn't bootstrap route ${baseRoute + route.route}: `
                       + `Either type '${route.type}' is unknown or no router (${router}) was passed`);
           }
         });
+        router.use(baseRoute, r);
       }
 
     }
