@@ -6,8 +6,6 @@ export function Api(baseRoute?: string) {
   if(baseRoute) { // the base route must begin and end with a '/'
     if(baseRoute[0] !== '/')
       baseRoute = '/' + baseRoute;
-    if(baseRoute[baseRoute.length - 1] !== '/')
-      baseRoute += '/';
   } else baseRoute = '/';
 
   return function<T extends {new(...args: any[]): {}}>(constructor: T) {
@@ -24,9 +22,9 @@ export function Api(baseRoute?: string) {
         // const router = Router();
         this.__routes.forEach(route => {
           try {
-            r[route.type](route.route, route.reqHandler);
+            r[route.type](`/${route.route}`, route.reqHandler);
           } catch(e) {
-              throw new Error(`Couldn't bootstrap route ${baseRoute + route.route}: `
+              throw new Error(`Couldn't bootstrap route ${route.type.toUpperCase}: ${baseRoute}/${route.route}; `
                       + `Either type '${route.type}' is unknown or no router (${router}) was passed`);
           }
         });
