@@ -47,9 +47,10 @@ export class DatabaseService {
     ]);
   }
 
+  public static get issues(): Table { return this.cfDb.table('issuesQueue'); }
+  public static get changelogs(): Table { return this.cfDb.table('changeLog'); }
+
   public static get log(): Table { return this.apiDb.table('apiLog'); }
-  public static get issues(): Table { return this.apiDb.table('issuesQueue'); }
-  public static get changelogs(): Table { return this.apiDb.table('changeLog'); }
   public static get sessions(): Table { return this.apiDb.table('sessions'); }
 
   public static run<T>(query: r.Operation<T>): Promise<T | any[]> {

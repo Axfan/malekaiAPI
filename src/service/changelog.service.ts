@@ -35,8 +35,7 @@ export class ChangelogService {
       r.and(
         r.or(doc('data_type').eq(data_type), doc('data_type').eq('*')),
         r.or(doc('applies_to').eq(id), doc('applies_to').eq('*'))
-      )).orderBy(r.desc('changedate')
-    );
+    )).orderBy(r.desc('changedate'));
 
     if(skip) cmd = cmd.slice(skip, skip + amt);
     else cmd = cmd.limit(amt);
