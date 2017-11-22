@@ -32,9 +32,10 @@ export class ChangelogService {
     amt = Math.min(amt < 1 ? 1 : amt, 50);
 
     let cmd = this.table.filter((doc) =>
-      doc('data_type').eq(data_type).or(doc('data_type').eq('*').and(
-          doc('applies_to').eq(id).or(doc('applies_to').eq('*'))
-      ))).orderBy(r.desc('changedate')
+      r.and(
+        r.or(doc('data_type').eq(data_type), doc('data_type').eq('*')),
+        r.or(doc('applies_to').eq(id), doc('applies_to').eq('*'))
+      )).orderBy(r.desc('changedate')
     );
 
     if(skip) cmd = cmd.slice(skip, skip + amt);

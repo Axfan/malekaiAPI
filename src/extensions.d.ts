@@ -7,6 +7,8 @@ declare module "rethinkdb" {
 
   export function not(e: Expression<boolean>): Expression<boolean>;
   export function expr(stuff: any): Expression<any> | Sequence;
+  export function and(...e: (Expression<boolean> | boolean)[]);
+  export function or(...e: (Expression<boolean> | boolean)[]);
 
   interface Sequence extends Operation<Cursor>, Writeable {
     union(...sequence: Sequence[]): Sequence;
