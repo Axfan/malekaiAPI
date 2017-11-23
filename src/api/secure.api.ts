@@ -9,7 +9,7 @@ import * as cors from 'cors';
 import * as passport from 'passport';
 import { WriteResult } from 'rethinkdb';
 
-@Api('secure')
+@Api('secure', { scoped: true })
 export class SecureApi {
 
   site: string;
