@@ -32,8 +32,8 @@ export const ChangelogSchema: GraphQLObjectType = new GraphQLObjectType({
       type: DataObjectInterface,
       description: 'The object which was changed.',
       resolve: (cl: Changelog) => {
-        if(cl.applies_to !== '*' && cl.action !== 'removed')
-          return DataLoaderParser.parseAndLoad({ data_type: cl.data_type, id: cl.applies_to });
+        if(cl.applies_to !== '*')
+          return DataLoaderParser.parseAndLoad({ data_type: cl.data_type, id: cl.applies_to }).catch(e => null);
         else return null;
       }
     },

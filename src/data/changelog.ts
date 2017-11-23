@@ -1,3 +1,13 @@
+/**
+ * The changelog class.
+ *
+ * Notes:
+ *
+ * To determine if an entire object (class/discipline/power/etc) was added or
+ * removed, `attribute_new_value` and `attribute_old_value` will both be
+ * empty, and `attribute_name` will be the name of the object. `action`
+ * will be the action that happened to it (added/removed).
+ */
 export class Changelog {
 
   changedate: Date;
