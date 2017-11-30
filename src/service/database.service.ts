@@ -133,8 +133,14 @@ export class DatabaseService {
 
         if(list.findIndex(t => t === 'sessions') < 0) {
           this.run(this.apiDb.tableCreate('sessions'))
-            .then(table => resolve()); // or index things
-        } else resolve(); // or index things
+            .then((table: any) => {
+              this.run(table.filter(doc => doc('expires').lt(new Date())).delete())
+                .then(() => resolve());
+            }); // or index things
+        } else {
+          this.run(this.sessions.filter(doc => doc('expires').lt(new Date())).delete())
+              .then(() => resolve());
+        }
       }).catch(err => reject(err));
     });
   }

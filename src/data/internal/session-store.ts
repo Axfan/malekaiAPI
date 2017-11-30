@@ -27,6 +27,7 @@ export class SessionStore extends session.Store {
   }
 
   set = function(sid: string, session: any, callback: (err?: any) => void) {
+    if(session && session.passport && session.passport.user) delete session.passport.user.email;
     db.run(db.sessions.insert({
       id: sid,
       expires: new Date(Date.now() + this.cookieAge),

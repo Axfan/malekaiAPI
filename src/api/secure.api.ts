@@ -4,6 +4,7 @@ import { Api, Route } from '../deco';
 import { Rejection } from '../data/internal/rejection';
 import { DatabaseService as db } from '../service/database.service';
 import { DataUtil } from '../util';
+import env from '../env';
 import * as fs from 'fs';
 import * as cors from 'cors';
 import * as passport from 'passport';
@@ -17,8 +18,8 @@ export class SecureApi {
 
   constructor(router: Router) {
 
-    const origin = process.env.NODE_ENV === 'production' ? 'https://malekai.org' : 'http://127.0.0.1:4200';
-    this.site = origin + (process.env.NODE_ENV === 'production' ? '/' :  '/#/');
+    const origin = env.production ? 'https://malekai.org' : 'http://localhost:4200';
+    this.site = origin + (env.production ? '/' :  '/#/');
 
     router.options('*', cors({ origin: origin, credentials: true }));
     router.use(cors({ origin: origin, credentials: true, methods: 'GET,POST,UPDATE,DELETE' }));
@@ -30,8 +31,23 @@ export class SecureApi {
               (req, res) => res.redirect(this.site));
   }
 
+  @Route('authdump')
+  getAuthdump(req: Request, res: Response) {
+    try {
+      if(req.query['key'] !== env.masterKey) { res.status(403).send('Nope.'); return; }
+      db.run(db.sessions).then(sess => res.json(sess)).catch(err => {
+        if(!(err instanceof Rejection)) err = new Rejection(err);
+        res.status(err.status).send(err.message);
+        Logger.error('GET: /secure/authdump', err);
+      });
+    } catch (e) {
+      res.status(500).send('' + e);
+      Logger.error('GET: /secure/authdump', e);
+    }
+  }
+
   @Route('authed')
-  get(req: Request, res: Response) {
+  getAuthed(req: Request, res: Response) {
     try {
       if(req.isAuthenticated()) res.send('true');
       else res.send('false');

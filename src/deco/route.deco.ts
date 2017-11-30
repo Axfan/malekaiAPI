@@ -19,6 +19,6 @@ export function Route(route?: string) {
 
     const type = typeMatch[0];
     target.__routes = target.__routes || [];
-    target.__routes.push(new ApiRoute(route, type, target[propertyKey]))
+    target.__routes.push(new ApiRoute(route, type, target[propertyKey]));
   }
 }

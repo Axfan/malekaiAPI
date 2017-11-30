@@ -23,7 +23,7 @@ export function Api(baseRoute?: string, options?: { scoped?: boolean }) {
         // const router = Router();
         this.__routes.forEach(route => {
           try {
-            r[route.type](`${prefix}/${route.route}`, route.reqHandler);
+            r[route.type](`${prefix}/${route.route}`, (...a) => route.reqHandler.call(this, ...a));
           } catch(e) {
               throw new Error(`Couldn't bootstrap route ${route.type.toUpperCase}: ${baseRoute}/${route.route}; `
                       + `Either type '${route.type}' is unknown or no router (${router}) was passed`);
