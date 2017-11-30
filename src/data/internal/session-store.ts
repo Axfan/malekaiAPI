@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { createHmac } from 'crypto';
 import * as session from 'express-session';
 import { DatabaseService as db } from '../../service/database.service';
 
@@ -19,6 +20,12 @@ export class SessionStore extends session.Store {
     if(options && options.cookieAge) this.cookieAge = options.cookieAge;
   }
 
+  hash = function(id: string, email: string) {
+    let hash = createHmac('sha512', id);
+    hash.update(email);
+    return hash.digest('hex');
+  }
+
   /** @override */
   get = function(sid: string, callback: (err?: any, session?: any) => void): void {
     db.run(db.sessions.filter(doc => doc('expires').lt(new Date())).delete()).then(
@@ -27,9 +34,15 @@ export class SessionStore extends session.Store {
   }
 
   set = function(sid: string, session: any, callback: (err?: any) => void) {
-    if(session && session.passport && session.passport.user) delete session.passport.user.email;
+    let emailHash;
+    if(session && session.passport && session.passport.user) {
+      const user = session.passport.user;
+      emailHash = this.hash(user.id, user.email);
+      delete user.email;
+    }
     db.run(db.sessions.insert({
       id: sid,
+      emailHash,
       expires: new Date(Date.now() + this.cookieAge),
       session: session
     } as SessionStoreItem, { conflict: 'replace' })).then(res => callback(), err => callback(err));
