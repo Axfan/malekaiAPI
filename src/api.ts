@@ -73,7 +73,12 @@ DatabaseService.init().then(() => {
     resave: false,
     saveUninitialized: false,
     store: new SessionStore(),
-    cookie: { domain: env.production ? 'malekai.org' : '127.0.0.1' }
+    cookie: {
+      httpOnly: true,
+      sameSite: false,
+      secure: env.production,
+      domain: env.production ? 'malekai.org' : '127.0.0.1'
+    }
   }));
 
   passport.use(new DiscordStrategy({
