@@ -67,6 +67,14 @@ DatabaseService.init().then(() => {
 
   app.use(cors({ origin: '*', methods: 'GET,POST' }));
   app.use(helmet());
+  app.use(helmet.referrerPolicy({
+    policy: 'no-referrer-when-downgrade'
+  }));
+  app.use(helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"]
+    }
+  }))
   // TODO: Brute!
   // const bruteForce = new ExpressBrute(store);
   // app.use(bruteForce.prevent);
