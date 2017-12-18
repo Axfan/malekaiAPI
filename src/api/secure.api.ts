@@ -22,7 +22,7 @@ export class SecureApi {
     this.site = origin + (env.production ? '/' :  '/#/');
 
     router.options('*', cors({ origin: origin, credentials: true }));
-    router.use(cors({ origin: origin, credentials: true, methods: 'GET,POST,UPDATE,DELETE' }));
+    router.use(cors({ origin: origin, credentials: true, methods: 'GET,PUT,POST,DELETE' }));
 
     router.get('/auth/discord',
               passport.authenticate('discord', { scope: this.discordScope }));

@@ -9,6 +9,7 @@ import * as fs from 'fs';
 import * as rethinkdb from 'rethinkdb';
 import * as graphqlHttp from 'express-graphql';
 import * as jsonfile from 'jsonfile';
+import * as helmet from 'helmet';
 import { bindLogger, Logger } from './util/logger';
 import { DatabaseService } from './service';
 import { Api } from './api/api';
@@ -23,6 +24,8 @@ import { Strategy as DiscordStrategy } from 'passport-discord';
 const logger = bindLogger('MAIN');
 
 const discordScope = ['identify'];
+
+// https://expressjs.com/en/advanced/best-practice-security.html
 
 let secret: {
   masterKey: string,
@@ -63,6 +66,7 @@ DatabaseService.init().then(() => {
   });
 
   app.use(cors({ origin: '*', methods: 'GET,POST' }));
+  app.use(helmet());
   // TODO: Brute!
   // const bruteForce = new ExpressBrute(store);
   // app.use(bruteForce.prevent);

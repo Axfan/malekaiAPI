@@ -34,15 +34,12 @@ export class SessionStore extends session.Store {
   }
 
   set = function(sid: string, session: any, callback: (err?: any) => void) {
-    let emailHash;
     if(session && session.passport && session.passport.user) {
       const user = session.passport.user;
-      emailHash = this.hash(user.id, user.email);
-      delete user.email;
+      user.email = this.hash(user.id, user.email);
     }
     db.run(db.sessions.insert({
       id: sid,
-      emailHash,
       expires: new Date(Date.now() + this.cookieAge),
       session: session
     } as SessionStoreItem, { conflict: 'replace' })).then(res => callback(), err => callback(err));
