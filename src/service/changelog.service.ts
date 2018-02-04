@@ -33,7 +33,7 @@ export class ChangelogService {
 
     let cmd = this.table.filter((doc) =>
       r.and(
-        r.or(doc('data_type').eq(data_type), doc('data_type').eq('*')),
+        r.or(doc('category').eq(data_type), doc('category').eq('*')),
         r.or(doc('applies_to').eq(id), doc('applies_to').eq('*'))
     )).orderBy(r.desc('changedate'));
 

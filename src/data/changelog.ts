@@ -12,7 +12,9 @@ export class Changelog {
 
   changedate: Date;
 
-  data_type: string;
+  static get data_type() { return "patchnote" }
+  data_type = Changelog.data_type;
+  category: string; // applies_to => data_type
   applies_to: string; // id
 
   change: string; // description, etc
@@ -23,9 +25,10 @@ export class Changelog {
   attribute_old_value: string;
 
   static fromDTO(obj: any): Changelog {
+    if(obj.data_type !== this.data_type && obj.data_type) throw new Error(`Datatype is not "${this.data_type}"!`);
     const log = new Changelog();
     log.changedate = new Date(obj.changedate);
-    log.data_type = obj.data_type || '';
+    log.category = obj.category || '';
     log.applies_to = obj.applies_to || '';
     log.change = obj.change || '';
     log.action = obj.action || '';
@@ -42,7 +45,7 @@ export class Changelog {
   constructor(log?: Changelog) {
     if(log != null) {
       this.changedate = new Date(log.changedate);
-      this.data_type = log.data_type || '';
+      this.category = log.category || '';
       this.applies_to = log.applies_to || '';
       this.change = log.change || '';
       this.action = log.action || '';
@@ -51,7 +54,7 @@ export class Changelog {
       this.attribute_old_value = log.attribute_old_value || '';
     } else {
       this.changedate = new Date();
-      this.data_type = '';
+      this.category = '';
       this.applies_to = '';
       this.change = '';
       this.action = '';
@@ -63,8 +66,9 @@ export class Changelog {
 
   toDTO(): any {
     return {
-      changedate: new Date(this.changedate),
       data_type: this.data_type,
+      changedate: new Date(this.changedate),
+      category: this.category,
       applies_to: this.applies_to,
       change: this.change,
       action: this.action,

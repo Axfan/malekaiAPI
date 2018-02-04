@@ -14,12 +14,17 @@ export const ChangelogSchema: GraphQLObjectType = new GraphQLObjectType({
   name: 'changelog',
   description: 'A changelog entry.',
   fields: () => ({
+    data_type: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: `The data type (${Changelog.data_type}).`,
+      resolve: () => Changelog.data_type
+    },
     changedate: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'The date which the change occured.',
       resolve: (cl: Changelog) => JSON.stringify(cl.changedate).replace(/^"|"$/g, '')
     },
-    data_type: {
+    category: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'The data type of the object which was changed.',
     },
@@ -33,7 +38,7 @@ export const ChangelogSchema: GraphQLObjectType = new GraphQLObjectType({
       description: 'The object which was changed.',
       resolve: (cl: Changelog) => {
         if(cl.applies_to !== '*')
-          return DataLoaderParser.parseAndLoad({ data_type: cl.data_type, id: cl.applies_to }).catch(e => null);
+          return DataLoaderParser.parseAndLoad({ data_type: cl.category, id: cl.applies_to }).catch(e => null);
         else return null;
       }
     },
