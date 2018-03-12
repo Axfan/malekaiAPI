@@ -5,6 +5,7 @@ import { RaceApi } from './race.api';
 import { ClassApi } from './class.api';
 import { DisciplineApi } from './discipline.api';
 import { PowerApi } from './power.api';
+import { GuildApi } from './guild.api';
 import { ChangelogApi } from './changelog.api';
 import { CSVApi } from './csv.api';
 import { SecureApi } from './secure.api';
@@ -32,6 +33,9 @@ export class Api {
   private _powers: PowerApi;
   public get powers(): PowerApi { return this._powers; }
 
+  private _guilds: GuildApi;
+  public get guilds(): GuildApi { return this._guilds; }
+
   private _changelog: ChangelogApi;
   public get changelog(): ChangelogApi { return this._changelog; }
 
@@ -48,6 +52,7 @@ export class Api {
     this._classes = new ClassApi(this.router);
     this._disciplines = new DisciplineApi(this.router);
     this._powers = new PowerApi(this.router);
+    this._guilds = new GuildApi(this.router);
     this._changelog = new ChangelogApi(this.router);
     this._csv = new CSVApi(this.router);
     this._secure = new SecureApi(this.router);

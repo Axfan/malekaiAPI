@@ -21,17 +21,19 @@ export class DatabaseService {
   public static get cfDb(): Db { return r.db(this.crowfallDbName); }
   public static get apiDb(): Db { return r.db(this.apiDbName); }
 
-  public static get tables() { return ['class', 'discipline', 'power']; }
+  public static get tables() { return ['class', 'discipline', 'power', 'guild']; }
 
   public static get classes(): Table { return this.cfDb.table('classLibrary'); }
   public static get disciplines(): Table { return this.cfDb.table('disciplineLibrary'); }
   public static get powers(): Table { return this.cfDb.table('powerLibrary'); }
+  public static get guilds(): Table { return this.cfDb.table('guildLibrary'); }
 
   public static getTable(name: string): Table {
     const t = this.tables.find(a => name.substr(0, a.length) === a);
     if(t === 'class') return this.classes;
     if(t === 'discipline') return this.disciplines;
     if(t === 'power') return this.powers;
+    if(t === 'guild') return this.guilds;
     return null;
   }
 
@@ -43,7 +45,8 @@ export class DatabaseService {
     return Promise.all([
       this.run(this.classes.delete()),
       this.run(this.disciplines.delete()),
-      this.run(this.powers.delete())
+      this.run(this.powers.delete()),
+      this.run(this.guilds.delete())
     ]);
   }
 

@@ -4,6 +4,7 @@ export { LogService } from './log.service';
 export { ClassService } from './class.service';
 export { DisciplineService } from './discipline.service';
 export { PowerService } from './power.service';
+export { GuildService } from './guild.service';
 
 export { ChangelogService } from './changelog.service';
 
